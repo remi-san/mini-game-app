@@ -72,6 +72,17 @@ trait MiniGameAppMocker {
     }
 
     /**
+     * @param ApplicationUser $user
+     * @return GameMoveCommand
+     */
+    public function getJoinGameCommand(ApplicationUser $user = null)
+    {
+        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\JoinGameCommand');
+        $command->shouldReceive('getUser')->andReturn($user);
+        return $command;
+    }
+
+    /**
      * @param  ApplicationResponse $response
      * @return CommandExecutor
      */
