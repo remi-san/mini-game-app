@@ -95,7 +95,7 @@ class MiniGameCommandExecutor implements CommandExecutor {
      * @param Player $player
      */
     protected function deletePlayerMiniGame(Player $player) {
-        $miniGame = $this->gameManager->getActiveMiniGameForPlayer($player);
+        $miniGame = $this->getPlayerMiniGame($player);
         $this->gameManager->deleteMiniGame($miniGame->getId());
     }
 

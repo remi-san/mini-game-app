@@ -8,6 +8,7 @@ use MiniGameApp\ApplicationUser;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class ExecutorTest extends \PHPUnit_Framework_TestCase {
     use MiniGameAppMocker;
@@ -69,5 +70,75 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase {
 
         $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager);
         $executor->execute($command);
+    }
+
+    /**
+     * @test
+     */
+    public function testCreateGame()
+    {
+        $message = 'start';
+        $options = $this->getGameOptions();
+        $command = $this->getCreateGameCommand($this->user, $options, $message);
+        $this->gameManager->shouldReceive('createMiniGame')->with($options);
+
+        $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager);
+        $response = $executor->execute($command);
+
+        $this->assertEquals($this->user, $response->getUser());
+        $this->assertEquals($message, $response->getMessage());
+    }
+
+    /**
+     * @test
+     */
+    public function testCreateGameWithException()
+    {
+        $message = 'start';
+        $exceptionMessage = 'exception';
+        $options = $this->getGameOptions();
+        $command = $this->getCreateGameCommand($this->user, $options, $message);
+
+        $exception = new \Exception($exceptionMessage);
+
+        $this->gameManager->shouldReceive('createMiniGame')->andThrow($exception);
+
+        $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager);
+        $response = $executor->execute($command);
+
+        $this->assertEquals($this->user, $response->getUser());
+        $this->assertEquals($exceptionMessage, $response->getMessage());
+    }
+
+    /**
+     * @test
+     */
+    public function testGameMove()
+    {
+
+    }
+
+    /**
+     * @test
+     */
+    public function testGameMoveWithEnding()
+    {
+
+    }
+
+    /**
+     * @test
+     */
+    public function testGameMoveWithGameException()
+    {
+
+    }
+
+    /**
+     * @test
+     */
+    public function testGameMoveWithGameNotFoundException()
+    {
+
     }
 } 
