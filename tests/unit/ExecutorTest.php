@@ -1,14 +1,15 @@
 <?php
 namespace MiniGameApp\Test;
 
+use MiniGame\Exceptions\IllegalMoveException;
 use MiniGame\Player;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Application\Executor\MiniGameCommandExecutor;
 use MiniGameApp\ApplicationUser;
+use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 class ExecutorTest extends \PHPUnit_Framework_TestCase {
     use MiniGameAppMocker;
@@ -80,7 +81,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase {
         $message = 'start';
         $options = $this->getGameOptions();
         $command = $this->getCreateGameCommand($this->user, $options, $message);
-        $this->gameManager->shouldReceive('createMiniGame')->with($options);
+        $this->gameManager->shouldReceive('createMiniGame')->with($options)->once();
 
         $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager);
         $response = $executor->execute($command);
@@ -115,7 +116,20 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGameMove()
     {
+        $resultText = 'result';
+        $move = $this->getMove('a');
+        $command = $this->getGameMoveCommand($this->user, $move);
+        $miniGame = $this->getMiniGame(42, 'game');
+        $result = $this->getGameResult($resultText);
 
+        $this->gameManager->shouldReceive('getActiveMiniGameForPlayer')->with($this->player)->andReturn($miniGame)->once();
+        $miniGame->shouldReceive('play')->with($this->player, $move)->andReturn($result)->once();
+
+        $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager);
+        $response = $executor->execute($command);
+
+        $this->assertEquals($this->user, $response->getUser());
+        $this->assertEquals($resultText, $response->getMessage());
     }
 
     /**
@@ -123,7 +137,23 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGameMoveWithEnding()
     {
+        $resultText = 'end';
+        $gameId = 42;
+        $move = $this->getMove('a');
+        $command = $this->getGameMoveCommand($this->user, $move);
+        $miniGame = $this->getMiniGame($gameId, 'game');
+        $result = $this->getEndGame($resultText);
 
+        $this->gameManager->shouldReceive('getActiveMiniGameForPlayer')->with($this->player)->andReturn($miniGame)->twice();
+        $this->gameManager->shouldReceive('deleteMiniGame')->with($gameId)->once();
+
+        $miniGame->shouldReceive('play')->with($this->player, $move)->andReturn($result)->once();
+
+        $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager);
+        $response = $executor->execute($command);
+
+        $this->assertEquals($this->user, $response->getUser());
+        $this->assertEquals($resultText, $response->getMessage());
     }
 
     /**
@@ -131,7 +161,21 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGameMoveWithGameException()
     {
+        $exceptionText = 'exception';
+        $resultText = 'bad result';
+        $move = $this->getMove('a');
+        $command = $this->getGameMoveCommand($this->user, $move);
+        $miniGame = $this->getMiniGame(42, 'game');
+        $result = $this->getGameResult($resultText);
 
+        $this->gameManager->shouldReceive('getActiveMiniGameForPlayer')->with($this->player)->andReturn($miniGame)->once();
+        $miniGame->shouldReceive('play')->with($this->player, $move)->andThrow(new IllegalMoveException($this->player, $miniGame, $result, $move, $exceptionText));
+
+        $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager);
+        $response = $executor->execute($command);
+
+        $this->assertEquals($this->user, $response->getUser());
+        $this->assertEquals($exceptionText . ' ' . $resultText, $response->getMessage());
     }
 
     /**
@@ -139,6 +183,16 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase {
      */
     public function testGameMoveWithGameNotFoundException()
     {
+        $resultText = 'You have to start/join a game first!';
+        $move = $this->getMove('a');
+        $command = $this->getGameMoveCommand($this->user, $move);
 
+        $this->gameManager->shouldReceive('getActiveMiniGameForPlayer')->with($this->player)->andThrow(new GameNotFoundException());
+
+        $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager);
+        $response = $executor->execute($command);
+
+        $this->assertEquals($this->user, $response->getUser());
+        $this->assertEquals($resultText, $response->getMessage());
     }
 } 
