@@ -8,6 +8,7 @@ use MiniGameApp\Application\Command\CreateGameCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Application\CommandExecutor;
 use MiniGameApp\Application\Response\ApplicationResponse;
+use MiniGameApp\Application\Response\Handler\ApplicationResponseHandler;
 use MiniGameApp\Application\Response\SendMessageResponse;
 use MiniGameApp\ApplicationUser;
 use MiniGameApp\Manager\GameManager;
@@ -117,5 +118,13 @@ trait MiniGameAppMocker {
         $appUser->shouldReceive('getId')->andReturn($id);
         $appUser->shouldReceive('getName')->andReturn($name);
         return $appUser;
+    }
+
+    /**
+     * @return ApplicationResponseHandler
+     */
+    public function getAppResponseHandler()
+    {
+        return \Mockery::mock('\\MiniGameApp\\Application\\Response\\Handler\\ApplicationResponseHandler');
     }
 } 
