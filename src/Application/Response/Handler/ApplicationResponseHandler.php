@@ -10,5 +10,5 @@ interface ApplicationResponseHandler {
      * @param  object              $context
      * @return void
      */
-    public function handle(ApplicationResponse $response, $context = null);
+    public function handle(ApplicationResponse $response = null, $context = null);
 } 

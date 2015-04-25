@@ -29,9 +29,9 @@ class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareI
      * @param  object $context
      * @return void
      */
-    public function handle(ApplicationResponse $response, $context = null)
+    public function handle(ApplicationResponse $response = null, $context = null)
     {
-        if (!($response instanceof Message)) {
+        if (!$response || !($response instanceof Message)) {
             if ($this->logger) {
                 $this->logger->info('Cannot handle response!');
             }
