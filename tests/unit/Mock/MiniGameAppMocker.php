@@ -4,11 +4,11 @@ namespace MiniGameApp\Test\Mock;
 use MiniGame\GameOptions;
 use MiniGame\MiniGame;
 use MiniGame\Player;
-use MiniGameApp\Application\Command\ApplicationCommand;
 use MiniGameApp\Application\Command\CreateGameCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Application\CommandExecutor;
 use MiniGameApp\Application\Response\ApplicationResponse;
+use MiniGameApp\Application\Response\SendMessageResponse;
 use MiniGameApp\ApplicationUser;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
@@ -97,10 +97,10 @@ trait MiniGameAppMocker {
     /**
      * @param  ApplicationUser $user
      * @param  string $message
-     * @return ApplicationResponse
+     * @return SendMessageResponse
      */
-    public function getApplicationResponse(ApplicationUser $user = null, $message = null) {
-        $response = \Mockery::mock('\\MiniGameApp\\Application\\Response\\ApplicationResponse');
+    public function getSendMessageResponse(ApplicationUser $user = null, $message = null) {
+        $response = \Mockery::mock('\\MiniGameApp\\Application\\Response\\SendMessageResponse');
         $response->shouldReceive('getUser')->andReturn($user);
         $response->shouldReceive('getMessage')->andReturn($message);
         return $response;

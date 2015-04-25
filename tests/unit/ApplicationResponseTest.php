@@ -2,6 +2,7 @@
 namespace MiniGameApp\Test;
 
 use MiniGameApp\Application\Response\ApplicationResponse;
+use MiniGameApp\Application\Response\SendMessageResponse;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
 
 class ApplicationResponseTest extends \PHPUnit_Framework_TestCase {
@@ -15,7 +16,7 @@ class ApplicationResponseTest extends \PHPUnit_Framework_TestCase {
         $message = 'message';
         $user = $this->getApplicationUser(42, 'adam');
 
-        $response = new ApplicationResponse($user, $message);
+        $response = new SendMessageResponse($user, $message);
 
         $this->assertEquals($user, $response->getUser());
         $this->assertEquals($message, $response->getMessage());

@@ -12,6 +12,7 @@ use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Application\Command\JoinGameCommand;
 use MiniGameApp\Application\CommandExecutor;
 use MiniGameApp\Application\Response\ApplicationResponse;
+use MiniGameApp\Application\Response\SendMessageResponse;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
@@ -44,7 +45,7 @@ class MiniGameCommandExecutor implements CommandExecutor {
      * Executes a command and returns a response
      *
      * @param ApplicationCommand $command
-     * @return \MiniGameApp\Application\Response\ApplicationResponse
+     * @return ApplicationResponse
      */
     public function execute(ApplicationCommand $command)
     {
@@ -76,7 +77,7 @@ class MiniGameCommandExecutor implements CommandExecutor {
         } else {
             $messageText = 'Unrecognized command!';
         }
-        return new ApplicationResponse($command->getUser(), $messageText);
+        return new SendMessageResponse($command->getUser(), $messageText);
     }
 
     /**
