@@ -6,7 +6,7 @@ use MiniGameApp\ApplicationUser;
 interface ApplicationCommand {
 
     /**
-     * @return \MiniGameApp\ApplicationUser
+     * @return ApplicationUser
      */
     public function getUser();
 } 
