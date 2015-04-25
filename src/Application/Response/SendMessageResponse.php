@@ -1,9 +1,10 @@
 <?php
 namespace MiniGameApp\Application\Response;
 
+use MiniGameApp\Application\Message;
 use MiniGameApp\ApplicationUser;
 
-class SendMessageResponse implements ApplicationResponse {
+class SendMessageResponse implements ApplicationResponse, Message {
 
     /**
      * @var string

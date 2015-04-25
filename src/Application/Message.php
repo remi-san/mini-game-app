@@ -1,9 +1,16 @@
 <?php
-namespace MiniGameApp\Application\Response;
+namespace MiniGameApp\Application;
 
 use MiniGameApp\ApplicationUser;
 
-interface ApplicationResponse {
+interface Message {
+
+    /**
+     * Returns the message
+     *
+     * @return string
+     */
+    public function getMessage();
 
     /**
      * Returns the user the message must be sent to
@@ -11,4 +18,4 @@ interface ApplicationResponse {
      * @return ApplicationUser
      */
     public function getUser();
-}
+} 
