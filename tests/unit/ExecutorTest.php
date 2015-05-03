@@ -1,11 +1,12 @@
 <?php
 namespace MiniGameApp\Test;
 
+use MessageApp\ApplicationUser;
+use MessageApp\Test\Mock\MessageAppMocker;
 use MiniGame\Exceptions\IllegalMoveException;
 use MiniGame\Player;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Application\Executor\MiniGameCommandExecutor;
-use MiniGameApp\ApplicationUser;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
@@ -14,6 +15,7 @@ use MiniGameApp\Test\Mock\MiniGameAppMocker;
 class ExecutorTest extends \PHPUnit_Framework_TestCase {
     use MiniGameAppMocker;
     use GameObjectMocker;
+    use MessageAppMocker;
 
     /**
      * @var ApplicationUser
@@ -50,7 +52,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase {
      */
     public function testUnrecognizedCommand()
     {
-        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\ApplicationCommand');
+        $command = \Mockery::mock('\\MessageApp\\Application\\Command\\ApplicationCommand');
         $command->shouldReceive('getUser')->andReturn($this->user);
 
         $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager);

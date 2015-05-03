@@ -1,8 +1,10 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
+use MessageApp\Application\Command\AbstractApplicationCommand;
+use MessageApp\Application\Command\ApplicationCommand;
+use MessageApp\ApplicationUser;
 use MiniGame\GameOptions;
-use MiniGameApp\ApplicationUser;
 
 class CreateGameCommand extends AbstractApplicationCommand implements ApplicationCommand {
 
@@ -19,7 +21,7 @@ class CreateGameCommand extends AbstractApplicationCommand implements Applicatio
     /**
      * Construct
      *
-     * @param ApplicationUser $user
+     * @param \MessageApp\ApplicationUser $user
      * @param GameOptions     $options
      * @param string          $message
      */

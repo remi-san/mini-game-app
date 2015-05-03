@@ -1,16 +1,12 @@
 <?php
 namespace MiniGameApp\Test\Mock;
 
+use MessageApp\ApplicationUser;
 use MiniGame\GameOptions;
 use MiniGame\MiniGame;
 use MiniGame\Player;
 use MiniGameApp\Application\Command\CreateGameCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
-use MiniGameApp\Application\CommandExecutor;
-use MiniGameApp\Application\Response\ApplicationResponse;
-use MiniGameApp\Application\Response\Handler\ApplicationResponseHandler;
-use MiniGameApp\Application\Response\SendMessageResponse;
-use MiniGameApp\ApplicationUser;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
 
@@ -60,7 +56,7 @@ trait MiniGameAppMocker {
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param \MessageApp\ApplicationUser $user
      * @param string          $move
      * @return GameMoveCommand
      */
@@ -73,7 +69,7 @@ trait MiniGameAppMocker {
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param \MessageApp\ApplicationUser $user
      * @return GameMoveCommand
      */
     public function getJoinGameCommand(ApplicationUser $user = null)
@@ -81,50 +77,5 @@ trait MiniGameAppMocker {
         $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\JoinGameCommand');
         $command->shouldReceive('getUser')->andReturn($user);
         return $command;
-    }
-
-    /**
-     * @param  ApplicationResponse $response
-     * @return CommandExecutor
-     */
-    public function getExecutor(ApplicationResponse $response = null) {
-        $executor = \Mockery::mock('\\MiniGameApp\\Application\\CommandExecutor');
-        if ($response) {
-            $executor->shouldReceive('execute')->andReturn($response);
-        }
-        return $executor;
-    }
-
-    /**
-     * @param  ApplicationUser $user
-     * @param  string $message
-     * @return SendMessageResponse
-     */
-    public function getSendMessageResponse(ApplicationUser $user = null, $message = null) {
-        $response = \Mockery::mock('\\MiniGameApp\\Application\\Response\\SendMessageResponse');
-        $response->shouldReceive('getUser')->andReturn($user);
-        $response->shouldReceive('getMessage')->andReturn($message);
-        return $response;
-    }
-
-    /**
-     * @param  int    $id
-     * @param  string $name
-     * @return ApplicationUser
-     */
-    public function getApplicationUser($id, $name)
-    {
-        $appUser = \Mockery::mock('\\MiniGameApp\\ApplicationUser');
-        $appUser->shouldReceive('getId')->andReturn($id);
-        $appUser->shouldReceive('getName')->andReturn($name);
-        return $appUser;
-    }
-
-    /**
-     * @return ApplicationResponseHandler
-     */
-    public function getAppResponseHandler()
-    {
-        return \Mockery::mock('\\MiniGameApp\\Application\\Response\\Handler\\ApplicationResponseHandler');
     }
 } 

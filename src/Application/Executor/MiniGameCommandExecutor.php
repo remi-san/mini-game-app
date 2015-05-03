@@ -1,18 +1,18 @@
 <?php
 namespace MiniGameApp\Application\Executor;
 
+use MessageApp\Application\Command\ApplicationCommand;
+use MessageApp\Application\CommandExecutor;
+use MessageApp\Application\Response\ApplicationResponse;
+use MessageApp\Application\Response\SendMessageResponse;
 use MiniGame\Exceptions\GameException;
 use MiniGame\GameOptions;
 use MiniGame\MiniGame;
 use MiniGame\Player;
 use MiniGame\Result\EndGame;
-use MiniGameApp\Application\Command\ApplicationCommand;
 use MiniGameApp\Application\Command\CreateGameCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Application\Command\JoinGameCommand;
-use MiniGameApp\Application\CommandExecutor;
-use MiniGameApp\Application\Response\ApplicationResponse;
-use MiniGameApp\Application\Response\SendMessageResponse;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
@@ -44,8 +44,8 @@ class MiniGameCommandExecutor implements CommandExecutor {
     /**
      * Executes a command and returns a response
      *
-     * @param ApplicationCommand $command
-     * @return ApplicationResponse
+     * @param \MessageApp\Application\Command\ApplicationCommand $command
+     * @return \MessageApp\Application\Response\ApplicationResponse
      */
     public function execute(ApplicationCommand $command)
     {

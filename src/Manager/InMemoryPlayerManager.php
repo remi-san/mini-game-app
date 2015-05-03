@@ -1,9 +1,9 @@
 <?php
 namespace MiniGameApp\Manager;
 
+use MessageApp\ApplicationUser;
 use MiniGame\MiniGamePlayer;
 use MiniGame\Player;
-use MiniGameApp\ApplicationUser;
 
 abstract class InMemoryPlayerManager implements PlayerManager {
 
@@ -26,7 +26,7 @@ abstract class InMemoryPlayerManager implements PlayerManager {
      * Gets the player matching the twitter user
      * If the player doesn't exist yet, it creates him
      *
-     * @param  \MiniGameApp\ApplicationUser $user
+     * @param  \MessageApp\ApplicationUser $user
      * @return Player
      */
     public function getPlayer(ApplicationUser $user)
@@ -41,7 +41,7 @@ abstract class InMemoryPlayerManager implements PlayerManager {
     /**
      * create a player
      *
-     * @param  \MiniGameApp\ApplicationUser $user
+     * @param  \MessageApp\ApplicationUser $user
      * @return Player
      */
     public function createPlayer(ApplicationUser $user) {

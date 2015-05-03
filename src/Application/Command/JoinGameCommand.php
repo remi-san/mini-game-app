@@ -1,8 +1,10 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
+use MessageApp\Application\Command\AbstractApplicationCommand;
+use MessageApp\Application\Command\ApplicationCommand;
+use MessageApp\ApplicationUser;
 use MiniGame\GameOptions;
-use MiniGameApp\ApplicationUser;
 
 class JoinGameCommand extends AbstractApplicationCommand implements ApplicationCommand {
 
@@ -19,7 +21,7 @@ class JoinGameCommand extends AbstractApplicationCommand implements ApplicationC
     /**
      * Construct
      *
-     * @param \MiniGameApp\ApplicationUser $user
+     * @param \MessageApp\ApplicationUser $user
      * @param string          $gameId
      * @param string          $message
      */

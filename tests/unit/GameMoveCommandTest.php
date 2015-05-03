@@ -1,6 +1,7 @@
 <?php
 namespace MiniGameApp\Test;
 
+use MessageApp\Test\Mock\MessageAppMocker;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
@@ -8,6 +9,7 @@ use MiniGameApp\Test\Mock\MiniGameAppMocker;
 class GameMoveCommandTest extends \PHPUnit_Framework_TestCase {
     use GameObjectMocker;
     use MiniGameAppMocker;
+    use MessageAppMocker;
 
     /**
      * @test

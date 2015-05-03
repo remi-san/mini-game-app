@@ -1,8 +1,8 @@
 <?php
 namespace MiniGameApp\Manager;
 
+use MessageApp\ApplicationUser;
 use MiniGame\Player;
-use MiniGameApp\ApplicationUser;
 
 interface PlayerManager {
 
@@ -10,7 +10,7 @@ interface PlayerManager {
      * Gets the player matching the twitter user
      * If the player doesn't exist yet, it creates him
      *
-     * @param ApplicationUser $user
+     * @param \MessageApp\ApplicationUser $user
      * @return Player
      */
     public function getPlayer(ApplicationUser $user);

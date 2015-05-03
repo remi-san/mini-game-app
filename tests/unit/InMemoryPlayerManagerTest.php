@@ -1,6 +1,7 @@
 <?php
 namespace MiniGameApp\Test;
 
+use MessageApp\Test\Mock\MessageAppMocker;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Manager\InMemoryPlayerManager;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
@@ -10,6 +11,7 @@ class TestPlayerManager extends InMemoryPlayerManager {}
 class InMemoryPlayerManagerTest extends \PHPUnit_Framework_TestCase {
     use GameObjectMocker;
     use MiniGameAppMocker;
+    use MessageAppMocker;
 
     private $playerId = 1;
     private $playerName = 'user';

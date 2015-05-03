@@ -1,8 +1,10 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
+use MessageApp\Application\Command\AbstractApplicationCommand;
+use MessageApp\Application\Command\ApplicationCommand;
+use MessageApp\ApplicationUser;
 use MiniGame\Move;
-use MiniGameApp\ApplicationUser;
 
 class GameMoveCommand extends AbstractApplicationCommand implements ApplicationCommand {
 
@@ -14,7 +16,7 @@ class GameMoveCommand extends AbstractApplicationCommand implements ApplicationC
     /**
      * Constructor
      *
-     * @param \MiniGameApp\ApplicationUser $user
+     * @param \MessageApp\ApplicationUser $user
      * @param Move            $move
      */
     public function __construct(ApplicationUser $user, Move $move)

@@ -17,10 +17,15 @@
         {
             "type": "vcs",
             "url": "git@bitbucket.org:remi-san/mini-game.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:remi-san/message-app.git"
         }
     ],
     "require": {
         "remi-san/mini-game" : "dev-master",
+        "remi-san/message-app" : "dev-master",
         "psr/log": "~1.0",
         "monolog/monolog": "~1.12"
     },
