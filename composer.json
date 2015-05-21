@@ -26,8 +26,7 @@
     "require": {
         "remi-san/mini-game" : "dev-master",
         "remi-san/message-app" : "dev-master",
-        "psr/log": "~1.0",
-        "monolog/monolog": "~1.12"
+        "psr/log": "~1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5",
