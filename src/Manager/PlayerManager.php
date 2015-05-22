@@ -26,7 +26,8 @@ interface PlayerManager {
     /**
      * Saves a player
      *
-     * @param Player $player
+     * @param  Player $player
+     * @return void
      */
     public function savePlayer(Player $player);
 } 
