@@ -10,7 +10,7 @@ interface PlayerManager {
      * Gets the player matching the twitter user
      * If the player doesn't exist yet, it creates him
      *
-     * @param \MessageApp\ApplicationUser $user
+     * @param  ApplicationUser $user
      * @return Player
      */
     public function getPlayer(ApplicationUser $user);
