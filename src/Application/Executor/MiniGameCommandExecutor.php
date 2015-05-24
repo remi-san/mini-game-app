@@ -20,12 +20,7 @@ use MiniGameApp\Manager\PlayerManager;
 class MiniGameCommandExecutor implements CommandExecutor {
 
     /**
-     * @var \MiniGameApp\Manager\PlayerManager
-     */
-    private $playerManager;
-
-    /**
-     * @var \MiniGameApp\Manager\GameManager
+     * @var GameManager
      */
     private $gameManager;
 
@@ -33,23 +28,26 @@ class MiniGameCommandExecutor implements CommandExecutor {
      * Constructor
      *
      * @param GameManager $gameManager
-     * @param PlayerManager $playerManager
      */
-    public function __construct(GameManager $gameManager, PlayerManager $playerManager)
+    public function __construct(GameManager $gameManager)
     {
         $this->gameManager = $gameManager;
-        $this->playerManager = $playerManager;
     }
 
     /**
      * Executes a command and returns a response
      *
-     * @param \MessageApp\Application\Command\ApplicationCommand $command
-     * @return \MessageApp\Application\Response\ApplicationResponse
+     * @param  ApplicationCommand $command
+     * @return ApplicationResponse
+     * @throws \Exception
      */
     public function execute(ApplicationCommand $command)
     {
-        $player = $this->playerManager->getPlayer($command->getUser());
+        $player = $command->getUser();
+
+        if (!$player instanceof Player) {
+            throw new \Exception(); // TODO type
+        }
 
         if ($command instanceof CreateGameCommand) {
             try {

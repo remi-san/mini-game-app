@@ -13,17 +13,6 @@ use MiniGameApp\Manager\PlayerManager;
 trait MiniGameAppMocker {
 
     /**
-     * @param Player $player
-     * @return PlayerManager
-     */
-    public function getPlayerManager(Player $player = null)
-    {
-        $manager = \Mockery::mock('\\MiniGameApp\\Manager\\PlayerManager');
-        $manager->shouldReceive('getPlayer')->andReturn($player);
-        return $manager;
-    }
-
-    /**
      * Returns a mini-game Manager
      *
      * @param  MiniGame $miniGame
