@@ -1,12 +1,11 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
-use MessageApp\Application\Command\AbstractApplicationCommand;
-use MessageApp\Application\Command\ApplicationCommand;
 use MessageApp\ApplicationUser;
 use MiniGame\GameOptions;
+use MiniGame\Player;
 
-class CreateGameCommand extends AbstractApplicationCommand implements ApplicationCommand {
+class CreateGameCommand extends AbstractGameCommand {
 
     /**
      * @var GameOptions
@@ -21,15 +20,15 @@ class CreateGameCommand extends AbstractApplicationCommand implements Applicatio
     /**
      * Construct
      *
-     * @param \MessageApp\ApplicationUser $user
-     * @param GameOptions     $options
-     * @param string          $message
+     * @param Player      $player
+     * @param GameOptions $options
+     * @param string      $message
      */
-    public function __construct(ApplicationUser $user, GameOptions $options, $message)
+    public function __construct(Player $player, GameOptions $options, $message)
     {
         $this->options = $options;
         $this->message = $message;
-        parent::__construct($user);
+        parent::__construct($player);
     }
 
     /**

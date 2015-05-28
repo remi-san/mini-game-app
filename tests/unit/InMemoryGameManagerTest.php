@@ -27,7 +27,7 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->wordSelector = \Mockery::mock('WordSelector\\WordSelector');
 
-        $this->player = $this->getPlayer(1, 'user');
+        $this->player = $this->getPlayer(1, 'player');
 
         $this->miniGame = $this->getMiniGame(self::ID, 'Game');
         $this->miniGame->shouldReceive('getPlayers')->andReturn(array($this->player));

@@ -16,13 +16,13 @@ class JoinGameCommandTest extends \PHPUnit_Framework_TestCase {
      */
     public function test()
     {
-        $user = $this->getApplicationUser(42, 'adam');
+        $user = $this->getPlayer(42, 'adam');
         $gameId = 5;
         $message = 'message';
 
         $command = new JoinGameCommand($user, $gameId, $message);
 
-        $this->assertEquals($user, $command->getUser());
+        $this->assertEquals($user, $command->getPlayer());
         $this->assertEquals($gameId, $command->getGameId());
         $this->assertEquals($message, $command->getMessage());
     }

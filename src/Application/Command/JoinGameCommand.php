@@ -1,12 +1,10 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
-use MessageApp\Application\Command\AbstractApplicationCommand;
-use MessageApp\Application\Command\ApplicationCommand;
-use MessageApp\ApplicationUser;
 use MiniGame\GameOptions;
+use MiniGame\Player;
 
-class JoinGameCommand extends AbstractApplicationCommand implements ApplicationCommand {
+class JoinGameCommand extends AbstractGameCommand {
 
     /**
      * @var string
@@ -21,15 +19,15 @@ class JoinGameCommand extends AbstractApplicationCommand implements ApplicationC
     /**
      * Construct
      *
-     * @param \MessageApp\ApplicationUser $user
-     * @param string          $gameId
-     * @param string          $message
+     * @param Player $player
+     * @param string $gameId
+     * @param string $message
      */
-    public function __construct(ApplicationUser $user, $gameId, $message)
+    public function __construct(Player $player,  $gameId, $message)
     {
         $this->gameId = $gameId;
         $this->message = $message;
-        parent::__construct($user);
+        parent::__construct($player);
     }
 
     /**

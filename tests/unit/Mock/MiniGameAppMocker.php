@@ -30,41 +30,41 @@ trait MiniGameAppMocker {
     }
 
     /**
-     * @param ApplicationUser $user
-     * @param GameOptions     $options
-     * @param string          $message
+     * @param Player      $player
+     * @param GameOptions $options
+     * @param string      $message
      * @return CreateGameCommand
      */
-    public function getCreateGameCommand(ApplicationUser $user = null, GameOptions $options = null, $message = null)
+    public function getCreateGameCommand(Player $player = null, GameOptions $options = null, $message = null)
     {
         $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\CreateGameCommand');
-        $command->shouldReceive('getUser')->andReturn($user);
+        $command->shouldReceive('getPlayer')->andReturn($player);
         $command->shouldReceive('getOptions')->andReturn($options);
         $command->shouldReceive('getMessage')->andReturn($message);
         return $command;
     }
 
     /**
-     * @param \MessageApp\ApplicationUser $user
-     * @param string          $move
+     * @param Player $player
+     * @param string $move
      * @return GameMoveCommand
      */
-    public function getGameMoveCommand(ApplicationUser $user = null, $move = null)
+    public function getGameMoveCommand(Player $player = null, $move = null)
     {
         $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\GameMoveCommand');
-        $command->shouldReceive('getUser')->andReturn($user);
+        $command->shouldReceive('getPlayer')->andReturn($player);
         $command->shouldReceive('getMove')->andReturn($move);
         return $command;
     }
 
     /**
-     * @param \MessageApp\ApplicationUser $user
+     * @param Player $player
      * @return GameMoveCommand
      */
-    public function getJoinGameCommand(ApplicationUser $user = null)
+    public function getJoinGameCommand(Player $player = null)
     {
         $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\JoinGameCommand');
-        $command->shouldReceive('getUser')->andReturn($user);
+        $command->shouldReceive('getPlayer')->andReturn($player);
         return $command;
     }
 } 

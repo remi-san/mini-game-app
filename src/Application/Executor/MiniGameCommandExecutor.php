@@ -1,21 +1,21 @@
 <?php
 namespace MiniGameApp\Application\Executor;
 
-use MessageApp\Application\Command\ApplicationCommand;
-use MessageApp\Application\CommandExecutor;
-use MessageApp\Application\Response\ApplicationResponse;
-use MessageApp\Application\Response\SendMessageResponse;
+use Command\Command;
+use Command\CommandExecutor;
+use Command\Response;
 use MiniGame\Exceptions\GameException;
 use MiniGame\GameOptions;
 use MiniGame\MiniGame;
 use MiniGame\Player;
 use MiniGame\Result\EndGame;
 use MiniGameApp\Application\Command\CreateGameCommand;
+use MiniGameApp\Application\Command\GameCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Application\Command\JoinGameCommand;
+use MiniGameApp\Application\MiniGameResponseBuilder;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Manager\GameManager;
-use MiniGameApp\Manager\PlayerManager;
 
 class MiniGameCommandExecutor implements CommandExecutor {
 
@@ -25,28 +25,39 @@ class MiniGameCommandExecutor implements CommandExecutor {
     private $gameManager;
 
     /**
+     * @var MiniGameResponseBuilder
+     */
+    private $responseBuilder;
+
+    /**
      * Constructor
      *
-     * @param GameManager $gameManager
+     * @param GameManager             $gameManager
+     * @param MiniGameResponseBuilder $responseBuilder
      */
-    public function __construct(GameManager $gameManager)
+    public function __construct(GameManager $gameManager, MiniGameResponseBuilder $responseBuilder)
     {
         $this->gameManager = $gameManager;
+        $this->responseBuilder = $responseBuilder;
     }
 
     /**
      * Executes a command and returns a response
      *
-     * @param  ApplicationCommand $command
-     * @return ApplicationResponse
+     * @param  Command $command
+     * @return Response
      * @throws \Exception
      */
-    public function execute(ApplicationCommand $command)
+    public function execute(Command $command)
     {
-        $player = $command->getUser();
+        if (! $command instanceof GameCommand) {
+            throw new \InvalidArgumentException('Command type not supported');
+        }
+
+        $player = $command->getPlayer();
 
         if (!$player instanceof Player) {
-            throw new \Exception(); // TODO type
+            throw new \InvalidArgumentException('User type not supported');
         }
 
         if ($command instanceof CreateGameCommand) {
@@ -75,7 +86,8 @@ class MiniGameCommandExecutor implements CommandExecutor {
         } else {
             $messageText = 'Unrecognized command!';
         }
-        return new SendMessageResponse($command->getUser(), $messageText);
+
+        return $this->responseBuilder->buildResponse($player, $messageText);
     }
 
     /**
