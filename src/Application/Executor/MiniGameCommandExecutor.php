@@ -4,18 +4,21 @@ namespace MiniGameApp\Application\Executor;
 use Command\Command;
 use Command\CommandExecutor;
 use Command\Response;
+use MessageApp\Application\Response\HandshakeResponse;
 use MiniGame\Exceptions\GameException;
 use MiniGame\GameOptions;
 use MiniGame\MiniGame;
 use MiniGame\Player;
 use MiniGame\Result\EndGame;
 use MiniGameApp\Application\Command\CreateGameCommand;
+use MiniGameApp\Application\Command\CreatePlayerCommand;
 use MiniGameApp\Application\Command\GameCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Application\Command\JoinGameCommand;
 use MiniGameApp\Application\MiniGameResponseBuilder;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Manager\GameManager;
+use MiniGameApp\Manager\PlayerManager;
 
 class MiniGameCommandExecutor implements CommandExecutor {
 
@@ -23,6 +26,11 @@ class MiniGameCommandExecutor implements CommandExecutor {
      * @var GameManager
      */
     private $gameManager;
+
+    /**
+     * @var PlayerManager
+     */
+    private $playerManager;
 
     /**
      * @var MiniGameResponseBuilder
@@ -34,10 +42,12 @@ class MiniGameCommandExecutor implements CommandExecutor {
      *
      * @param GameManager             $gameManager
      * @param MiniGameResponseBuilder $responseBuilder
+     * @param PlayerManager           $playerManager
      */
-    public function __construct(GameManager $gameManager, MiniGameResponseBuilder $responseBuilder)
+    public function __construct(GameManager $gameManager, PlayerManager $playerManager, MiniGameResponseBuilder $responseBuilder)
     {
         $this->gameManager = $gameManager;
+        $this->playerManager = $playerManager;
         $this->responseBuilder = $responseBuilder;
     }
 
@@ -60,7 +70,11 @@ class MiniGameCommandExecutor implements CommandExecutor {
             throw new \InvalidArgumentException('User type not supported');
         }
 
-        if ($command instanceof CreateGameCommand) {
+        if ($command instanceof CreatePlayerCommand) {
+            $player = $command->getPlayer();
+            $this->savePlayer($player);
+            return new HandshakeResponse($player);
+        } elseif ($command instanceof CreateGameCommand) {
             try {
                 $this->createNewMiniGame($command->getOptions());
                 $messageText = $command->getMessage();
@@ -88,6 +102,17 @@ class MiniGameCommandExecutor implements CommandExecutor {
         }
 
         return $this->responseBuilder->buildResponse($player, $messageText);
+    }
+
+    /**
+     * Saves a player
+     *
+     * @param  Player $player
+     * @return void
+     */
+    protected function savePlayer(Player $player)
+    {
+        $this->playerManager->save($player);
     }
 
     /**
