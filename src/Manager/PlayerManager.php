@@ -1,10 +1,10 @@
 <?php
 namespace MiniGameApp\Manager;
 
-use MessageApp\User\Exception\AppUserException;
-use MessageApp\User\Exception\UnsupportedUserException;
 use MiniGame\Player;
+use MiniGameApp\Manager\Exceptions\PlayerException;
 use MiniGameApp\Manager\Exceptions\PlayerNotFoundException;
+use MiniGameApp\Manager\Exceptions\UnbuildablePlayerException;
 
 interface PlayerManager {
 
@@ -21,7 +21,7 @@ interface PlayerManager {
      * Retrieves a player
      *
      * @param  object $object
-     * @throws UnsupportedUserException
+     * @throws PlayerException
      * @return Player
      */
     public function getByObject($object);
@@ -31,7 +31,7 @@ interface PlayerManager {
      *
      * @param  object $object
      * @return Player
-     * @throws AppUserException
+     * @throws UnbuildablePlayerException
      */
     public function create($object);
 

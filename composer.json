@@ -21,6 +21,10 @@
         {
             "type": "vcs",
             "url": "git@github.com:remi-san/command"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:remi-san/message-app"
         }
     ],
     "require": {
@@ -30,7 +34,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5",
-        "Mockery/Mockery": "~0.9"
+        "Mockery/Mockery": "~0.9",
+        "remi-san/message-app" : "dev-master"
     },
     "autoload": {
         "psr-4": {

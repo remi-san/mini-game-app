@@ -1,7 +1,6 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
-use MessageApp\ApplicationUser;
 use MiniGame\GameOptions;
 use MiniGame\Player;
 

@@ -4,7 +4,6 @@ namespace MiniGameApp\Application\Executor;
 use Command\Command;
 use Command\CommandExecutor;
 use Command\Response;
-use MessageApp\Application\Response\HandshakeResponse;
 use MiniGame\Exceptions\GameException;
 use MiniGame\GameOptions;
 use MiniGame\MiniGame;
@@ -71,9 +70,12 @@ class MiniGameCommandExecutor implements CommandExecutor {
         }
 
         if ($command instanceof CreatePlayerCommand) {
-            $player = $command->getPlayer();
-            $this->savePlayer($player);
-            return new HandshakeResponse($player);
+            try {
+                $this->savePlayer($player);
+                $messageText = MiniGameResponseBuilder::HANDSHAKE;
+            } catch (GameException $e) {
+                $messageText = 'Could not create the player!';
+            }
         } elseif ($command instanceof CreateGameCommand) {
             try {
                 $this->createNewMiniGame($command->getOptions());
