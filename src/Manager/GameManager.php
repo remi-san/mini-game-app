@@ -4,6 +4,7 @@ namespace MiniGameApp\Manager;
 use MiniGame\GameOptions;
 use MiniGame\MiniGame;
 use MiniGame\Player;
+use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 
 interface GameManager {
 
@@ -28,6 +29,7 @@ interface GameManager {
      *
      * @param  string $id
      * @return MiniGame
+     * @throws GameNotFoundException
      */
     public function getMiniGame($id);
 
@@ -36,6 +38,7 @@ interface GameManager {
      *
      * @param Player $player
      * @return MiniGame
+     * @throws GameNotFoundException
      */
     public function getActiveMiniGameForPlayer(Player $player);
 
@@ -44,6 +47,7 @@ interface GameManager {
      *
      * @param  string $id
      * @return void
+     * @throws GameNotFoundException
      */
     public function deleteMiniGame($id);
 } 
