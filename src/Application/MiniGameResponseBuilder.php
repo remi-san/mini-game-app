@@ -6,8 +6,6 @@ use MiniGame\Player;
 
 interface MiniGameResponseBuilder {
 
-    const HANDSHAKE = 'handshake';
-
     /**
      * Builds a response
      *

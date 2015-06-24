@@ -14,6 +14,7 @@ use MiniGameApp\Application\Command\CreatePlayerCommand;
 use MiniGameApp\Application\Command\GameCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Application\Command\JoinGameCommand;
+use MiniGameApp\Application\Command\LeaveGameCommand;
 use MiniGameApp\Application\MiniGameResponseBuilder;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Manager\GameManager;
@@ -72,7 +73,7 @@ class MiniGameCommandExecutor implements CommandExecutor {
         if ($command instanceof CreatePlayerCommand) {
             try {
                 $this->savePlayer($player);
-                $messageText = MiniGameResponseBuilder::HANDSHAKE;
+                $messageText = 'Welcome!';
             } catch (GameException $e) {
                 $messageText = 'Could not create the player!';
             }
@@ -84,6 +85,8 @@ class MiniGameCommandExecutor implements CommandExecutor {
                 $messageText = $e->getMessage();
             }
         } else if ($command instanceof JoinGameCommand) {
+            throw new \InvalidArgumentException('Not implemented'); // TODO manage
+        } else if ($command instanceof LeaveGameCommand) {
             throw new \InvalidArgumentException('Not implemented'); // TODO manage
         } else if ($command instanceof GameMoveCommand) {
             try {
