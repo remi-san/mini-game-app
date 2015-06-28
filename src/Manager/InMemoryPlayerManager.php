@@ -5,13 +5,21 @@ use MiniGame\Player;
 use MiniGameApp\Manager\Exceptions\PlayerException;
 use MiniGameApp\Manager\Exceptions\PlayerNotFoundException;
 use MiniGameApp\Manager\Exceptions\UnbuildablePlayerException;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
-abstract class InMemoryPlayerManager implements PlayerManager {
+abstract class InMemoryPlayerManager implements PlayerManager, LoggerAwareInterface {
 
     /**
      * @var Player[]
      */
     protected $players;
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * Constructor
@@ -21,6 +29,7 @@ abstract class InMemoryPlayerManager implements PlayerManager {
     public function __construct(array $players = array())
     {
         $this->players = $players;
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -92,4 +101,13 @@ abstract class InMemoryPlayerManager implements PlayerManager {
      * @return boolean
      */
     protected abstract function supports($object);
+
+    /**
+     * @param  LoggerInterface $logger
+     * @return void
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
 } 

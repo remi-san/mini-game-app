@@ -5,8 +5,11 @@ use MiniGame\GameOptions;
 use MiniGame\MiniGame;
 use MiniGame\Player;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
-abstract class InMemoryGameManager implements GameManager {
+abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface {
 
     /**
      * @var MiniGame[]
@@ -19,6 +22,11 @@ abstract class InMemoryGameManager implements GameManager {
     protected $playersMiniGames;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * Constructor
      *
      * @param MiniGame[] $managedMiniGames
@@ -28,6 +36,7 @@ abstract class InMemoryGameManager implements GameManager {
     {
         $this->managedMiniGames = $managedMiniGames;
         $this->playersMiniGames = $playersMiniGames;
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -107,5 +116,14 @@ abstract class InMemoryGameManager implements GameManager {
         }
 
         unset($this->managedMiniGames[$id]);
+    }
+
+    /**
+     * @param  LoggerInterface $logger
+     * @return void
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 } 

@@ -19,8 +19,11 @@ use MiniGameApp\Application\MiniGameResponseBuilder;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
-class MiniGameCommandExecutor implements CommandExecutor {
+class MiniGameCommandExecutor implements CommandExecutor, LoggerAwareInterface {
 
     /**
      * @var GameManager
@@ -38,6 +41,11 @@ class MiniGameCommandExecutor implements CommandExecutor {
     private $responseBuilder;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * Constructor
      *
      * @param GameManager             $gameManager
@@ -49,6 +57,7 @@ class MiniGameCommandExecutor implements CommandExecutor {
         $this->gameManager = $gameManager;
         $this->playerManager = $playerManager;
         $this->responseBuilder = $responseBuilder;
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -148,5 +157,16 @@ class MiniGameCommandExecutor implements CommandExecutor {
      */
     protected function getPlayerMiniGame(Player $player) {
         return $this->gameManager->getActiveMiniGameForPlayer($player);
+    }
+
+    /**
+     * Sets a logger instance on the object
+     *
+     * @param LoggerInterface $logger
+     * @return null
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 } 
