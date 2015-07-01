@@ -40,6 +40,7 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
     {
 
         $manager = new TestGameManager(array(self::ID, $this->miniGame), array());
+        $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
         $this->assertEquals($this->miniGame, $manager->getMiniGame(self::ID));
     }
@@ -53,6 +54,8 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException');
 
         $manager = new TestGameManager();
+        $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
+
         $manager->getMiniGame(self::ID);
     }
 
@@ -63,6 +66,7 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
     {
 
         $manager = new TestGameManager(array(self::ID, $this->miniGame), array($this->player->getId(), $this->miniGame));
+        $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
         $this->assertEquals($this->miniGame, $manager->getActiveMiniGameForPlayer($this->player));
     }
@@ -76,6 +80,8 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException');
 
         $manager = new TestGameManager();
+        $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
+
         $manager->getActiveMiniGameForPlayer($this->player);
     }
 
@@ -88,6 +94,7 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException');
 
         $manager = new TestGameManager(array(self::ID, $this->miniGame));
+        $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
         $this->assertEquals($this->miniGame, $manager->getMiniGame(self::ID));
 
@@ -104,6 +111,8 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException');
 
         $manager = new TestGameManager();
+        $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
+
         $manager->deleteMiniGame(self::ID);
     }
 
@@ -114,6 +123,8 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
     {
 
         $manager = new TestGameManager();
+        $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
+
         $manager->saveMiniGame($this->miniGame);
 
         $this->assertEquals($this->miniGame, $manager->getMiniGame(self::ID));

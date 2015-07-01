@@ -57,6 +57,44 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
+    public function testLogger()
+    {
+        $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager, $this->responseBuilder);
+        $executor->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
+    }
+
+    /**
+     * @test
+     */
+    public function testIllegalCommand()
+    {
+        $command = \Mockery::mock('\\Command\\Command');
+
+        $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager, $this->responseBuilder);
+
+        $this->setExpectedException('\\InvalidArgumentException');
+
+        $executor->execute($command);
+    }
+
+    /**
+     * @test
+     */
+    public function testIllegalPlayer()
+    {
+        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\GameCommand');
+        $command->shouldReceive('getPlayer')->andReturn(null);
+
+        $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager, $this->responseBuilder);
+
+        $this->setExpectedException('\\InvalidArgumentException');
+
+        $executor->execute($command);
+    }
+
+    /**
+     * @test
+     */
     public function testUnrecognizedCommand()
     {
         $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\GameCommand');
@@ -74,9 +112,58 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
+    public function testCreatePlayer()
+    {
+        $message = 'Welcome!';
+        $command = $this->getCreatePlayerCommand($this->player);
+        $this->playerManager->shouldReceive('save')->with($this->player)->once();
+
+        $expectedResponse = \Mockery::mock('\\Command\\Response');
+        $this->responseBuilder->shouldReceive('buildResponse')->with($this->player, $message)->andReturn($expectedResponse);
+
+        $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager, $this->responseBuilder);
+        $response = $executor->execute($command);
+
+        $this->assertEquals($expectedResponse, $response);
+    }
+
+    /**
+     * @test
+     */
+    public function testErrorCreatingPlayer()
+    {
+        $message = 'Could not create the player!';
+        $command = $this->getCreatePlayerCommand($this->player);
+        $this->playerManager->shouldReceive('save')->with($this->player)->andThrow('\\MiniGameApp\\Manager\\Exceptions\\PlayerException');
+
+        $expectedResponse = \Mockery::mock('\\Command\\Response');
+        $this->responseBuilder->shouldReceive('buildResponse')->with($this->player, $message)->andReturn($expectedResponse);
+
+        $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager, $this->responseBuilder);
+        $response = $executor->execute($command);
+
+        $this->assertEquals($expectedResponse, $response);
+    }
+
+    /**
+     * @test
+     */
     public function testJoinGame()
     {
         $command = $this->getJoinGameCommand($this->player);
+
+        $this->setExpectedException('\\InvalidArgumentException');
+
+        $executor = new MiniGameCommandExecutor($this->gameManager, $this->playerManager, $this->responseBuilder);
+        $executor->execute($command);
+    }
+
+    /**
+     * @test
+     */
+    public function testLeaveGame()
+    {
+        $command = $this->getLeaveGameCommand($this->player);
 
         $this->setExpectedException('\\InvalidArgumentException');
 

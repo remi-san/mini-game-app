@@ -6,7 +6,9 @@ use MiniGame\GameOptions;
 use MiniGame\MiniGame;
 use MiniGame\Player;
 use MiniGameApp\Application\Command\CreateGameCommand;
+use MiniGameApp\Application\Command\CreatePlayerCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
+use MiniGameApp\Application\Command\LeaveGameCommand;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
 
@@ -81,6 +83,30 @@ trait MiniGameAppMocker {
     public function getJoinGameCommand(Player $player = null)
     {
         $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\JoinGameCommand');
+        $command->shouldReceive('getPlayer')->andReturn($player);
+        return $command;
+    }
+
+    /**
+     * @param Player $player
+     * @param string $gameId
+     * @return LeaveGameCommand
+     */
+    public function getLeaveGameCommand(Player $player = null, $gameId = null)
+    {
+        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\LeaveGameCommand');
+        $command->shouldReceive('getPlayer')->andReturn($player);
+        $command->shouldReceive('getGameId')->andReturn($gameId);
+        return $command;
+    }
+
+    /**
+     * @param Player $player
+     * @return CreatePlayerCommand
+     */
+    public function getCreatePlayerCommand(Player $player = null)
+    {
+        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\CreatePlayerCommand');
         $command->shouldReceive('getPlayer')->andReturn($player);
         return $command;
     }

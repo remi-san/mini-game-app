@@ -17,6 +17,7 @@ use MiniGameApp\Application\Command\JoinGameCommand;
 use MiniGameApp\Application\Command\LeaveGameCommand;
 use MiniGameApp\Application\MiniGameResponseBuilder;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
+use MiniGameApp\Manager\Exceptions\PlayerException;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
 use Psr\Log\LoggerAwareInterface;
@@ -81,9 +82,9 @@ class MiniGameCommandExecutor implements CommandExecutor, LoggerAwareInterface {
 
         if ($command instanceof CreatePlayerCommand) {
             try {
-                $this->savePlayer($player);
+                $this->playerManager->save($player);
                 $messageText = 'Welcome!';
-            } catch (GameException $e) {
+            } catch (PlayerException $e) {
                 $messageText = 'Could not create the player!';
             }
         } elseif ($command instanceof CreateGameCommand) {
@@ -116,17 +117,6 @@ class MiniGameCommandExecutor implements CommandExecutor, LoggerAwareInterface {
         }
 
         return $this->responseBuilder->buildResponse($player, $messageText);
-    }
-
-    /**
-     * Saves a player
-     *
-     * @param  Player $player
-     * @return void
-     */
-    protected function savePlayer(Player $player)
-    {
-        $this->playerManager->save($player);
     }
 
     /**
