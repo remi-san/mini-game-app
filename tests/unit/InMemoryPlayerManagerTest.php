@@ -2,11 +2,15 @@
 namespace MiniGameApp\Test;
 
 use MiniGame\Test\Mock\GameObjectMocker;
+use MiniGameApp\Manager\Exceptions\PlayerException;
 use MiniGameApp\Manager\InMemoryPlayerManager;
 
 class TestPlayerManager extends InMemoryPlayerManager {
     protected function getUserId($object)
     {
+        if (!$this->supports($object)) {
+            throw new PlayerException();
+        }
         $object->id;
     }
 
@@ -41,7 +45,7 @@ class InMemoryPlayerManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new TestPlayerManager();
         $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
-        $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\UnbuildablePlayerException');
+        $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\PlayerException');
 
         $manager->getByObject(null);
     }

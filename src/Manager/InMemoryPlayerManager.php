@@ -66,10 +66,6 @@ abstract class InMemoryPlayerManager implements PlayerManager, LoggerAwareInterf
      */
     public function getByObject($object)
     {
-        if (!$this->supports($object)) {
-            throw new UnbuildablePlayerException(); // TODO: change?
-        }
-
         $userId = $this->getUserId($object);
         return $this->get($userId);
     }
