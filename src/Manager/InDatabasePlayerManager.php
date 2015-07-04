@@ -1,6 +1,7 @@
 <?php
 namespace MiniGameApp\Manager;
 
+use Doctrine\ORM\ORMException;
 use MiniGame\Player;
 use MiniGame\Repository\PlayerRepository;
 use MiniGameApp\Manager\Exceptions\PlayerException;
@@ -42,7 +43,11 @@ abstract class InDatabasePlayerManager implements PlayerManager, LoggerAwareInte
      */
     public function get($id)
     {
-        $player = $this->repository->find($id);
+        $player = null;
+        try {
+            $player = $this->repository->find($id);
+        } catch (ORMException $e) {}
+
         if (!$player) {
             throw new PlayerNotFoundException('Player with id "' . $id . '" doesn\'t exist!');
         }

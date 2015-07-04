@@ -30,6 +30,7 @@ abstract class InDatabaseGameManager implements GameManager, LoggerAwareInterfac
      */
     public function __construct(MiniGameRepository $repository)
     {
+        $this->repository = $repository;
         $this->logger = new NullLogger();
     }
 
