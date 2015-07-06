@@ -54,6 +54,11 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase {
         $this->responseBuilder = \Mockery::mock('\\MiniGameApp\\Application\\MiniGameResponseBuilder');
     }
 
+    public function tearDown()
+    {
+        \Mockery::close();
+    }
+
     /**
      * @test
      */

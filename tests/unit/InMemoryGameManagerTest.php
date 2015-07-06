@@ -29,6 +29,11 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
         $this->miniGame->shouldReceive('getPlayers')->andReturn(array($this->player));
     }
 
+    public function tearDown()
+    {
+        \Mockery::close();
+    }
+
     /**
      * @test
      */

@@ -12,6 +12,11 @@ class LeaveGameCommandTest extends \PHPUnit_Framework_TestCase {
     use MiniGameAppMocker;
     use MessageAppMocker;
 
+    public function tearDown()
+    {
+        \Mockery::close();
+    }
+
     /**
      * @test
      */

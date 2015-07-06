@@ -34,6 +34,11 @@ class InDatabasePlayerManagerTest extends \PHPUnit_Framework_TestCase
 
     const ID = 1;
 
+    public function tearDown()
+    {
+        \Mockery::close();
+    }
+
     /**
      * @test
      */
