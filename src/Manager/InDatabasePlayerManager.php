@@ -55,26 +55,13 @@ abstract class InDatabasePlayerManager implements PlayerManager, LoggerAwareInte
     }
 
     /**
-     * Gets the user id from the user object
-     *
-     * @param  object $object
-     * @throws PlayerException
-     * @return string
-     */
-    protected abstract function getUserId($object);
-
-    /**
      * Retrieves a player
      *
      * @param  object $object
      * @throws PlayerException
      * @return Player
      */
-    public function getByObject($object)
-    {
-        $userId = $this->getUserId($object);
-        return $this->get($userId);
-    }
+    public abstract function getByObject($object);
 
     /**
      * Creates a player

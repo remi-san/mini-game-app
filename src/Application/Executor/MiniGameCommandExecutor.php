@@ -106,6 +106,8 @@ class MiniGameCommandExecutor implements CommandExecutor, LoggerAwareInterface {
 
                 if ($result instanceof EndGame) {
                     $this->deletePlayerMiniGame($player);
+                } else {
+                    $this->gameManager->saveMiniGame($miniGame);
                 }
             } catch (GameException $ge) {
                 $messageText = $ge->getMessage() . ' ' . $ge->getResult()->getAsMessage();

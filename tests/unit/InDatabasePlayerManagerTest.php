@@ -2,25 +2,14 @@
 namespace MiniGameApp\Test;
 
 use MiniGame\Test\Mock\GameObjectMocker;
-use MiniGameApp\Manager\Exceptions\PlayerException;
 use MiniGameApp\Manager\InDatabasePlayerManager;
 
 class TestDbPlayerManager extends InDatabasePlayerManager {
-    protected function getUserId($object)
-    {
-        if (!$this->supports($object)) {
-            throw new PlayerException();
-        }
-        $object->id;
-    }
 
-    public function create($object)
-    {
-        $player = \Mockery::mock('\\MiniGame\\Player');
-        $player->shouldReceive('getId')->andReturn($object->id);
+    public function getByObject($object) {}
 
-        return $player;
-    }
+
+    public function create($object) {}
 
     protected function supports($object)
     {
@@ -37,64 +26,6 @@ class InDatabasePlayerManagerTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         \Mockery::close();
-    }
-
-    /**
-     * @test
-     */
-    public function testGetIllegalByObject()
-    {
-        $repository = \Mockery::mock('\\MiniGame\\Repository\\PlayerRepository');
-
-        $user = new \stdClass();
-        $user->id = self::ID;
-
-        $manager = new TestDbPlayerManager($repository);
-        $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
-
-        $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\PlayerException');
-
-        $manager->getByObject(null);
-    }
-
-    /**
-     * @test
-     */
-    public function testGetByObject()
-    {
-        $player = $this->getPlayer(42, 'douglas');
-
-        $repository = \Mockery::mock('\\MiniGame\\Repository\\PlayerRepository');
-        $repository->shouldReceive('find')->andReturn($player);
-
-        $user = new \stdClass();
-        $user->id = self::ID;
-
-        $manager = new TestDbPlayerManager($repository);
-        $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
-
-        $return = $manager->getByObject($user);
-
-        $this->assertEquals($player, $return);
-    }
-
-    /**
-     * @test
-     */
-    public function testGetNonExistingByObject()
-    {
-        $repository = \Mockery::mock('\\MiniGame\\Repository\\PlayerRepository');
-        $repository->shouldReceive('find')->andThrow('\\Doctrine\\ORM\\ORMException');
-
-        $user = new \stdClass();
-        $user->id = self::ID;
-
-        $manager = new TestDbPlayerManager($repository);
-        $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
-
-        $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\PlayerNotFoundException');
-
-        $manager->getByObject($user);
     }
 
     /**

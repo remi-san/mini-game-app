@@ -230,6 +230,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase {
         $result = $this->getGameResult($resultText);
 
         $this->gameManager->shouldReceive('getActiveMiniGameForPlayer')->with($this->player)->andReturn($miniGame)->once();
+        $this->gameManager->shouldReceive('saveMiniGame')->with($miniGame)->once();
         $miniGame->shouldReceive('play')->with($this->player, $move)->andReturn($result)->once();
 
         $expectedResponse = \Mockery::mock('\\Command\\Response');
