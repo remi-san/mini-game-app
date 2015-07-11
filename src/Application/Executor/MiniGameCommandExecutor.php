@@ -89,7 +89,7 @@ class MiniGameCommandExecutor implements CommandExecutor, LoggerAwareInterface {
             }
         } elseif ($command instanceof CreateGameCommand) {
             try {
-                $this->createNewMiniGame($command->getOptions());
+                $this->gameManager->createMiniGame($command->getOptions());
                 $messageText = $command->getMessage();
             } catch (\Exception $e) {
                 $messageText = $e->getMessage();
@@ -100,12 +100,12 @@ class MiniGameCommandExecutor implements CommandExecutor, LoggerAwareInterface {
             throw new \InvalidArgumentException('Not implemented'); // TODO manage
         } else if ($command instanceof GameMoveCommand) {
             try {
-                $miniGame = $this->getPlayerMiniGame($player);
+                $miniGame = $this->gameManager->getActiveMiniGameForPlayer($player);
                 $result = $miniGame->play($player, $command->getMove());
                 $messageText = $result->getAsMessage();
 
                 if ($result instanceof EndGame) {
-                    $this->deletePlayerMiniGame($player);
+                    $this->gameManager->deleteMiniGame($miniGame->getId());
                 } else {
                     $this->gameManager->saveMiniGame($miniGame);
                 }
@@ -119,36 +119,6 @@ class MiniGameCommandExecutor implements CommandExecutor, LoggerAwareInterface {
         }
 
         return $this->responseBuilder->buildResponse($player, $messageText);
-    }
-
-    /**
-     * Creates a new game for the player
-     *
-     * @param  GameOptions $options
-     * @return void
-     */
-    protected function createNewMiniGame(GameOptions $options) {
-        $this->gameManager->createMiniGame($options);
-    }
-
-    /**
-     * Deletes ended game for the player
-     *
-     * @param Player $player
-     */
-    protected function deletePlayerMiniGame(Player $player) {
-        $miniGame = $this->getPlayerMiniGame($player);
-        $this->gameManager->deleteMiniGame($miniGame->getId());
-    }
-
-    /**
-     * Returns the current game for the player
-     *
-     * @param  Player $player
-     * @return MiniGame
-     */
-    protected function getPlayerMiniGame(Player $player) {
-        return $this->gameManager->getActiveMiniGameForPlayer($player);
     }
 
     /**

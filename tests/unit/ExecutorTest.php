@@ -254,7 +254,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase {
         $miniGame = $this->getMiniGame($gameId, 'game');
         $result = $this->getEndGame($resultText);
 
-        $this->gameManager->shouldReceive('getActiveMiniGameForPlayer')->with($this->player)->andReturn($miniGame)->twice();
+        $this->gameManager->shouldReceive('getActiveMiniGameForPlayer')->with($this->player)->andReturn($miniGame)->once();
         $this->gameManager->shouldReceive('deleteMiniGame')->with($gameId)->once();
 
         $miniGame->shouldReceive('play')->with($this->player, $move)->andReturn($result)->once();
