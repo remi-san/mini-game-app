@@ -4,12 +4,17 @@ namespace MiniGameApp\Test;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Manager\InDatabasePlayerManager;
 
-class TestDbPlayerManager extends InDatabasePlayerManager {
+class TestDbPlayerManager extends InDatabasePlayerManager
+{
 
-    public function getByObject($object) {}
+    public function getByObject($object)
+    {
+    }
 
 
-    public function create($object) {}
+    public function create($object)
+    {
+    }
 
     protected function supports($object)
     {

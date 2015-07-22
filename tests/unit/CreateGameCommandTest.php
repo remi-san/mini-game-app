@@ -6,7 +6,8 @@ use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Application\Command\CreateGameCommand;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
 
-class CreateGameCommandTest extends \PHPUnit_Framework_TestCase {
+class CreateGameCommandTest extends \PHPUnit_Framework_TestCase
+{
     use GameObjectMocker;
     use MiniGameAppMocker;
     use MessageAppMocker;

@@ -9,7 +9,8 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface {
+abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
+{
 
     /**
      * @var MiniGame[]
@@ -75,7 +76,7 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface 
     public function getMiniGame($id)
     {
         if (!array_key_exists($id, $this->managedMiniGames)) {
-            throw new GameNotFoundException('Game with id "'.$id.'" doesn\'t exist!');
+            throw new GameNotFoundException('Game with id "' . $id . '" doesn\'t exist!');
         }
 
         return $this->managedMiniGames[$id];
@@ -107,11 +108,11 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface 
     public function deleteMiniGame($id)
     {
         if (!array_key_exists($id, $this->managedMiniGames)) {
-            throw new GameNotFoundException('Game with id "'.$id.'" doesn\'t exist!');
+            throw new GameNotFoundException('Game with id "' . $id . '" doesn\'t exist!');
         }
 
         $miniGame = $this->managedMiniGames[$id];
-        foreach($miniGame->getPlayers() as $player) {
+        foreach ($miniGame->getPlayers() as $player) {
             unset($this->playersMiniGames[$player->getId()]);
         }
 

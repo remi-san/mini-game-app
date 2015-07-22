@@ -9,7 +9,8 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-abstract class InMemoryPlayerManager implements PlayerManager, LoggerAwareInterface {
+abstract class InMemoryPlayerManager implements PlayerManager, LoggerAwareInterface
+{
 
     /**
      * @var Player[]
@@ -35,17 +36,14 @@ abstract class InMemoryPlayerManager implements PlayerManager, LoggerAwareInterf
     /**
      * Retrieves a player
      *
-     * @param  int $id
+     * @param  object $object
+     * @throws PlayerException
      * @return Player
-     * @throws PlayerNotFoundException
      */
-    public function get($id)
+    public function getByObject($object)
     {
-        if (!array_key_exists($id, $this->players)) {
-            throw new PlayerNotFoundException();
-        }
-
-        return $this->players[$id];
+        $userId = $this->getUserId($object);
+        return $this->get($userId);
     }
 
     /**
@@ -60,14 +58,17 @@ abstract class InMemoryPlayerManager implements PlayerManager, LoggerAwareInterf
     /**
      * Retrieves a player
      *
-     * @param  object $object
-     * @throws PlayerException
+     * @param  int $id
      * @return Player
+     * @throws PlayerNotFoundException
      */
-    public function getByObject($object)
+    public function get($id)
     {
-        $userId = $this->getUserId($object);
-        return $this->get($userId);
+        if (!array_key_exists($id, $this->players)) {
+            throw new PlayerNotFoundException();
+        }
+
+        return $this->players[$id];
     }
 
     /**
@@ -91,14 +92,6 @@ abstract class InMemoryPlayerManager implements PlayerManager, LoggerAwareInterf
     }
 
     /**
-     * Can the player manager deal with that object?
-     *
-     * @param  object $object
-     * @return boolean
-     */
-    protected abstract function supports($object);
-
-    /**
      * @param  LoggerInterface $logger
      * @return void
      */
@@ -106,4 +99,12 @@ abstract class InMemoryPlayerManager implements PlayerManager, LoggerAwareInterf
     {
         $this->logger = $logger;
     }
+
+    /**
+     * Can the player manager deal with that object?
+     *
+     * @param  object $object
+     * @return boolean
+     */
+    protected abstract function supports($object);
 } 

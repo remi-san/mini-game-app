@@ -4,7 +4,8 @@ namespace MiniGameApp\Application\Command;
 use MiniGame\Move;
 use MiniGame\Player;
 
-class GameMoveCommand extends AbstractGameCommand {
+class GameMoveCommand extends AbstractGameCommand
+{
 
     /**
      * @var Move

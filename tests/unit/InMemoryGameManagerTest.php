@@ -5,8 +5,10 @@ use MiniGame\GameOptions;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Manager\InMemoryGameManager;
 
-class TestGameManager extends InMemoryGameManager {
-    public function createMiniGame(GameOptions $options) {
+class TestGameManager extends InMemoryGameManager
+{
+    public function createMiniGame(GameOptions $options)
+    {
         return null;
     }
 }
@@ -66,7 +68,8 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetActiveMiniGameForPlayer()
     {
 
-        $manager = new TestGameManager(array(self::ID, $this->miniGame), array($this->player->getId(), $this->miniGame));
+        $manager = new TestGameManager(array(self::ID, $this->miniGame),
+            array($this->player->getId(), $this->miniGame));
         $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
         $this->assertEquals($this->miniGame, $manager->getActiveMiniGameForPlayer($this->player));

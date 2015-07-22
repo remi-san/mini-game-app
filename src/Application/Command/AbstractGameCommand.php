@@ -3,7 +3,8 @@ namespace MiniGameApp\Application\Command;
 
 use MiniGame\Player;
 
-class AbstractGameCommand implements GameCommand {
+class AbstractGameCommand implements GameCommand
+{
 
     /**
      * @var Player

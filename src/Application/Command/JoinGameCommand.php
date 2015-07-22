@@ -4,7 +4,8 @@ namespace MiniGameApp\Application\Command;
 use MiniGame\GameOptions;
 use MiniGame\Player;
 
-class JoinGameCommand extends AbstractGameCommand {
+class JoinGameCommand extends AbstractGameCommand
+{
 
     /**
      * @var string
@@ -23,7 +24,7 @@ class JoinGameCommand extends AbstractGameCommand {
      * @param string $gameId
      * @param string $message
      */
-    public function __construct(Player $player,  $gameId, $message)
+    public function __construct(Player $player, $gameId, $message)
     {
         $this->gameId = $gameId;
         $this->message = $message;

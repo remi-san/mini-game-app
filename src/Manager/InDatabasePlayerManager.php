@@ -46,7 +46,8 @@ abstract class InDatabasePlayerManager implements PlayerManager, LoggerAwareInte
         $player = null;
         try {
             $player = $this->repository->find($id);
-        } catch (ORMException $e) {}
+        } catch (ORMException $e) {
+        }
 
         if (!$player) {
             throw new PlayerNotFoundException('Player with id "' . $id . '" doesn\'t exist!');
@@ -84,14 +85,6 @@ abstract class InDatabasePlayerManager implements PlayerManager, LoggerAwareInte
     }
 
     /**
-     * Can the player manager deal with that object?
-     *
-     * @param  object $object
-     * @return boolean
-     */
-    protected abstract function supports($object);
-
-    /**
      * @param  LoggerInterface $logger
      * @return void
      */
@@ -99,4 +92,12 @@ abstract class InDatabasePlayerManager implements PlayerManager, LoggerAwareInte
     {
         $this->logger = $logger;
     }
+
+    /**
+     * Can the player manager deal with that object?
+     *
+     * @param  object $object
+     * @return boolean
+     */
+    protected abstract function supports($object);
 } 

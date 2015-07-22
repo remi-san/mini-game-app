@@ -6,7 +6,8 @@ use MiniGameApp\Manager\Exceptions\PlayerException;
 use MiniGameApp\Manager\Exceptions\PlayerNotFoundException;
 use MiniGameApp\Manager\Exceptions\UnbuildablePlayerException;
 
-interface PlayerManager {
+interface PlayerManager
+{
 
     /**
      * Retrieves a player

@@ -6,7 +6,8 @@ use MiniGame\MiniGame;
 use MiniGame\Player;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 
-interface GameManager {
+interface GameManager
+{
 
     /**
      * Create a mini-game according to the options
@@ -36,7 +37,7 @@ interface GameManager {
     /**
      * Get the active mini-game for the player
      *
-     * @param Player $player
+     * @param  Player $player
      * @return MiniGame
      * @throws GameNotFoundException
      */

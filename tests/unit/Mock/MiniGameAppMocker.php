@@ -1,7 +1,6 @@
 <?php
 namespace MiniGameApp\Test\Mock;
 
-use MessageApp\ApplicationUser;
 use MiniGame\GameOptions;
 use MiniGame\MiniGame;
 use MiniGame\Player;
@@ -12,7 +11,8 @@ use MiniGameApp\Application\Command\LeaveGameCommand;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
 
-trait MiniGameAppMocker {
+trait MiniGameAppMocker
+{
 
     /**
      * Returns a mini-game Manager
@@ -49,9 +49,9 @@ trait MiniGameAppMocker {
     }
 
     /**
-     * @param Player      $player
-     * @param GameOptions $options
-     * @param string      $message
+     * @param  Player      $player
+     * @param  GameOptions $options
+     * @param  string      $message
      * @return CreateGameCommand
      */
     public function getCreateGameCommand(Player $player = null, GameOptions $options = null, $message = null)
@@ -64,8 +64,8 @@ trait MiniGameAppMocker {
     }
 
     /**
-     * @param Player $player
-     * @param string $move
+     * @param  Player $player
+     * @param  string $move
      * @return GameMoveCommand
      */
     public function getGameMoveCommand(Player $player = null, $move = null)
@@ -77,7 +77,7 @@ trait MiniGameAppMocker {
     }
 
     /**
-     * @param Player $player
+     * @param  Player $player
      * @return GameMoveCommand
      */
     public function getJoinGameCommand(Player $player = null)
@@ -88,8 +88,8 @@ trait MiniGameAppMocker {
     }
 
     /**
-     * @param Player $player
-     * @param string $gameId
+     * @param  Player $player
+     * @param  string $gameId
      * @return LeaveGameCommand
      */
     public function getLeaveGameCommand(Player $player = null, $gameId = null)
@@ -101,7 +101,7 @@ trait MiniGameAppMocker {
     }
 
     /**
-     * @param Player $player
+     * @param  Player $player
      * @return CreatePlayerCommand
      */
     public function getCreatePlayerCommand(Player $player = null)

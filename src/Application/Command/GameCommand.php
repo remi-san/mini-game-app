@@ -4,7 +4,8 @@ namespace MiniGameApp\Application\Command;
 use Command\Command;
 use MiniGame\Player;
 
-interface GameCommand extends Command {
+interface GameCommand extends Command
+{
 
     /**
      * Returns the player

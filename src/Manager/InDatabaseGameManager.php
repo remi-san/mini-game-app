@@ -53,31 +53,10 @@ abstract class InDatabaseGameManager implements GameManager, LoggerAwareInterfac
         $this->repository->save($game);
     }
 
-
-    /**
-     * Get the mini-game corresponding to the id
-     *
-     * @param  string $id
-     * @return MiniGame
-     * @throws GameNotFoundException
-     */
-    public function getMiniGame($id)
-    {
-        $game = null;
-        try {
-            $game = $this->repository->find($id);
-        } catch (ORMException $e) {}
-
-        if (!$game) {
-            throw new GameNotFoundException('Game with id "' . $id . '" doesn\'t exist!');
-        }
-        return $game;
-    }
-
     /**
      * Get the active mini-game for the player
      *
-     * @param Player $player
+     * @param  Player $player
      * @return MiniGame
      * @throws GameNotFoundException
      */
@@ -86,7 +65,8 @@ abstract class InDatabaseGameManager implements GameManager, LoggerAwareInterfac
         $game = null;
         try {
             $game = $this->repository->findPlayerMinigame($player);
-        } catch (ORMException $e) {}
+        } catch (ORMException $e) {
+        }
 
         if (!$game) {
             throw new GameNotFoundException('Game with for user "' . $player->getId() . '" doesn\'t exist!');
@@ -105,6 +85,27 @@ abstract class InDatabaseGameManager implements GameManager, LoggerAwareInterfac
     {
         $game = $this->getMiniGame($id);
         $this->repository->delete($game);
+    }
+
+    /**
+     * Get the mini-game corresponding to the id
+     *
+     * @param  string $id
+     * @return MiniGame
+     * @throws GameNotFoundException
+     */
+    public function getMiniGame($id)
+    {
+        $game = null;
+        try {
+            $game = $this->repository->find($id);
+        } catch (ORMException $e) {
+        }
+
+        if (!$game) {
+            throw new GameNotFoundException('Game with id "' . $id . '" doesn\'t exist!');
+        }
+        return $game;
     }
 
     /**

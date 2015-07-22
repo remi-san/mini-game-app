@@ -4,7 +4,8 @@ namespace MiniGameApp\Application\Command;
 use MiniGame\GameOptions;
 use MiniGame\Player;
 
-class LeaveGameCommand extends AbstractGameCommand {
+class LeaveGameCommand extends AbstractGameCommand
+{
 
     /**
      * @var string
@@ -17,7 +18,7 @@ class LeaveGameCommand extends AbstractGameCommand {
      * @param Player $player
      * @param string $gameId
      */
-    public function __construct(Player $player,  $gameId)
+    public function __construct(Player $player, $gameId)
     {
         $this->gameId = $gameId;
         parent::__construct($player);

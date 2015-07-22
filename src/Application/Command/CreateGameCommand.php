@@ -4,7 +4,8 @@ namespace MiniGameApp\Application\Command;
 use MiniGame\GameOptions;
 use MiniGame\Player;
 
-class CreateGameCommand extends AbstractGameCommand {
+class CreateGameCommand extends AbstractGameCommand
+{
 
     /**
      * @var GameOptions

@@ -4,7 +4,8 @@ namespace MiniGameApp\Application;
 use Command\Response;
 use MiniGame\Player;
 
-interface MiniGameResponseBuilder {
+interface MiniGameResponseBuilder
+{
 
     /**
      * Builds a response

@@ -2,11 +2,9 @@
 namespace MiniGameApp\Application\Executor;
 
 use Command\Command;
-use Command\CommandExecutor;
+use Command\CommandBus;
 use Command\Response;
 use MiniGame\Exceptions\GameException;
-use MiniGame\GameOptions;
-use MiniGame\MiniGame;
 use MiniGame\Player;
 use MiniGame\Result\EndGame;
 use MiniGameApp\Application\Command\CreateGameCommand;
@@ -24,27 +22,25 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-class MiniGameCommandExecutor implements CommandExecutor, LoggerAwareInterface {
-
-    /**
-     * @var GameManager
-     */
-    private $gameManager;
-
-    /**
-     * @var PlayerManager
-     */
-    private $playerManager;
-
-    /**
-     * @var MiniGameResponseBuilder
-     */
-    private $responseBuilder;
+class MiniGameCommandBus implements CommandBus, LoggerAwareInterface
+{
 
     /**
      * @var LoggerInterface
      */
     protected $logger;
+    /**
+     * @var GameManager
+     */
+    private $gameManager;
+    /**
+     * @var PlayerManager
+     */
+    private $playerManager;
+    /**
+     * @var MiniGameResponseBuilder
+     */
+    private $responseBuilder;
 
     /**
      * Constructor
@@ -53,8 +49,11 @@ class MiniGameCommandExecutor implements CommandExecutor, LoggerAwareInterface {
      * @param MiniGameResponseBuilder $responseBuilder
      * @param PlayerManager           $playerManager
      */
-    public function __construct(GameManager $gameManager, PlayerManager $playerManager, MiniGameResponseBuilder $responseBuilder)
-    {
+    public function __construct(
+        GameManager $gameManager,
+        PlayerManager $playerManager,
+        MiniGameResponseBuilder $responseBuilder
+    ) {
         $this->gameManager = $gameManager;
         $this->playerManager = $playerManager;
         $this->responseBuilder = $responseBuilder;
@@ -70,7 +69,7 @@ class MiniGameCommandExecutor implements CommandExecutor, LoggerAwareInterface {
      */
     public function execute(Command $command)
     {
-        if (! $command instanceof GameCommand) {
+        if (!$command instanceof GameCommand) {
             throw new \InvalidArgumentException('Command type not supported');
         }
 
@@ -94,28 +93,34 @@ class MiniGameCommandExecutor implements CommandExecutor, LoggerAwareInterface {
             } catch (\Exception $e) {
                 $messageText = $e->getMessage();
             }
-        } else if ($command instanceof JoinGameCommand) {
-            throw new \InvalidArgumentException('Not implemented'); // TODO manage
-        } else if ($command instanceof LeaveGameCommand) {
-            throw new \InvalidArgumentException('Not implemented'); // TODO manage
-        } else if ($command instanceof GameMoveCommand) {
-            try {
-                $miniGame = $this->gameManager->getActiveMiniGameForPlayer($player);
-                $result = $miniGame->play($player, $command->getMove());
-                $messageText = $result->getAsMessage();
-
-                if ($result instanceof EndGame) {
-                    $this->gameManager->deleteMiniGame($miniGame->getId());
-                } else {
-                    $this->gameManager->saveMiniGame($miniGame);
-                }
-            } catch (GameException $ge) {
-                $messageText = $ge->getMessage() . ' ' . $ge->getResult()->getAsMessage();
-            } catch (GameNotFoundException $gnfe) {
-                $messageText = 'You have to start/join a game first!';
-            }
         } else {
-            $messageText = 'Unrecognized command!';
+            if ($command instanceof JoinGameCommand) {
+                throw new \InvalidArgumentException('Not implemented'); // TODO manage
+            } else {
+                if ($command instanceof LeaveGameCommand) {
+                    throw new \InvalidArgumentException('Not implemented'); // TODO manage
+                } else {
+                    if ($command instanceof GameMoveCommand) {
+                        try {
+                            $miniGame = $this->gameManager->getActiveMiniGameForPlayer($player);
+                            $result = $miniGame->play($player, $command->getMove());
+                            $messageText = $result->getAsMessage();
+
+                            if ($result instanceof EndGame) {
+                                $this->gameManager->deleteMiniGame($miniGame->getId());
+                            } else {
+                                $this->gameManager->saveMiniGame($miniGame);
+                            }
+                        } catch (GameException $ge) {
+                            $messageText = $ge->getMessage() . ' ' . $ge->getResult()->getAsMessage();
+                        } catch (GameNotFoundException $gnfe) {
+                            $messageText = 'You have to start/join a game first!';
+                        }
+                    } else {
+                        $messageText = 'Unrecognized command!';
+                    }
+                }
+            }
         }
 
         return $this->responseBuilder->buildResponse($player, $messageText);
@@ -124,8 +129,8 @@ class MiniGameCommandExecutor implements CommandExecutor, LoggerAwareInterface {
     /**
      * Sets a logger instance on the object
      *
-     * @param LoggerInterface $logger
-     * @return null
+     * @param  LoggerInterface $logger
+     * @return void
      */
     public function setLogger(LoggerInterface $logger)
     {
