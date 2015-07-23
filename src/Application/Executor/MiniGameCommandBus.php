@@ -1,9 +1,9 @@
 <?php
 namespace MiniGameApp\Application\Executor;
 
-use Command\Command;
 use Command\Response;
 use League\Tactician\CommandBus;
+use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MiniGame\Exceptions\GameException;
 use MiniGame\Player;
 use MiniGame\Result\EndGame;
@@ -63,11 +63,11 @@ class MiniGameCommandBus extends CommandBus implements LoggerAwareInterface
     /**
      * Executes a command and returns a response
      *
-     * @param  Command $command
+     * @param  NamedCommand $command
      * @return Response
      * @throws \Exception
      */
-    public function execute(Command $command)
+    public function execute(NamedCommand $command)
     {
         if (!$command instanceof GameCommand) {
             throw new \InvalidArgumentException('Command type not supported');

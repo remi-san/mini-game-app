@@ -1,10 +1,10 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
-use Command\Command;
+use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MiniGame\Player;
 
-interface GameCommand extends Command
+interface GameCommand extends NamedCommand
 {
 
     /**
@@ -14,3 +14,4 @@ interface GameCommand extends Command
      */
     public function getPlayer();
 }
+

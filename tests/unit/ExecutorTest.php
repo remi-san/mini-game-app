@@ -1,7 +1,6 @@
 <?php
 namespace MiniGameApp\Test;
 
-use MessageApp\ApplicationUser;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MiniGame\Exceptions\IllegalMoveException;
 use MiniGame\Player;
@@ -69,7 +68,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
      */
     public function testIllegalCommand()
     {
-        $command = \Mockery::mock('\\Command\\Command');
+        $command = \Mockery::mock('\\League\\Tactician\\Plugins\\NamedCommand\\NamedCommand');
 
         $executor = new MiniGameCommandBus($this->gameManager, $this->playerManager, $this->responseBuilder);
 
