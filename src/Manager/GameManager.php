@@ -51,4 +51,4 @@ interface GameManager
      * @throws GameNotFoundException
      */
     public function deleteMiniGame($id);
-} 
+}

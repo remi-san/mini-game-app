@@ -13,4 +13,4 @@ interface GameCommand extends Command
      * @return Player
      */
     public function getPlayer();
-} 
+}

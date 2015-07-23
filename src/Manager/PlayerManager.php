@@ -43,4 +43,4 @@ interface PlayerManager
      * @return void
      */
     public function save(Player $player);
-} 
+}

@@ -62,7 +62,7 @@ abstract class InDatabasePlayerManager implements PlayerManager, LoggerAwareInte
      * @throws PlayerException
      * @return Player
      */
-    public abstract function getByObject($object);
+    abstract public function getByObject($object);
 
     /**
      * Creates a player
@@ -71,7 +71,7 @@ abstract class InDatabasePlayerManager implements PlayerManager, LoggerAwareInte
      * @throws UnbuildablePlayerException
      * @return Player
      */
-    public abstract function create($object);
+    abstract public function create($object);
 
     /**
      * Saves a player
@@ -99,5 +99,5 @@ abstract class InDatabasePlayerManager implements PlayerManager, LoggerAwareInte
      * @param  object $object
      * @return boolean
      */
-    protected abstract function supports($object);
-} 
+    abstract protected function supports($object);
+}

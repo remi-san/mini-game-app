@@ -46,4 +46,4 @@ class CreateGameCommand extends AbstractGameCommand
     {
         return $this->message;
     }
-} 
+}

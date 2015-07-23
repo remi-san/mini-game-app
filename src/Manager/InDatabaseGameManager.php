@@ -116,4 +116,4 @@ abstract class InDatabaseGameManager implements GameManager, LoggerAwareInterfac
     {
         $this->logger = $logger;
     }
-} 
+}

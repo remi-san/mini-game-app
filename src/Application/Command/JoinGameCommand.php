@@ -46,4 +46,4 @@ class JoinGameCommand extends AbstractGameCommand
     {
         return $this->message;
     }
-} 
+}

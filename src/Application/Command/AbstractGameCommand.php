@@ -3,7 +3,7 @@ namespace MiniGameApp\Application\Command;
 
 use MiniGame\Player;
 
-class AbstractGameCommand implements GameCommand
+abstract class AbstractGameCommand implements GameCommand
 {
 
     /**
@@ -12,13 +12,20 @@ class AbstractGameCommand implements GameCommand
     protected $player;
 
     /**
+     * @var string
+     */
+    protected $name;
+
+    /**
      * Constructor
      *
      * @param Player $player
+     * @param string $name
      */
-    public function __construct(Player $player)
+    public function __construct(Player $player, $name = null)
     {
         $this->player = $player;
+        $this->name = $name;
     }
 
     /**
@@ -30,4 +37,14 @@ class AbstractGameCommand implements GameCommand
     {
         return $this->player;
     }
-} 
+
+    /**
+     * Returns the command name
+     *
+     * @return string
+     */
+    public function getCommandName()
+    {
+        return $this->name;
+    }
+}

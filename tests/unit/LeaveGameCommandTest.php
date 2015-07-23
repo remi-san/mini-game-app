@@ -30,4 +30,4 @@ class LeaveGameCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($user, $command->getPlayer());
         $this->assertEquals($gameId, $command->getGameId());
     }
-} 
+}

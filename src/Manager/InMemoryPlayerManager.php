@@ -53,7 +53,7 @@ abstract class InMemoryPlayerManager implements PlayerManager, LoggerAwareInterf
      * @throws PlayerException
      * @return string
      */
-    protected abstract function getUserId($object);
+    abstract protected function getUserId($object);
 
     /**
      * Retrieves a player
@@ -78,7 +78,7 @@ abstract class InMemoryPlayerManager implements PlayerManager, LoggerAwareInterf
      * @throws UnbuildablePlayerException
      * @return Player
      */
-    public abstract function create($object);
+    abstract public function create($object);
 
     /**
      * Saves a player
@@ -106,5 +106,5 @@ abstract class InMemoryPlayerManager implements PlayerManager, LoggerAwareInterf
      * @param  object $object
      * @return boolean
      */
-    protected abstract function supports($object);
-} 
+    abstract protected function supports($object);
+}

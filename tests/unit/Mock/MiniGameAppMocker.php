@@ -13,7 +13,6 @@ use MiniGameApp\Manager\PlayerManager;
 
 trait MiniGameAppMocker
 {
-
     /**
      * Returns a mini-game Manager
      *
@@ -110,4 +109,4 @@ trait MiniGameAppMocker
         $command->shouldReceive('getPlayer')->andReturn($player);
         return $command;
     }
-} 
+}

@@ -30,4 +30,4 @@ class GameMoveCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($user, $command->getPlayer());
         $this->assertEquals($move, $command->getMove());
     }
-} 
+}

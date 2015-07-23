@@ -15,4 +15,4 @@ interface MiniGameResponseBuilder
      * @return Response
      */
     public function buildResponse(Player $player, $response);
-} 
+}

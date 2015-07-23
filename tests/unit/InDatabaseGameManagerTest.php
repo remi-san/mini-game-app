@@ -4,14 +4,7 @@ namespace MiniGameApp\Test;
 use MiniGame\GameOptions;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Manager\InDatabaseGameManager;
-
-class TestDbGameManager extends InDatabaseGameManager
-{
-    public function createMiniGame(GameOptions $options)
-    {
-        return null;
-    }
-}
+use MiniGameApp\Test\Mock\TestDbGameManager;
 
 class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
 {

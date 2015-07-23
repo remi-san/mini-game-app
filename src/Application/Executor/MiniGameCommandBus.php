@@ -2,8 +2,8 @@
 namespace MiniGameApp\Application\Executor;
 
 use Command\Command;
-use Command\CommandBus;
 use Command\Response;
+use League\Tactician\CommandBus;
 use MiniGame\Exceptions\GameException;
 use MiniGame\Player;
 use MiniGame\Result\EndGame;
@@ -22,7 +22,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-class MiniGameCommandBus implements CommandBus, LoggerAwareInterface
+class MiniGameCommandBus extends CommandBus implements LoggerAwareInterface
 {
 
     /**
@@ -136,4 +136,4 @@ class MiniGameCommandBus implements CommandBus, LoggerAwareInterface
     {
         $this->logger = $logger;
     }
-} 
+}

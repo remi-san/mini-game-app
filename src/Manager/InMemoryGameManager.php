@@ -127,4 +127,4 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
     {
         $this->logger = $logger;
     }
-} 
+}

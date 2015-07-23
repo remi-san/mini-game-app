@@ -31,4 +31,4 @@ class LeaveGameCommand extends AbstractGameCommand
     {
         return $this->gameId;
     }
-} 
+}
