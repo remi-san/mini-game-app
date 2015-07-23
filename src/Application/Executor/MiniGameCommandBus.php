@@ -1,9 +1,9 @@
 <?php
 namespace MiniGameApp\Application\Executor;
 
-use Command\Response;
 use League\Tactician\CommandBus;
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
+use MessageApp\Application\Response;
 use MiniGame\Exceptions\GameException;
 use MiniGame\Player;
 use MiniGame\Result\EndGame;

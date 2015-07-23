@@ -100,7 +100,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\GameCommand');
         $command->shouldReceive('getPlayer')->andReturn($this->player);
 
-        $expectedResponse = \Mockery::mock('\\Command\\Response');
+        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->player, 'Unrecognized command!')
@@ -121,7 +121,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $command = $this->getCreatePlayerCommand($this->player);
         $this->playerManager->shouldReceive('save')->with($this->player)->once();
 
-        $expectedResponse = \Mockery::mock('\\Command\\Response');
+        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->player, $message)
@@ -145,7 +145,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             ->with($this->player)
             ->andThrow('\\MiniGameApp\\Manager\\Exceptions\\PlayerException');
 
-        $expectedResponse = \Mockery::mock('\\Command\\Response');
+        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->player, $message)
@@ -193,7 +193,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
         $command = $this->getCreateGameCommand($this->player, $options, $message);
         $this->gameManager->shouldReceive('createMiniGame')->with($options)->once();
 
-        $expectedResponse = \Mockery::mock('\\Command\\Response');
+        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->player, $message)
@@ -219,7 +219,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
 
         $this->gameManager->shouldReceive('createMiniGame')->andThrow($exception);
 
-        $expectedResponse = \Mockery::mock('\\Command\\Response');
+        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->player, $exceptionMessage)
@@ -257,7 +257,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             ->andReturn($result)
             ->once();
 
-        $expectedResponse = \Mockery::mock('\\Command\\Response');
+        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->player, $resultText)
@@ -293,7 +293,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
 
         $miniGame->shouldReceive('play')->with($this->player, $move)->andReturn($result)->once();
 
-        $expectedResponse = \Mockery::mock('\\Command\\Response');
+        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->player, $resultText)
@@ -329,7 +329,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             ->with($this->player, $move)
             ->andThrow(new IllegalMoveException($this->player, $miniGame, $result, $move, $exceptionText));
 
-        $expectedResponse = \Mockery::mock('\\Command\\Response');
+        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->player, $messageText)
@@ -355,7 +355,7 @@ class ExecutorTest extends \PHPUnit_Framework_TestCase
             ->with($this->player)
             ->andThrow(new GameNotFoundException());
 
-        $expectedResponse = \Mockery::mock('\\Command\\Response');
+        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->player, $resultText)

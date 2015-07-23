@@ -1,7 +1,7 @@
 <?php
 namespace MiniGameApp\Application;
 
-use Command\Response;
+use MessageApp\Application\Response;
 use MiniGame\Player;
 
 interface MiniGameResponseBuilder
