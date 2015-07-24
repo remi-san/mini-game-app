@@ -6,6 +6,7 @@ use MiniGame\Player;
 
 class CreateGameCommand extends AbstractGameCommand
 {
+    const NAME = 'GAME.CREATE';
 
     /**
      * @var GameOptions
@@ -29,6 +30,16 @@ class CreateGameCommand extends AbstractGameCommand
         $this->options = $options;
         $this->message = $message;
         parent::__construct($player);
+    }
+
+    /**
+     * Returns the command name
+     *
+     * @return string
+     */
+    public function getCommandName()
+    {
+        return self::NAME;
     }
 
     /**

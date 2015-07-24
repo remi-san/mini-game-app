@@ -6,6 +6,7 @@ use MiniGame\Player;
 
 class GameMoveCommand extends AbstractGameCommand
 {
+    const NAME = 'GAME.MOVE';
 
     /**
      * @var Move
@@ -22,6 +23,16 @@ class GameMoveCommand extends AbstractGameCommand
     {
         $this->move = $move;
         parent::__construct($player);
+    }
+
+    /**
+     * Returns the command name
+     *
+     * @return string
+     */
+    public function getCommandName()
+    {
+        return self::NAME;
     }
 
     /**

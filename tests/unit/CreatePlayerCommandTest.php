@@ -3,10 +3,10 @@ namespace MiniGameApp\Test;
 
 use MessageApp\Test\Mock\MessageAppMocker;
 use MiniGame\Test\Mock\GameObjectMocker;
-use MiniGameApp\Application\Command\LeaveGameCommand;
+use MiniGameApp\Application\Command\CreatePlayerCommand;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
 
-class LeaveGameCommandTest extends \PHPUnit_Framework_TestCase
+class CreatePlayerCommandTest extends \PHPUnit_Framework_TestCase
 {
     use GameObjectMocker;
     use MiniGameAppMocker;
@@ -23,12 +23,10 @@ class LeaveGameCommandTest extends \PHPUnit_Framework_TestCase
     public function test()
     {
         $user = $this->getPlayer(42, 'adam');
-        $gameId = 666;
 
-        $command = new LeaveGameCommand($user, $gameId);
+        $command = new CreatePlayerCommand($user);
 
         $this->assertEquals($user, $command->getPlayer());
-        $this->assertEquals($gameId, $command->getGameId());
-        $this->assertEquals(LeaveGameCommand::NAME, $command->getCommandName());
+        $this->assertEquals(CreatePlayerCommand::NAME, $command->getCommandName());
     }
 }

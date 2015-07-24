@@ -5,4 +5,14 @@ use MiniGameApp\Application\Command\AbstractGameCommand;
 
 class ConcreteGameCommand extends AbstractGameCommand
 {
+    /**
+     * Returns the command name
+     *
+     * @return string
+     */
+    public function getCommandName()
+    {
+        return 'TEST';
+    }
+
 }

@@ -31,5 +31,6 @@ class CreateGameCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($user, $command->getPlayer());
         $this->assertEquals($options, $command->getOptions());
         $this->assertEquals($message, $command->getMessage());
+        $this->assertEquals(CreateGameCommand::NAME, $command->getCommandName());
     }
 }

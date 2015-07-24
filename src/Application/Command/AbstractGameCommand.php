@@ -12,20 +12,13 @@ abstract class AbstractGameCommand implements GameCommand
     protected $player;
 
     /**
-     * @var string
-     */
-    protected $name;
-
-    /**
      * Constructor
      *
      * @param Player $player
-     * @param string $name
      */
-    public function __construct(Player $player, $name = null)
+    public function __construct(Player $player)
     {
         $this->player = $player;
-        $this->name = $name;
     }
 
     /**
@@ -43,8 +36,5 @@ abstract class AbstractGameCommand implements GameCommand
      *
      * @return string
      */
-    public function getCommandName()
-    {
-        return $this->name;
-    }
+    abstract public function getCommandName();
 }

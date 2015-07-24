@@ -31,5 +31,6 @@ class JoinGameCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($user, $command->getPlayer());
         $this->assertEquals($gameId, $command->getGameId());
         $this->assertEquals($message, $command->getMessage());
+        $this->assertEquals(JoinGameCommand::NAME, $command->getCommandName());
     }
 }

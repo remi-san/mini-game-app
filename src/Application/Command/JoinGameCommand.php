@@ -6,6 +6,7 @@ use MiniGame\Player;
 
 class JoinGameCommand extends AbstractGameCommand
 {
+    const NAME = 'GAME.JOIN';
 
     /**
      * @var string
@@ -29,6 +30,16 @@ class JoinGameCommand extends AbstractGameCommand
         $this->gameId = $gameId;
         $this->message = $message;
         parent::__construct($player);
+    }
+
+    /**
+     * Returns the command name
+     *
+     * @return string
+     */
+    public function getCommandName()
+    {
+        return self::NAME;
     }
 
     /**

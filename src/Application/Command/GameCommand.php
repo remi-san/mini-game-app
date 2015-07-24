@@ -6,7 +6,6 @@ use MiniGame\Player;
 
 interface GameCommand extends NamedCommand
 {
-
     /**
      * Returns the player
      *

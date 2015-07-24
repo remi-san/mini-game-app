@@ -19,11 +19,10 @@ class AbstractGameCommandTest extends \PHPUnit_Framework_TestCase
     public function test()
     {
         $user = $this->getPlayer(42, 'adam');
-        $name = 'name';
 
-        $command = new ConcreteGameCommand($user, $name);
+        $command = new ConcreteGameCommand($user);
 
         $this->assertEquals($user, $command->getPlayer());
-        $this->assertEquals($name, $command->getCommandName());
+        $this->assertEquals('TEST', $command->getCommandName());
     }
 }

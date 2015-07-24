@@ -6,6 +6,7 @@ use MiniGame\Player;
 
 class LeaveGameCommand extends AbstractGameCommand
 {
+    const NAME = 'GAME.LEAVE';
 
     /**
      * @var string
@@ -22,6 +23,16 @@ class LeaveGameCommand extends AbstractGameCommand
     {
         $this->gameId = $gameId;
         parent::__construct($player);
+    }
+
+    /**
+     * Returns the command name
+     *
+     * @return string
+     */
+    public function getCommandName()
+    {
+        return self::NAME;
     }
 
     /**
