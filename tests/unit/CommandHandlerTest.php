@@ -66,50 +66,16 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testIllegalCommand()
-    {
-        $command = \Mockery::mock('\\League\\Tactician\\Plugins\\NamedCommand\\NamedCommand');
-
-        $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-
-        $this->setExpectedException('\\InvalidArgumentException');
-
-        $executor->handle($command);
-    }
-
-    /**
-     * @test
-     */
     public function testIllegalPlayer()
     {
-        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\GameCommand');
+        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\CreateGameCommand');
         $command->shouldReceive('getPlayer')->andReturn(null);
 
         $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
 
         $this->setExpectedException('\\InvalidArgumentException');
 
-        $executor->handle($command);
-    }
-
-    /**
-     * @test
-     */
-    public function testUnrecognizedCommand()
-    {
-        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\GameCommand');
-        $command->shouldReceive('getPlayer')->andReturn($this->player);
-
-        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
-        $this->responseBuilder
-            ->shouldReceive('buildResponse')
-            ->with($this->player, 'Unrecognized command!')
-            ->andReturn($expectedResponse);
-
-        $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-        $response = $executor->handle($command);
-
-        $this->assertEquals($expectedResponse, $response);
+        $executor->handleCreateGameCommand($command);
     }
 
     /**
@@ -128,7 +94,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andReturn($expectedResponse);
 
         $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-        $response = $executor->handle($command);
+        $response = $executor->handleCreatePlayerCommand($command);
 
         $this->assertEquals($expectedResponse, $response);
     }
@@ -152,7 +118,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andReturn($expectedResponse);
 
         $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-        $response = $executor->handle($command);
+        $response = $executor->handleCreatePlayerCommand($command);
 
         $this->assertEquals($expectedResponse, $response);
     }
@@ -167,7 +133,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\\InvalidArgumentException');
 
         $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-        $executor->handle($command);
+        $executor->handleJoinGameCommand($command);
     }
 
     /**
@@ -180,7 +146,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\\InvalidArgumentException');
 
         $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-        $executor->handle($command);
+        $executor->handleLeaveGameCommand($command);
     }
 
     /**
@@ -200,7 +166,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andReturn($expectedResponse);
 
         $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-        $response = $executor->handle($command);
+        $response = $executor->handleCreateGameCommand($command);
 
         $this->assertEquals($expectedResponse, $response);
     }
@@ -226,7 +192,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andReturn($expectedResponse);
 
         $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-        $response = $executor->handle($command);
+        $response = $executor->handleCreateGameCommand($command);
 
         $this->assertEquals($expectedResponse, $response);
     }
@@ -264,7 +230,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andReturn($expectedResponse);
 
         $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-        $response = $executor->handle($command);
+        $response = $executor->handleGameMoveCommand($command);
 
         $this->assertEquals($expectedResponse, $response);
     }
@@ -300,7 +266,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andReturn($expectedResponse);
 
         $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-        $response = $executor->handle($command);
+        $response = $executor->handleGameMoveCommand($command);
 
         $this->assertEquals($expectedResponse, $response);
     }
@@ -336,7 +302,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andReturn($expectedResponse);
 
         $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-        $response = $executor->handle($command);
+        $response = $executor->handleGameMoveCommand($command);
 
         $this->assertEquals($expectedResponse, $response);
     }
@@ -362,7 +328,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andReturn($expectedResponse);
 
         $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-        $response = $executor->handle($command);
+        $response = $executor->handleGameMoveCommand($command);
 
         $this->assertEquals($expectedResponse, $response);
     }

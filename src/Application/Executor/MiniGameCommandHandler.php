@@ -60,36 +60,6 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     }
 
     /**
-     * Executes a command and returns a response
-     *
-     * @param  NamedCommand $command
-     * @return Response
-     * @throws \Exception
-     */
-    public function handle(NamedCommand $command)
-    {
-        if (!$command instanceof GameCommand) {
-            throw new \InvalidArgumentException('Command type not supported');
-        }
-
-        $player = $this->getPlayer($command);
-
-        if ($command instanceof JoinGameCommand) {
-            return $this->handleJoinGameCommand($command);
-        } elseif ($command instanceof LeaveGameCommand) {
-            return $this->handleLeaveGameCommand($command);
-        } elseif ($command instanceof CreatePlayerCommand) {
-            return $this->handleCreatePlayerCommand($command);
-        } elseif ($command instanceof CreateGameCommand) {
-            return $this->handleCreateGameCommand($command);
-        } elseif ($command instanceof GameMoveCommand) {
-            return $this->handleGameMoveCommand($command);
-        }
-
-        return $this->responseBuilder->buildResponse($player, 'Unrecognized command!');
-    }
-
-    /**
      * Retrieves the player
      *
      * @param  GameCommand $command
