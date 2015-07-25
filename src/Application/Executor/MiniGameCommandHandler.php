@@ -22,7 +22,6 @@ use Psr\Log\NullLogger;
 
 class MiniGameCommandHandler implements LoggerAwareInterface
 {
-
     /**
      * @var LoggerInterface
      */
