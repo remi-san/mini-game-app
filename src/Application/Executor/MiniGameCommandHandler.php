@@ -81,7 +81,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      */
     public function handleJoinGameCommand(JoinGameCommand $command)
     {
-        throw new \InvalidArgumentException('Not implemented'); // TODO manage
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     /**
@@ -91,7 +91,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      */
     public function handleLeaveGameCommand(LeaveGameCommand $command)
     {
-        throw new \InvalidArgumentException('Not implemented'); // TODO manage
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     /**
