@@ -6,7 +6,6 @@ use MiniGame\Player;
 
 interface MiniGameResponseBuilder
 {
-
     /**
      * Builds a response
      *

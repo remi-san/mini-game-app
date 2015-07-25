@@ -5,7 +5,6 @@ use MiniGame\Player;
 
 abstract class AbstractGameCommand implements GameCommand
 {
-
     /**
      * @var Player
      */

@@ -11,7 +11,6 @@ use Psr\Log\NullLogger;
 
 abstract class InMemoryPlayerManager implements PlayerManager, LoggerAwareInterface
 {
-
     /**
      * @var Player[]
      */

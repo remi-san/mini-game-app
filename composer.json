@@ -20,16 +20,12 @@
         },
         {
             "type": "vcs",
-            "url": "git@github.com:remi-san/command"
-        },
-        {
-            "type": "vcs",
             "url": "git@bitbucket.org:remi-san/message-app"
         }
     ],
     "require": {
         "remi-san/mini-game" : "dev-master",
-        "remi-san/command": "dev-master",
+        "league/tactician": "~0.6",
         "psr/log": "~1.0"
     },
     "require-dev": {

@@ -8,7 +8,6 @@ use MiniGameApp\Manager\Exceptions\UnbuildablePlayerException;
 
 interface PlayerManager
 {
-
     /**
      * Retrieves a player
      *

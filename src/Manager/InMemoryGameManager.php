@@ -11,7 +11,6 @@ use Psr\Log\NullLogger;
 
 abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
 {
-
     /**
      * @var MiniGame[]
      */

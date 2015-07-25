@@ -2,7 +2,6 @@
 namespace MiniGameApp\Test;
 
 use MiniGame\Test\Mock\GameObjectMocker;
-use MiniGameApp\Manager\InDatabasePlayerManager;
 use MiniGameApp\Test\Mock\TestDbPlayerManager;
 
 class InDatabasePlayerManagerTest extends \PHPUnit_Framework_TestCase

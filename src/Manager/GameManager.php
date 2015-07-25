@@ -8,7 +8,6 @@ use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 
 interface GameManager
 {
-
     /**
      * Create a mini-game according to the options
      *

@@ -1,9 +1,7 @@
 <?php
 namespace MiniGameApp\Test;
 
-use MiniGame\GameOptions;
 use MiniGame\Test\Mock\GameObjectMocker;
-use MiniGameApp\Manager\InMemoryGameManager;
 use MiniGameApp\Test\Mock\TestGameManager;
 
 class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase

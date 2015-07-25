@@ -2,8 +2,6 @@
 namespace MiniGameApp\Test;
 
 use MiniGame\Test\Mock\GameObjectMocker;
-use MiniGameApp\Manager\Exceptions\PlayerException;
-use MiniGameApp\Manager\InMemoryPlayerManager;
 use MiniGameApp\Test\Mock\TestPlayerManager;
 
 class InMemoryPlayerManagerTest extends \PHPUnit_Framework_TestCase

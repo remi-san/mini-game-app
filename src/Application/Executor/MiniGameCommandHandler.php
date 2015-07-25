@@ -1,7 +1,6 @@
 <?php
 namespace MiniGameApp\Application\Executor;
 
-use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MessageApp\Application\Response;
 use MiniGame\Exceptions\GameException;
 use MiniGame\Player;

@@ -13,4 +13,3 @@ interface GameCommand extends NamedCommand
      */
     public function getPlayer();
 }
-
