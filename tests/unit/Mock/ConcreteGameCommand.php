@@ -14,5 +14,4 @@ class ConcreteGameCommand extends AbstractGameCommand
     {
         return 'TEST';
     }
-
 }
