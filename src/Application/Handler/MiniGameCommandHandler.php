@@ -1,13 +1,11 @@
 <?php
-namespace MiniGameApp\Application\Executor;
+namespace MiniGameApp\Application\Handler;
 
 use MessageApp\Application\Response;
 use MiniGame\Exceptions\GameException;
-use MiniGame\Player;
 use MiniGame\Result\EndGame;
 use MiniGameApp\Application\Command\CreateGameCommand;
 use MiniGameApp\Application\Command\CreatePlayerCommand;
-use MiniGameApp\Application\Command\GameCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Application\Command\JoinGameCommand;
 use MiniGameApp\Application\Command\LeaveGameCommand;
@@ -58,23 +56,6 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     }
 
     /**
-     * Retrieves the player
-     *
-     * @param  GameCommand $command
-     * @return Player
-     */
-    private function getPlayer(GameCommand $command)
-    {
-        $player = $command->getPlayer();
-
-        if (!$player instanceof Player) {
-            throw new \InvalidArgumentException('User type not supported');
-        }
-
-        return $player;
-    }
-
-    /**
      * Handles a JoinGameCommand
      *
      * @param JoinGameCommand $command
@@ -102,7 +83,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      */
     public function handleCreatePlayerCommand(CreatePlayerCommand $command)
     {
-        $player = $this->getPlayer($command);
+        $player = $command->getPlayer();
 
         try {
             $this->playerManager->save($player);
@@ -111,6 +92,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
             $messageText = 'Could not create the player!';
         }
 
+        // TODO do not build response here - send event while saving
         return $this->responseBuilder->buildResponse($player, $messageText);
     }
 
@@ -122,7 +104,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      */
     public function handleCreateGameCommand(CreateGameCommand $command)
     {
-        $player = $this->getPlayer($command);
+        $player = $command->getPlayer();
 
         try {
             $this->gameManager->createMiniGame($command->getOptions());
@@ -131,6 +113,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
             $messageText = $e->getMessage();
         }
 
+        // TODO do not build response here - send event while saving
         return $this->responseBuilder->buildResponse($player, $messageText);
     }
 
@@ -142,7 +125,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      */
     public function handleGameMoveCommand(GameMoveCommand $command)
     {
-        $player = $this->getPlayer($command);
+        $player = $command->getPlayer();
 
         try {
             $miniGame = $this->gameManager->getActiveMiniGameForPlayer($player);
@@ -160,6 +143,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
             $messageText = 'You have to start/join a game first!';
         }
 
+        // TODO do not build response here - send event while saving
         return $this->responseBuilder->buildResponse($player, $messageText);
     }
 

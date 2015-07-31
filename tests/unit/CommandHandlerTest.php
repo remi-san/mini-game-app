@@ -5,7 +5,7 @@ use MessageApp\Test\Mock\MessageAppMocker;
 use MiniGame\Exceptions\IllegalMoveException;
 use MiniGame\Player;
 use MiniGame\Test\Mock\GameObjectMocker;
-use MiniGameApp\Application\Executor\MiniGameCommandHandler;
+use MiniGameApp\Application\Handler\MiniGameCommandHandler;
 use MiniGameApp\Application\MiniGameResponseBuilder;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Manager\GameManager;
@@ -61,21 +61,6 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
         $executor->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
-    }
-
-    /**
-     * @test
-     */
-    public function testIllegalPlayer()
-    {
-        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\CreateGameCommand');
-        $command->shouldReceive('getPlayer')->andReturn(null);
-
-        $executor = new MiniGameCommandHandler($this->gameManager, $this->playerManager, $this->responseBuilder);
-
-        $this->setExpectedException('\\InvalidArgumentException');
-
-        $executor->handleCreateGameCommand($command);
     }
 
     /**
