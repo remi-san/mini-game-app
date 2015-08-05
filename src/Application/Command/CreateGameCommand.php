@@ -1,8 +1,9 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
+use MiniGame\Entity\MiniGameId;
+use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
-use MiniGame\Player;
 
 class CreateGameCommand extends AbstractGameCommand
 {
@@ -21,15 +22,16 @@ class CreateGameCommand extends AbstractGameCommand
     /**
      * Construct
      *
-     * @param Player      $player
+     * @param MiniGameId  $gameId
+     * @param PlayerId    $playerId
      * @param GameOptions $options
      * @param string      $message
      */
-    public function __construct(Player $player, GameOptions $options, $message)
+    public function __construct(MiniGameId $gameId, PlayerId $playerId, GameOptions $options, $message)
     {
         $this->options = $options;
         $this->message = $message;
-        parent::__construct($player);
+        parent::__construct($gameId, $playerId);
     }
 
     /**

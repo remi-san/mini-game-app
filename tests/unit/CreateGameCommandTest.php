@@ -22,13 +22,15 @@ class CreateGameCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function test()
     {
-        $user = $this->getPlayer(42, 'adam');
+        $userId = $this->getPlayerId(42);
+        $gameId = $this->getMiniGameId(666);
         $options = $this->getGameOptions();
         $message = 'message';
 
-        $command = new CreateGameCommand($user, $options, $message);
+        $command = new CreateGameCommand($gameId, $userId, $options, $message);
 
-        $this->assertEquals($user, $command->getPlayer());
+        $this->assertEquals($userId, $command->getPlayerId());
+        $this->assertEquals($gameId, $command->getGameId());
         $this->assertEquals($options, $command->getOptions());
         $this->assertEquals($message, $command->getMessage());
         $this->assertEquals(CreateGameCommand::NAME, $command->getCommandName());

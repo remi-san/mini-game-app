@@ -22,12 +22,14 @@ class GameMoveCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function test()
     {
-        $user = $this->getPlayer(42, 'adam');
+        $userId = $this->getPlayerId(42);
+        $gameId = $this->getMiniGameId(666);
         $move = $this->getMove('move');
 
-        $command = new GameMoveCommand($user, $move);
+        $command = new GameMoveCommand($gameId, $userId, $move);
 
-        $this->assertEquals($user, $command->getPlayer());
+        $this->assertEquals($userId, $command->getPlayerId());
+        $this->assertEquals($gameId, $command->getGameId());
         $this->assertEquals($move, $command->getMove());
         $this->assertEquals(GameMoveCommand::NAME, $command->getCommandName());
     }

@@ -2,16 +2,16 @@
 namespace MiniGameApp\Application;
 
 use MessageApp\Application\Response;
-use MiniGame\Player;
+use MiniGame\Entity\PlayerId;
 
 interface MiniGameResponseBuilder
 {
     /**
      * Builds a response
      *
-     * @param  Player               $player
+     * @param  PlayerId             $player
      * @param  object|string|number $response
      * @return Response
      */
-    public function buildResponse(Player $player, $response);
+    public function buildResponse(PlayerId $player, $response);
 }

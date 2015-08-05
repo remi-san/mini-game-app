@@ -1,9 +1,9 @@
 <?php
 namespace MiniGameApp\Manager;
 
+use MiniGame\Entity\MiniGame;
+use MiniGame\Entity\MiniGameId;
 use MiniGame\GameOptions;
-use MiniGame\MiniGame;
-use MiniGame\Player;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 
 interface GameManager
@@ -27,27 +27,18 @@ interface GameManager
     /**
      * Get the mini-game corresponding to the id
      *
-     * @param  string $id
+     * @param  MiniGameId $id
      * @return MiniGame
      * @throws GameNotFoundException
      */
-    public function getMiniGame($id);
-
-    /**
-     * Get the active mini-game for the player
-     *
-     * @param  Player $player
-     * @return MiniGame
-     * @throws GameNotFoundException
-     */
-    public function getActiveMiniGameForPlayer(Player $player);
+    public function getMiniGame(MiniGameId $id);
 
     /**
      * Delete the mini-game corresponding to the id
      *
-     * @param  string $id
+     * @param  MiniGameId $id
      * @return void
      * @throws GameNotFoundException
      */
-    public function deleteMiniGame($id);
+    public function deleteMiniGame(MiniGameId $id);
 }

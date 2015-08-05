@@ -2,36 +2,36 @@
 namespace MiniGameApp\Manager;
 
 use Doctrine\ORM\ORMException;
+use MiniGame\Entity\MiniGame;
+use MiniGame\Entity\MiniGameId;
+use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
-use MiniGame\MiniGame;
-use MiniGame\Player;
 use MiniGame\Repository\MiniGameRepository;
+use MiniGame\Repository\PlayerRepository;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
-abstract class InDatabaseGameManager implements GameManager, LoggerAwareInterface
+abstract class InDatabaseGameManager implements GameManager
 {
     /**
      * @var MiniGameRepository
      */
-    protected $repository;
+    private $gameRepository;
 
     /**
-     * @var LoggerInterface
+     * @var PlayerRepository
      */
-    protected $logger;
+    private $playerRepository;
 
     /**
      * Constructor
      *
-     * @param MiniGameRepository $repository
+     * @param MiniGameRepository $gameRepository
+     * @param PlayerRepository   $playerRepository
      */
-    public function __construct(MiniGameRepository $repository)
+    public function __construct(MiniGameRepository $gameRepository, PlayerRepository $playerRepository)
     {
-        $this->repository = $repository;
-        $this->logger = new NullLogger();
+        $this->gameRepository = $gameRepository;
+        $this->playerRepository = $playerRepository;
     }
 
     /**
@@ -50,21 +50,27 @@ abstract class InDatabaseGameManager implements GameManager, LoggerAwareInterfac
      */
     public function saveMiniGame(MiniGame $game)
     {
-        $this->repository->save($game);
+        $this->gameRepository->save($game);
+        $players = $game->getPlayers();
+
+        foreach ($players as $player) {
+            $player->setGame($game);
+            $this->playerRepository->save($player);
+        }
     }
 
     /**
      * Get the active mini-game for the player
      *
-     * @param  Player $player
+     * @param  PlayerId $player
      * @return MiniGame
      * @throws GameNotFoundException
      */
-    public function getActiveMiniGameForPlayer(Player $player)
+    public function getActiveMiniGameForPlayer(PlayerId $player)
     {
         $game = null;
         try {
-            $game = $this->repository->findPlayerMinigame($player);
+            $game = $this->gameRepository->findPlayerMinigame($player);
         } catch (ORMException $e) {
         }
 
@@ -77,28 +83,34 @@ abstract class InDatabaseGameManager implements GameManager, LoggerAwareInterfac
     /**
      * Delete the mini-game corresponding to the id
      *
-     * @param  string $id
+     * @param  MiniGameId $id
      * @return void
      * @throws GameNotFoundException
      */
-    public function deleteMiniGame($id)
+    public function deleteMiniGame(MiniGameId $id)
     {
         $game = $this->getMiniGame($id);
-        $this->repository->delete($game);
+        $players = $game->getPlayers();
+
+        foreach ($players as $player) {
+            $this->playerRepository->delete($player);
+        }
+
+        $this->gameRepository->delete($game);
     }
 
     /**
      * Get the mini-game corresponding to the id
      *
-     * @param  string $id
+     * @param  MiniGameId $id
      * @return MiniGame
      * @throws GameNotFoundException
      */
-    public function getMiniGame($id)
+    public function getMiniGame(MiniGameId $id)
     {
         $game = null;
         try {
-            $game = $this->repository->find($id);
+            $game = $this->gameRepository->find($id);
         } catch (ORMException $e) {
         }
 
@@ -106,14 +118,5 @@ abstract class InDatabaseGameManager implements GameManager, LoggerAwareInterfac
             throw new GameNotFoundException('Game with id "' . $id . '" doesn\'t exist!');
         }
         return $game;
-    }
-
-    /**
-     * @param  LoggerInterface $logger
-     * @return void
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
     }
 }

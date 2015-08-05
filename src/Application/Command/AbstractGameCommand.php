@@ -1,33 +1,51 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
-use MiniGame\Player;
+use MiniGame\Entity\MiniGameId;
+use MiniGame\Entity\PlayerId;
 
 abstract class AbstractGameCommand implements GameCommand
 {
     /**
-     * @var Player
+     * @var PlayerId
      */
-    protected $player;
+    private $playerId;
+
+    /**
+     * @var MiniGameId
+     */
+    private $gameId;
 
     /**
      * Constructor
      *
-     * @param Player $player
+     * @param MiniGameId $gameId
+     * @param PlayerId   $playerId
      */
-    public function __construct(Player $player)
+    public function __construct(MiniGameId $gameId, PlayerId $playerId)
     {
-        $this->player = $player;
+        $this->gameId = $gameId;
+        $this->playerId = $playerId;
     }
 
     /**
-     * Returns the user
+     * Returns the minigame id
      *
-     * @return Player
+     * @return MiniGameId
      */
-    public function getPlayer()
+    public function getGameId()
     {
-        return $this->player;
+        return $this->gameId;
+    }
+
+    /**
+     * Returns the player id
+     *
+     * @return PlayerId
+     */
+    public function getPlayerId()
+    {
+        return $this->playerId;
     }
 
     /**

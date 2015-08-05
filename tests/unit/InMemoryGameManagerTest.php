@@ -12,13 +12,19 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
 
     private $miniGame;
 
+    private $miniGameId;
+
     private $player;
+
+    private $playerId;
 
     public function setUp()
     {
-        $this->player = $this->getPlayer(1, 'player');
+        $this->playerId = $this->getPlayerId(1);
+        $this->player = $this->getPlayer($this->playerId, 'player');
 
-        $this->miniGame = $this->getMiniGame(self::ID, 'Game');
+        $this->miniGameId = $this->getMiniGameId(self::ID);
+        $this->miniGame = $this->getMiniGame($this->miniGameId, 'Game');
         $this->miniGame->shouldReceive('getPlayers')->andReturn(array($this->player));
     }
 
@@ -33,10 +39,10 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetMiniGame()
     {
 
-        $manager = new TestGameManager(array(self::ID, $this->miniGame), array());
+        $manager = new TestGameManager(array($this->miniGameId, $this->miniGame), array());
         $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
-        $this->assertEquals($this->miniGame, $manager->getMiniGame(self::ID));
+        $this->assertEquals($this->miniGame, $manager->getMiniGame($this->miniGameId));
     }
 
     /**
@@ -50,7 +56,7 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new TestGameManager();
         $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
-        $manager->getMiniGame(self::ID);
+        $manager->getMiniGame($this->miniGameId);
     }
 
     /**
@@ -60,12 +66,12 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
     {
 
         $manager = new TestGameManager(
-            array(self::ID, $this->miniGame),
-            array($this->player->getId(),$this->miniGame)
+            array($this->miniGameId, $this->miniGame),
+            array($this->playerId, $this->miniGame)
         );
         $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
-        $this->assertEquals($this->miniGame, $manager->getActiveMiniGameForPlayer($this->player));
+        $this->assertEquals($this->miniGame, $manager->getActiveMiniGameForPlayer($this->playerId));
     }
 
     /**
@@ -79,7 +85,7 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new TestGameManager();
         $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
-        $manager->getActiveMiniGameForPlayer($this->player);
+        $manager->getActiveMiniGameForPlayer($this->playerId);
     }
 
     /**
@@ -93,10 +99,10 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new TestGameManager(array(self::ID, $this->miniGame));
         $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
-        $this->assertEquals($this->miniGame, $manager->getMiniGame(self::ID));
+        $this->assertEquals($this->miniGame, $manager->getMiniGame($this->miniGameId));
 
-        $manager->deleteMiniGame(self::ID);
-        $manager->getMiniGame(self::ID);
+        $manager->deleteMiniGame($this->miniGameId);
+        $manager->getMiniGame($this->miniGameId);
     }
 
     /**
@@ -110,7 +116,7 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new TestGameManager();
         $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
-        $manager->deleteMiniGame(self::ID);
+        $manager->deleteMiniGame($this->miniGameId);
     }
 
     /**
@@ -124,6 +130,6 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
 
         $manager->saveMiniGame($this->miniGame);
 
-        $this->assertEquals($this->miniGame, $manager->getMiniGame(self::ID));
+        $this->assertEquals($this->miniGame, $manager->getMiniGame($this->miniGameId));
     }
 }

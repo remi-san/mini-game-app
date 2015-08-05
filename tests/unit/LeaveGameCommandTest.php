@@ -22,12 +22,12 @@ class LeaveGameCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function test()
     {
-        $user = $this->getPlayer(42, 'adam');
-        $gameId = 666;
+        $userId = $this->getPlayerId(42);
+        $gameId = $this->getMiniGameId(666);
 
-        $command = new LeaveGameCommand($user, $gameId);
+        $command = new LeaveGameCommand($gameId, $userId);
 
-        $this->assertEquals($user, $command->getPlayer());
+        $this->assertEquals($userId, $command->getPlayerId());
         $this->assertEquals($gameId, $command->getGameId());
         $this->assertEquals(LeaveGameCommand::NAME, $command->getCommandName());
     }

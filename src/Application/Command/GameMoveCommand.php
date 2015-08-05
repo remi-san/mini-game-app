@@ -1,8 +1,9 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
+use MiniGame\Entity\MiniGameId;
+use MiniGame\Entity\PlayerId;
 use MiniGame\Move;
-use MiniGame\Player;
 
 class GameMoveCommand extends AbstractGameCommand
 {
@@ -11,18 +12,19 @@ class GameMoveCommand extends AbstractGameCommand
     /**
      * @var Move
      */
-    protected $move;
+    private $move;
 
     /**
      * Constructor
      *
-     * @param Player $player
-     * @param Move   $move
+     * @param MiniGameId $gameId
+     * @param PlayerId   $playerId
+     * @param Move       $move
      */
-    public function __construct(Player $player, Move $move)
+    public function __construct(MiniGameId $gameId, PlayerId $playerId, Move $move)
     {
         $this->move = $move;
-        parent::__construct($player);
+        parent::__construct($gameId, $playerId);
     }
 
     /**
