@@ -54,7 +54,6 @@ abstract class InDatabaseGameManager implements GameManager
         $players = $game->getPlayers();
 
         foreach ($players as $player) {
-            $player->setGame($game);
             $this->playerRepository->save($player);
         }
     }
