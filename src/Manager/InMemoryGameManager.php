@@ -1,6 +1,7 @@
 <?php
 namespace MiniGameApp\Manager;
 
+use Broadway\EventHandling\EventBusInterface;
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
@@ -13,7 +14,12 @@ use Psr\Log\NullLogger;
 abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
 {
     /**
-     * @var \MiniGame\Entity\MiniGame[]
+     * @var EventBusInterface
+     */
+    private $eventBus;
+
+    /**
+     * @var MiniGame[]
      */
     protected $managedMiniGames;
 
@@ -30,13 +36,18 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
     /**
      * Constructor
      *
-     * @param \MiniGame\Entity\MiniGame[] $managedMiniGames
-     * @param array      $playersMiniGames
+     * @param MiniGame[]        $managedMiniGames
+     * @param array             $playersMiniGames
+     * @param EventBusInterface $eventBus
      */
-    public function __construct(array $managedMiniGames = array(), array $playersMiniGames = array())
-    {
+    public function __construct(
+        array $managedMiniGames = array(),
+        array $playersMiniGames = array(),
+        EventBusInterface $eventBus = null
+    ) {
         $this->managedMiniGames = $managedMiniGames;
         $this->playersMiniGames = $playersMiniGames;
+        $this->eventBus = $eventBus;
         $this->logger = new NullLogger();
     }
 
@@ -44,7 +55,7 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
      * Create a mini-game according to the options
      *
      * @param  GameOptions $options
-     * @return \MiniGame\Entity\MiniGame
+     * @return MiniGame
      */
     abstract public function createMiniGame(GameOptions $options);
 
@@ -52,7 +63,7 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
      * Saves a mini-game
      *
      * @param  MiniGame $game
-     * @return \MiniGame\Entity\MiniGame
+     * @return MiniGame
      */
     public function saveMiniGame(MiniGame $game)
     {
@@ -61,6 +72,8 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
         foreach ($game->getPlayers() as $player) {
             $this->playersMiniGames[(string)$player->getId()] = $game;
         }
+
+        $this->eventBus->publish($game->getUncommittedEvents());
 
         return $game;
     }
@@ -85,8 +98,8 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
     /**
      * Get the active mini-game for the player
      *
-     * @param PlayerId $player
-     * @return \MiniGame\Entity\MiniGame
+     * @param  PlayerId $player
+     * @return MiniGame
      * @throws GameNotFoundException
      */
     public function getActiveMiniGameForPlayer(PlayerId $player)

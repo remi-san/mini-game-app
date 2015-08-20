@@ -1,6 +1,7 @@
 <?php
 namespace MiniGameApp\Manager;
 
+use Broadway\EventHandling\EventBusInterface;
 use Doctrine\ORM\ORMException;
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
@@ -23,15 +24,25 @@ abstract class InDatabaseGameManager implements GameManager
     private $playerRepository;
 
     /**
+     * @var EventBusInterface
+     */
+    private $eventBus;
+
+    /**
      * Constructor
      *
      * @param MiniGameRepository $gameRepository
      * @param PlayerRepository   $playerRepository
+     * @param EventBusInterface  $eventBus
      */
-    public function __construct(MiniGameRepository $gameRepository, PlayerRepository $playerRepository)
-    {
+    public function __construct(
+        MiniGameRepository $gameRepository,
+        PlayerRepository $playerRepository,
+        EventBusInterface $eventBus
+    ) {
         $this->gameRepository = $gameRepository;
         $this->playerRepository = $playerRepository;
+        $this->eventBus = $eventBus;
     }
 
     /**
@@ -56,6 +67,8 @@ abstract class InDatabaseGameManager implements GameManager
         foreach ($players as $player) {
             $this->playerRepository->save($player);
         }
+
+        $this->eventBus->publish($game->getUncommittedEvents());
     }
 
     /**
