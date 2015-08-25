@@ -152,7 +152,9 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
         $playerRepository = \Mockery::mock('\\MiniGame\\Repository\\PlayerRepository');
         $playerRepository->shouldReceive('save')->once();
 
-        $this->miniGame->shouldReceive('getUncommittedEvents')->andReturn(array());
+        $eventStream = \Mockery::mock('\\Broadway\\Domain\\DomainEventStreamInterface');
+
+        $this->miniGame->shouldReceive('getUncommittedEvents')->andReturn($eventStream);
         $this->eventBus->shouldReceive('publish')->once();
 
         $manager = new TestDbGameManager($repository, $playerRepository, $this->eventBus);

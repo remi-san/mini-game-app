@@ -127,7 +127,9 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSaveMiniGame()
     {
-        $this->miniGame->shouldReceive('getUncommittedEvents')->andReturn(array());
+        $eventStream = \Mockery::mock('\\Broadway\\Domain\\DomainEventStreamInterface');
+
+        $this->miniGame->shouldReceive('getUncommittedEvents')->andReturn($eventStream);
         $this->eventBus->shouldReceive('publish')->once();
 
         $manager = new TestGameManager(array(), array(), $this->eventBus);
