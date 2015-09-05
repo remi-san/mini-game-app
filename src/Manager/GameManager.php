@@ -11,10 +11,11 @@ interface GameManager
     /**
      * Create a mini-game according to the options
      *
+     * @param  MiniGameId  $id
      * @param  GameOptions $options
      * @return MiniGame
      */
-    public function createMiniGame(GameOptions $options);
+    public function createMiniGame(MiniGameId $id, GameOptions $options);
 
     /**
      * Saves a mini-game

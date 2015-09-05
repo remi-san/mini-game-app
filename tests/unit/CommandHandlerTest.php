@@ -103,10 +103,11 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $message = 'start';
         $options = $this->getGameOptions();
+        $options->shouldReceive('getId')->andReturn($this->gameId);
         $options->shouldReceive('getPlayers')->andReturn(array($this->getPlayer($this->playerId)));
 
         $command = $this->getCreateGameCommand($options, $message);
-        $this->gameManager->shouldReceive('createMiniGame')->with($options)->once();
+        $this->gameManager->shouldReceive('createMiniGame')->with($this->gameId, $options)->once();
 
         $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
         $this->responseBuilder
@@ -128,6 +129,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $message = 'start';
         $exceptionMessage = 'exception';
         $options = $this->getGameOptions();
+        $options->shouldReceive('getId')->andReturn($this->gameId);
         $options->shouldReceive('getPlayers')->andReturn(array($this->getPlayer($this->playerId)));
 
         $command = $this->getCreateGameCommand($options, $message);

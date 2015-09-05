@@ -8,11 +8,6 @@ use MiniGame\Entity\PlayerId;
 abstract class AbstractGameCommand implements NamedCommand
 {
     /**
-     * @var PlayerId
-     */
-    private $playerId;
-
-    /**
      * @var MiniGameId
      */
     private $gameId;
@@ -21,12 +16,10 @@ abstract class AbstractGameCommand implements NamedCommand
      * Constructor
      *
      * @param MiniGameId $gameId
-     * @param PlayerId   $playerId
      */
-    public function __construct(MiniGameId $gameId, PlayerId $playerId)
+    public function __construct(MiniGameId $gameId)
     {
         $this->gameId = $gameId;
-        $this->playerId = $playerId;
     }
 
     /**
@@ -37,16 +30,6 @@ abstract class AbstractGameCommand implements NamedCommand
     public function getGameId()
     {
         return $this->gameId;
-    }
-
-    /**
-     * Returns the player id
-     *
-     * @return PlayerId
-     */
-    public function getPlayerId()
-    {
-        return $this->playerId;
     }
 
     /**

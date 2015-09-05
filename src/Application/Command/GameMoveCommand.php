@@ -5,7 +5,7 @@ use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 use MiniGame\Move;
 
-class GameMoveCommand extends AbstractGameCommand
+class GameMoveCommand extends AbstractPlayerCommand
 {
     const NAME = 'GAME.MOVE';
 

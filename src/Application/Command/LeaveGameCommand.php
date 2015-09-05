@@ -1,7 +1,7 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
-class LeaveGameCommand extends AbstractGameCommand
+class LeaveGameCommand extends AbstractPlayerCommand
 {
     const NAME = 'GAME.LEAVE';
 

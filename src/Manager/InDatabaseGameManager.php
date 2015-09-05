@@ -48,10 +48,11 @@ abstract class InDatabaseGameManager implements GameManager
     /**
      * Create a mini-game according to the options
      *
+     * @param  MiniGameId  $id
      * @param  GameOptions $options
      * @return MiniGame
      */
-    abstract public function createMiniGame(GameOptions $options);
+    abstract public function createMiniGame(MiniGameId $id, GameOptions $options);
 
     /**
      * Saves a mini-game

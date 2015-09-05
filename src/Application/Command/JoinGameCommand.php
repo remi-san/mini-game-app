@@ -1,7 +1,7 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
-class JoinGameCommand extends AbstractGameCommand
+class JoinGameCommand extends AbstractPlayerCommand
 {
     const NAME = 'GAME.JOIN';
 

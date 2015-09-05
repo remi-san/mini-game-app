@@ -1,7 +1,7 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
-class CreatePlayerCommand extends AbstractGameCommand
+class CreatePlayerCommand extends AbstractPlayerCommand
 {
     const NAME = 'PLAYER.CREATE';
 
