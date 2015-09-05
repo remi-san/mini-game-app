@@ -33,38 +33,15 @@ trait MiniGameAppMocker
     }
 
     /**
-     * Returns a player Manager
-     *
-     * @param  Player $player
-     * @return PlayerManager
-     */
-    public function getPlayerManager(Player $player = null)
-    {
-        $mg = \Mockery::mock('\\MiniGameApp\\Manager\\PlayerManager');
-        $mg->shouldReceive('create')->andReturn($player);
-        $mg->shouldReceive('save')->andReturn($player);
-        $mg->shouldReceive('get')->andReturn($player);
-        $mg->shouldReceive('getByObject')->andReturn($player);
-
-        return $mg;
-    }
-
-    /**
-     * @param  MiniGameId  $gameId
-     * @param  PlayerId    $playerId
      * @param  GameOptions $options
      * @param  string      $message
      * @return CreateGameCommand
      */
     public function getCreateGameCommand(
-        MiniGameId $gameId = null,
-        PlayerId $playerId = null,
         GameOptions $options = null,
         $message = null
     ) {
         $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\CreateGameCommand');
-        $command->shouldReceive('getGameId')->andReturn($gameId);
-        $command->shouldReceive('getPlayerId')->andReturn($playerId);
         $command->shouldReceive('getOptions')->andReturn($options);
         $command->shouldReceive('getMessage')->andReturn($message);
         return $command;

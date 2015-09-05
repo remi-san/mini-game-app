@@ -1,10 +1,11 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
+use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 
-abstract class AbstractGameCommand implements GameCommand
+abstract class AbstractGameCommand implements NamedCommand
 {
     /**
      * @var PlayerId

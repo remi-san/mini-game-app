@@ -75,7 +75,8 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      */
     public function handleCreateGameCommand(CreateGameCommand $command)
     {
-        $player = $command->getPlayerId();
+        $player = reset($command->getOptions()->getPlayers());
+        $playerId = $player->getId();
 
         try {
             $this->gameManager->createMiniGame($command->getOptions());
@@ -85,7 +86,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
         }
 
         // TODO do not build response here - send event while saving
-        return $this->responseBuilder->buildResponse($player, $messageText);
+        return $this->responseBuilder->buildResponse($playerId, $messageText);
     }
 
     /**
