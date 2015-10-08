@@ -33,17 +33,20 @@ trait MiniGameAppMocker
     }
 
     /**
-     * @param  GameOptions $options
-     * @param  string      $message
+     * @param MiniGameId $gameId
+     * @param GameOptions $options
+     * @param string $message
      * @return CreateGameCommand
      */
     public function getCreateGameCommand(
+        MiniGameId $gameId = null,
         GameOptions $options = null,
         $message = null
     ) {
         $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\CreateGameCommand');
         $command->shouldReceive('getOptions')->andReturn($options);
         $command->shouldReceive('getMessage')->andReturn($message);
+        $command->shouldReceive('getGameId')->andReturn($gameId);
         return $command;
     }
 
