@@ -97,22 +97,6 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
     }
 
     /**
-     * Get the active mini-game for the player
-     *
-     * @param  PlayerId $player
-     * @return MiniGame
-     * @throws GameNotFoundException
-     */
-    public function getActiveMiniGameForPlayer(PlayerId $player)
-    {
-        if (!array_key_exists((string)$player, $this->playersMiniGames)) {
-            throw new GameNotFoundException('Game with for user "' . $player . '" doesn\'t exist!');
-        }
-
-        return $this->playersMiniGames[(string)$player];
-    }
-
-    /**
      * Delete the mini-game corresponding to the id
      *
      * @param  MiniGameId $id

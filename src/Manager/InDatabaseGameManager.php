@@ -73,27 +73,6 @@ abstract class InDatabaseGameManager implements GameManager
     }
 
     /**
-     * Get the active mini-game for the player
-     *
-     * @param  PlayerId $player
-     * @return MiniGame
-     * @throws GameNotFoundException
-     */
-    public function getActiveMiniGameForPlayer(PlayerId $player)
-    {
-        $game = null;
-        try {
-            $game = $this->gameRepository->findPlayerMinigame($player);
-        } catch (ORMException $e) {
-        }
-
-        if (!$game) {
-            throw new GameNotFoundException('Game with for user "' . $player->getId() . '" doesn\'t exist!');
-        }
-        return $game;
-    }
-
-    /**
      * Delete the mini-game corresponding to the id
      *
      * @param  MiniGameId $id

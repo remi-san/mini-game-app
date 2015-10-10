@@ -76,38 +76,6 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testGetActiveMiniGameForPlayer()
-    {
-        $repository = \Mockery::mock('\\MiniGame\\Repository\\MiniGameRepository');
-        $repository->shouldReceive('findPlayerMinigame')->andReturn($this->miniGame);
-
-        $playerRepository = \Mockery::mock('\\MiniGame\\Repository\\PlayerRepository');
-
-        $manager = new TestDbGameManager($repository, $playerRepository, $this->eventBus);
-
-        $this->assertEquals($this->miniGame, $manager->getActiveMiniGameForPlayer($this->playerId));
-    }
-
-    /**
-     * @test
-     */
-    public function testGetNonExistingActiveMiniGameForPlayer()
-    {
-        $repository = \Mockery::mock('\\MiniGame\\Repository\\MiniGameRepository');
-        $repository->shouldReceive('findPlayerMinigame')->andThrow('\\Doctrine\\ORM\\ORMException');
-
-        $playerRepository = \Mockery::mock('\\MiniGame\\Repository\\PlayerRepository');
-
-        $manager = new TestDbGameManager($repository, $playerRepository, $this->eventBus);
-
-        $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException');
-
-        $manager->getActiveMiniGameForPlayer($this->playerId);
-    }
-
-    /**
-     * @test
-     */
     public function testDeleteMiniGame()
     {
         $repository = \Mockery::mock('\\MiniGame\\Repository\\MiniGameRepository');
