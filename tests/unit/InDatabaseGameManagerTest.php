@@ -46,10 +46,10 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMiniGame()
     {
-        $repository = \Mockery::mock('\\MiniGame\\Repository\\MiniGameRepository');
+        $repository = \Mockery::mock('\\MiniGameApp\\Repository\\MiniGameRepository');
         $repository->shouldReceive('find')->andReturn($this->miniGame);
 
-        $playerRepository = \Mockery::mock('\\MiniGame\\Repository\\PlayerRepository');
+        $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
 
         $manager = new TestDbGameManager($repository, $playerRepository, $this->eventBus);
 
@@ -61,10 +61,10 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNonExistingMiniGame()
     {
-        $repository = \Mockery::mock('\\MiniGame\\Repository\\MiniGameRepository');
+        $repository = \Mockery::mock('\\MiniGameApp\\Repository\\MiniGameRepository');
         $repository->shouldReceive('find')->andThrow('\\Doctrine\\ORM\\ORMException');
 
-        $playerRepository = \Mockery::mock('\\MiniGame\\Repository\\PlayerRepository');
+        $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
 
         $manager = new TestDbGameManager($repository, $playerRepository, $this->eventBus);
 
@@ -78,11 +78,11 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeleteMiniGame()
     {
-        $repository = \Mockery::mock('\\MiniGame\\Repository\\MiniGameRepository');
+        $repository = \Mockery::mock('\\MiniGameApp\\Repository\\MiniGameRepository');
         $repository->shouldReceive('find')->andReturn($this->miniGame);
         $repository->shouldReceive('delete')->once();
 
-        $playerRepository = \Mockery::mock('\\MiniGame\\Repository\\PlayerRepository');
+        $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
         $playerRepository->shouldReceive('delete')->once();
 
         $manager = new TestDbGameManager($repository, $playerRepository, $this->eventBus);
@@ -97,10 +97,10 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeleteNonExistingMiniGame()
     {
-        $repository = \Mockery::mock('\\MiniGame\\Repository\\MiniGameRepository');
+        $repository = \Mockery::mock('\\MiniGameApp\\Repository\\MiniGameRepository');
         $repository->shouldReceive('find')->andThrow('\\Doctrine\\ORM\\ORMException');
 
-        $playerRepository = \Mockery::mock('\\MiniGame\\Repository\\PlayerRepository');
+        $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
 
         $manager = new TestDbGameManager($repository, $playerRepository, $this->eventBus);
 
@@ -114,10 +114,10 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSaveMiniGame()
     {
-        $repository = \Mockery::mock('\\MiniGame\\Repository\\MiniGameRepository');
+        $repository = \Mockery::mock('\\MiniGameApp\\Repository\\MiniGameRepository');
         $repository->shouldReceive('save')->once();
 
-        $playerRepository = \Mockery::mock('\\MiniGame\\Repository\\PlayerRepository');
+        $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
         $playerRepository->shouldReceive('save')->once();
 
         $eventStream = \Mockery::mock('\\Broadway\\Domain\\DomainEventStreamInterface');

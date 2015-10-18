@@ -5,11 +5,10 @@ use Broadway\EventHandling\EventBusInterface;
 use Doctrine\ORM\ORMException;
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
-use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
-use MiniGame\Repository\MiniGameRepository;
-use MiniGame\Repository\PlayerRepository;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
+use MiniGameApp\Repository\MiniGameRepository;
+use MiniGameApp\Repository\PlayerRepository;
 
 abstract class InDatabaseGameManager implements GameManager
 {
