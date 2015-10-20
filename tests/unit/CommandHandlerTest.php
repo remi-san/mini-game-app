@@ -104,7 +104,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $message = 'start';
         $options = $this->getGameOptions();
         $options->shouldReceive('getId')->andReturn($this->gameId);
-        $options->shouldReceive('getPlayers')->andReturn(array($this->getPlayer($this->playerId)));
+        $options->shouldReceive('getPlayers')->andReturn(array($this->getPlayerOptions($this->playerId)));
 
         $command = $this->getCreateGameCommand($this->gameId, $options, $message);
         $this->gameManager->shouldReceive('createMiniGame')->with($this->gameId, $options)->once();
@@ -130,7 +130,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $exceptionMessage = 'exception';
         $options = $this->getGameOptions();
         $options->shouldReceive('getId')->andReturn($this->gameId);
-        $options->shouldReceive('getPlayers')->andReturn(array($this->getPlayer($this->playerId)));
+        $options->shouldReceive('getPlayers')->andReturn(array($this->getPlayerOptions($this->playerId)));
 
         $command = $this->getCreateGameCommand($this->gameId, $options, $message);
 
