@@ -42,4 +42,14 @@ class PlayerMock implements Player
     {
         $this->game = $game;
     }
+
+    /**
+     * Returns the external reference
+     *
+     * @return string
+     */
+    public function getExternalReference()
+    {
+        return 'ext';
+    }
 }
