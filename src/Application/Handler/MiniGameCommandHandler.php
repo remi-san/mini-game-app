@@ -85,7 +85,6 @@ class MiniGameCommandHandler implements LoggerAwareInterface
             $messageText = $e->getMessage();
         }
 
-        // TODO do not build response here - send event while saving
         return $this->responseBuilder->buildResponse($playerId, $messageText);
     }
 
@@ -98,31 +97,21 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     public function handleGameMoveCommand(GameMoveCommand $command)
     {
         $playerId = $command->getPlayerId();
-        $response = null;
+        $messageText = null;
 
         try {
             $miniGame = $this->gameManager->getMiniGame($command->getGameId());
             $result = $miniGame->play($playerId, $command->getMove());
             $messageText = $result->getAsMessage();
 
-            $response = $this->responseBuilder->buildResponse($playerId, $messageText);
-
-            if ($result instanceof EndGame) {
-                $this->gameManager->deleteMiniGame($miniGame->getId());
-            } else {
-                $this->gameManager->saveMiniGame($miniGame);
-            }
-        } catch (GameException $e) {
-            $response = $this->responseBuilder->buildResponse(
-                $playerId,
-                $e->getMessage() . ' ' . $e->getResult()->getAsMessage()
-            );
+            $this->gameManager->saveMiniGame($miniGame);
         } catch (GameNotFoundException $e) {
-            $response = $this->responseBuilder->buildResponse($playerId, 'You have to start/join a game first!');
+            $messageText = 'You have to start/join a game first!';
+        } catch (GameException $e) {
+            $messageText = $e->getMessage() . ' ' . $e->getResult()->getAsMessage();
         }
 
-        // TODO do not build response here - send event while saving
-        return $response;
+        return $this->responseBuilder->buildResponse($playerId, $messageText);
     }
 
     /**
