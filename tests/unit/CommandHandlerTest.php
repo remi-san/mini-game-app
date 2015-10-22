@@ -191,41 +191,6 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testGameMoveWithEnding()
-    {
-        $resultText = 'end';
-        $move = $this->getMove('a');
-        $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move);
-        $miniGame = $this->getMiniGame($this->gameId, 'game');
-        $result = $this->getEndGame($resultText);
-
-        $this->gameManager
-            ->shouldReceive('deleteMiniGame')
-            ->with($this->gameId)
-            ->once();
-        $this->gameManager
-            ->shouldReceive('getMiniGame')
-            ->with($this->gameId)
-            ->andReturn($miniGame)
-            ->once();
-
-        $miniGame->shouldReceive('play')->with($this->playerId, $move)->andReturn($result)->once();
-
-        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
-        $this->responseBuilder
-            ->shouldReceive('buildResponse')
-            ->with($this->playerId, $resultText)
-            ->andReturn($expectedResponse);
-
-        $executor = new MiniGameCommandHandler($this->gameManager, $this->responseBuilder);
-        $response = $executor->handleGameMoveCommand($command);
-
-        $this->assertEquals($expectedResponse, $response);
-    }
-
-    /**
-     * @test
-     */
     public function testGameMoveWithGameException()
     {
         $exceptionText = 'exception';
