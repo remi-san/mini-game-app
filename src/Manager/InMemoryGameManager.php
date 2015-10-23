@@ -14,11 +14,6 @@ use Psr\Log\NullLogger;
 abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
 {
     /**
-     * @var EventBusInterface
-     */
-    private $eventBus;
-
-    /**
      * @var MiniGame[]
      */
     protected $managedMiniGames;
@@ -38,16 +33,13 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
      *
      * @param MiniGame[]        $managedMiniGames
      * @param array             $playersMiniGames
-     * @param EventBusInterface $eventBus
      */
     public function __construct(
         array $managedMiniGames = array(),
-        array $playersMiniGames = array(),
-        EventBusInterface $eventBus = null
+        array $playersMiniGames = array()
     ) {
         $this->managedMiniGames = $managedMiniGames;
         $this->playersMiniGames = $playersMiniGames;
-        $this->eventBus = $eventBus;
         $this->logger = new NullLogger();
     }
 
@@ -73,8 +65,6 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
         foreach ($game->getPlayers() as $player) {
             $this->playersMiniGames[(string)$player->getId()] = $game;
         }
-
-        $this->eventBus->publish($game->getUncommittedEvents());
 
         return $game;
     }

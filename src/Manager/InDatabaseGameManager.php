@@ -23,25 +23,17 @@ abstract class InDatabaseGameManager implements GameManager
     private $playerRepository;
 
     /**
-     * @var EventBusInterface
-     */
-    private $eventBus;
-
-    /**
      * Constructor
      *
      * @param MiniGameRepository $gameRepository
      * @param PlayerRepository   $playerRepository
-     * @param EventBusInterface  $eventBus
      */
     public function __construct(
         MiniGameRepository $gameRepository,
-        PlayerRepository $playerRepository,
-        EventBusInterface $eventBus
+        PlayerRepository $playerRepository
     ) {
         $this->gameRepository = $gameRepository;
         $this->playerRepository = $playerRepository;
-        $this->eventBus = $eventBus;
     }
 
     /**
@@ -67,8 +59,6 @@ abstract class InDatabaseGameManager implements GameManager
         foreach ($players as $player) {
             $this->playerRepository->save($player);
         }
-
-        $this->eventBus->publish($game->getUncommittedEvents());
     }
 
     /**
