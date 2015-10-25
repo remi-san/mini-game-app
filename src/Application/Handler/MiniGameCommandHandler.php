@@ -3,7 +3,6 @@ namespace MiniGameApp\Application\Handler;
 
 use MessageApp\Application\Response;
 use MiniGame\Exceptions\GameException;
-use MiniGame\Result\EndGame;
 use MiniGameApp\Application\Command\CreateGameCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Application\Command\JoinGameCommand;
@@ -92,7 +91,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      * Handles a GameMoveCommand
      *
      * @param  GameMoveCommand $command
-     * @return string
+     * @return Response
      */
     public function handleGameMoveCommand(GameMoveCommand $command)
     {
