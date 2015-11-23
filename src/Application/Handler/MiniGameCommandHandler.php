@@ -104,13 +104,11 @@ class MiniGameCommandHandler implements LoggerAwareInterface
             $messageText = $result->getAsMessage();
 
             $this->gameManager->saveMiniGame($miniGame);
-        } catch (GameNotFoundException $e) {
-            $messageText = 'You have to start/join a game first!';
-        } catch (GameException $e) {
-            $messageText = $e->getMessage() . ' ' . $e->getResult()->getAsMessage();
+        } catch (\Exception $e) {
+            $messageText = $e->getMessage();
         }
 
-        return $this->responseBuilder->buildResponse($playerId, $messageText);
+        return $this->responseBuilder->buildResponse($playerId, $messageText); // send event ?
     }
 
     /**
