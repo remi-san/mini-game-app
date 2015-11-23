@@ -195,7 +195,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $exceptionText = 'exception';
         $resultText = 'bad result';
-        $messageText = $exceptionText . ' ' . $resultText;
+        $messageText = $exceptionText;
 
         $move = $this->getMove('a');
         $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move);
@@ -229,7 +229,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGameMoveWithGameNotFoundException()
     {
-        $resultText = 'You have to start/join a game first!';
+        $resultText = '';
         $move = $this->getMove('a');
         $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move);
 
