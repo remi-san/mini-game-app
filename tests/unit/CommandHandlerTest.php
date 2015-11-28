@@ -210,7 +210,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $miniGame
             ->shouldReceive('play')
             ->with($this->playerId, $move)
-            ->andThrow(new IllegalMoveException($this->playerId, $this->gameId, $result, $move, $exceptionText));
+            ->andThrow(new IllegalMoveException($move, $exceptionText));
 
         $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
         $this->responseBuilder
