@@ -6,6 +6,7 @@ use Doctrine\ORM\ORMException;
 use League\Event\EmitterInterface;
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
+use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Repository\MiniGameRepository;
@@ -49,10 +50,11 @@ abstract class InDatabaseGameManager implements GameManager
      * Create a mini-game according to the options
      *
      * @param  MiniGameId  $id
+     * @param  PlayerId    $playerId
      * @param  GameOptions $options
      * @return MiniGame
      */
-    abstract public function createMiniGame(MiniGameId $id, GameOptions $options);
+    abstract public function createMiniGame(MiniGameId $id, PlayerId $playerId, GameOptions $options);
 
     /**
      * Saves a mini-game

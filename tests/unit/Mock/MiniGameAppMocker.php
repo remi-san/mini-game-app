@@ -34,12 +34,14 @@ trait MiniGameAppMocker
 
     /**
      * @param MiniGameId $gameId
+     * @param PlayerId $playerId
      * @param GameOptions $options
      * @param string $message
      * @return CreateGameCommand
      */
     public function getCreateGameCommand(
         MiniGameId $gameId = null,
+        PlayerId $playerId = null,
         GameOptions $options = null,
         $message = null
     ) {
@@ -47,6 +49,7 @@ trait MiniGameAppMocker
         $command->shouldReceive('getOptions')->andReturn($options);
         $command->shouldReceive('getMessage')->andReturn($message);
         $command->shouldReceive('getGameId')->andReturn($gameId);
+        $command->shouldReceive('getPlayerId')->andReturn($playerId);
         return $command;
     }
 

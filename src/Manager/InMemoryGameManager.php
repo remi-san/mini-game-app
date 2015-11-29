@@ -47,10 +47,11 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
      * Create a mini-game according to the options
      *
      * @param  MiniGameId  $id
+     * @param  PlayerId    $playerId
      * @param  GameOptions $options
      * @return MiniGame
      */
-    abstract public function createMiniGame(MiniGameId $id, GameOptions $options);
+    abstract public function createMiniGame(MiniGameId $id, PlayerId $playerId, GameOptions $options);
 
     /**
      * Saves a mini-game

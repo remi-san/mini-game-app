@@ -81,9 +81,7 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
         $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
         $playerRepository->shouldReceive('save')->once();
 
-        $eventStream = \Mockery::mock('\\Broadway\\Domain\\DomainEventStreamInterface');
-
-        $this->miniGame->shouldReceive('getUncommittedEvents')->andReturn($eventStream);
+        $this->miniGame->shouldReceive('getUncommittedEvents')->andReturn(array());
 
         $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
 

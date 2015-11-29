@@ -74,11 +74,11 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      */
     public function handleCreateGameCommand(CreateGameCommand $command)
     {
-        $player = reset($command->getOptions()->getPlayers());
+        $player = reset($command->getOptions()->getPlayerOptions());
         $playerId = $player->getPlayerId();
 
         try {
-            $this->gameManager->createMiniGame($command->getGameId(), $command->getOptions());
+            $this->gameManager->createMiniGame($command->getGameId(), $command->getPlayerId(), $command->getOptions());
             $messageText = $command->getMessage();
         } catch (\Exception $e) {
             $messageText = $e->getMessage();

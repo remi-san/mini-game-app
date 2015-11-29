@@ -3,9 +3,10 @@ namespace MiniGameApp\Application\Command;
 
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MiniGame\Entity\MiniGameId;
+use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
 
-class CreateGameCommand extends AbstractGameCommand implements NamedCommand
+class CreateGameCommand extends AbstractPlayerCommand implements NamedCommand
 {
     const NAME = 'GAME.CREATE';
 
@@ -23,12 +24,13 @@ class CreateGameCommand extends AbstractGameCommand implements NamedCommand
      * Construct
      *
      * @param MiniGameId  $id
+     * @param PlayerId    $playerId
      * @param GameOptions $options
      * @param string      $message
      */
-    public function __construct(MiniGameId $id, GameOptions $options, $message)
+    public function __construct(MiniGameId $id, PlayerId $playerId, GameOptions $options, $message)
     {
-        parent::__construct($id);
+        parent::__construct($id, $playerId);
         $this->options = $options;
         $this->message = $message;
     }
