@@ -33,13 +33,4 @@ interface GameManager
      * @throws GameNotFoundException
      */
     public function getMiniGame(MiniGameId $id);
-
-    /**
-     * Delete the mini-game corresponding to the id
-     *
-     * @param  MiniGameId $id
-     * @return void
-     * @throws GameNotFoundException
-     */
-    public function deleteMiniGame(MiniGameId $id);
 }

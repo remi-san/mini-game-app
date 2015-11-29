@@ -61,35 +61,6 @@ class InMemoryGameManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testDeleteMiniGame()
-    {
-        $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException');
-
-        $manager = new TestGameManager(array(self::ID, $this->miniGame), array());
-        $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
-
-        $this->assertEquals($this->miniGame, $manager->getMiniGame($this->miniGameId));
-
-        $manager->deleteMiniGame($this->miniGameId);
-        $manager->getMiniGame($this->miniGameId);
-    }
-
-    /**
-     * @test
-     */
-    public function testDeleteNonExistingMiniGame()
-    {
-        $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException');
-
-        $manager = new TestGameManager();
-        $manager->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
-
-        $manager->deleteMiniGame($this->miniGameId);
-    }
-
-    /**
-     * @test
-     */
     public function testSaveMiniGame()
     {
         $eventStream = \Mockery::mock('\\Broadway\\Domain\\DomainEventStreamInterface');

@@ -87,27 +87,6 @@ abstract class InMemoryGameManager implements GameManager, LoggerAwareInterface
     }
 
     /**
-     * Delete the mini-game corresponding to the id
-     *
-     * @param  MiniGameId $id
-     * @return void
-     * @throws GameNotFoundException
-     */
-    public function deleteMiniGame(MiniGameId $id)
-    {
-        if (!array_key_exists((string)$id, $this->managedMiniGames)) {
-            throw new GameNotFoundException('Game with id "' . $id . '" doesn\'t exist!');
-        }
-
-        $miniGame = $this->managedMiniGames[(string)$id];
-        foreach ($miniGame->getPlayers() as $player) {
-            unset($this->playersMiniGames[(string)$player->getId()]);
-        }
-
-        unset($this->managedMiniGames[(string)$id]);
-    }
-
-    /**
      * @param  LoggerInterface $logger
      * @return void
      */

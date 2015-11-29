@@ -77,25 +77,6 @@ abstract class InDatabaseGameManager implements GameManager
     }
 
     /**
-     * Delete the mini-game corresponding to the id
-     *
-     * @param  MiniGameId $id
-     * @return void
-     * @throws GameNotFoundException
-     */
-    public function deleteMiniGame(MiniGameId $id)
-    {
-        $game = $this->getMiniGame($id);
-        $players = $game->getPlayers();
-
-        foreach ($players as $player) {
-            $this->playerRepository->delete($player);
-        }
-
-        $this->gameRepository->delete($game);
-    }
-
-    /**
      * Get the mini-game corresponding to the id
      *
      * @param  MiniGameId $id
