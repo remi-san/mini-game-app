@@ -1,8 +1,9 @@
 <?php
 namespace MiniGameApp\Manager;
 
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\Domain\DomainMessage;
 use Doctrine\ORM\ORMException;
+use League\Event\EmitterInterface;
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\GameOptions;
@@ -23,17 +24,25 @@ abstract class InDatabaseGameManager implements GameManager
     private $playerRepository;
 
     /**
+     * @var EmitterInterface
+     */
+    private $eventEmitter;
+
+    /**
      * Constructor
      *
      * @param MiniGameRepository $gameRepository
      * @param PlayerRepository   $playerRepository
+     * @param EmitterInterface   $eventEmitter
      */
     public function __construct(
         MiniGameRepository $gameRepository,
-        PlayerRepository $playerRepository
+        PlayerRepository $playerRepository,
+        EmitterInterface $eventEmitter
     ) {
         $this->gameRepository = $gameRepository;
         $this->playerRepository = $playerRepository;
+        $this->eventEmitter = $eventEmitter;
     }
 
     /**
@@ -58,6 +67,12 @@ abstract class InDatabaseGameManager implements GameManager
 
         foreach ($players as $player) {
             $this->playerRepository->save($player);
+        }
+
+        $eventStream = $game->getUncommittedEvents();
+        foreach ($eventStream as $domainMessage) {
+            /* @var $domainMessage DomainMessage */
+            $this->eventEmitter->emit($domainMessage->getPayload());
         }
     }
 

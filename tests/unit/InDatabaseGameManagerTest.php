@@ -44,7 +44,9 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
 
         $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
 
-        $manager = new TestDbGameManager($repository, $playerRepository);
+        $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
+
+        $manager = new TestDbGameManager($repository, $playerRepository, $emitter);
 
         $this->assertEquals($this->miniGame, $manager->getMiniGame($this->miniGameId));
     }
@@ -59,7 +61,9 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
 
         $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
 
-        $manager = new TestDbGameManager($repository, $playerRepository);
+        $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
+
+        $manager = new TestDbGameManager($repository, $playerRepository, $emitter);
 
         $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException');
 
@@ -78,7 +82,9 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
         $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
         $playerRepository->shouldReceive('delete')->once();
 
-        $manager = new TestDbGameManager($repository, $playerRepository);
+        $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
+
+        $manager = new TestDbGameManager($repository, $playerRepository, $emitter);
 
         $this->assertEquals($this->miniGame, $manager->getMiniGame($this->miniGameId));
 
@@ -95,7 +101,9 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
 
         $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
 
-        $manager = new TestDbGameManager($repository, $playerRepository);
+        $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
+
+        $manager = new TestDbGameManager($repository, $playerRepository, $emitter);
 
         $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException');
 
@@ -117,7 +125,9 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->miniGame->shouldReceive('getUncommittedEvents')->andReturn($eventStream);
 
-        $manager = new TestDbGameManager($repository, $playerRepository);
+        $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
+
+        $manager = new TestDbGameManager($repository, $playerRepository, $emitter);
 
         $manager->saveMiniGame($this->miniGame);
     }
