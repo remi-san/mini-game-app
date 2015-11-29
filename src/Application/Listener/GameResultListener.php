@@ -1,5 +1,5 @@
 <?php
-namespace MiniGameApp\Listener;
+namespace MiniGameApp\Application\Listener;
 
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
