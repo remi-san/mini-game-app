@@ -1,14 +1,12 @@
 <?php
 namespace MiniGameApp\Application\Handler;
 
-use MessageApp\Application\Response;
-use MiniGame\Exceptions\GameException;
+use MessageApp\Application\Response\ApplicationResponse;
 use MiniGameApp\Application\Command\CreateGameCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Application\Command\JoinGameCommand;
 use MiniGameApp\Application\Command\LeaveGameCommand;
 use MiniGameApp\Application\MiniGameResponseBuilder;
-use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Manager\GameManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -78,8 +76,15 @@ class MiniGameCommandHandler implements LoggerAwareInterface
         $playerId = $player->getPlayerId();
 
         try {
-            $this->gameManager->createMiniGame($command->getGameId(), $command->getPlayerId(), $command->getOptions());
+            $miniGame = $this->gameManager->createMiniGame(
+                $command->getGameId(),
+                $command->getPlayerId(),
+                $command->getOptions()
+            );
+
             $messageText = $command->getMessage();
+
+            $this->gameManager->saveMiniGame($miniGame);
         } catch (\Exception $e) {
             $messageText = $e->getMessage();
         }
@@ -91,7 +96,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      * Handles a GameMoveCommand
      *
      * @param  GameMoveCommand $command
-     * @return Response
+     * @return ApplicationResponse
      */
     public function handleGameMoveCommand(GameMoveCommand $command)
     {

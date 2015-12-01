@@ -106,8 +106,18 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $options->shouldReceive('getId')->andReturn($this->gameId);
         $options->shouldReceive('getPlayerOptions')->andReturn(array($this->getPlayerOptions($this->playerId)));
 
+        $game = $this->getMiniGame();
+
         $command = $this->getCreateGameCommand($this->gameId, $this->playerId, $options, $message);
-        $this->gameManager->shouldReceive('createMiniGame')->with($this->gameId, $this->playerId, $options)->once();
+        $this->gameManager
+            ->shouldReceive('createMiniGame')
+            ->with($this->gameId, $this->playerId, $options)
+            ->andReturn($game)
+            ->once();
+        $this->gameManager
+            ->shouldReceive('saveMiniGame')
+            ->with($game)
+            ->once();
 
         $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
         $this->responseBuilder
