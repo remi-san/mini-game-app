@@ -1,7 +1,6 @@
 <?php
 namespace MiniGameApp\Test;
 
-use MessageApp\Test\Mock\MessageAppMocker;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Application\Command\CreatePlayerCommand;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
@@ -10,7 +9,6 @@ class CreatePlayerCommandTest extends \PHPUnit_Framework_TestCase
 {
     use GameObjectMocker;
     use MiniGameAppMocker;
-    use MessageAppMocker;
 
     public function tearDown()
     {

@@ -1,7 +1,6 @@
 <?php
 namespace MiniGameApp\Application;
 
-use MessageApp\Application\Response\ApplicationResponse;
 use MiniGame\Entity\PlayerId;
 
 interface MiniGameResponseBuilder
@@ -11,7 +10,7 @@ interface MiniGameResponseBuilder
      *
      * @param  PlayerId             $player
      * @param  object|string|number $response
-     * @return ApplicationResponse
+     * @return Response
      */
     public function buildResponse(PlayerId $player, $response);
 }

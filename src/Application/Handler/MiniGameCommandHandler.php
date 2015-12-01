@@ -1,12 +1,12 @@
 <?php
 namespace MiniGameApp\Application\Handler;
 
-use MessageApp\Application\Response\ApplicationResponse;
 use MiniGameApp\Application\Command\CreateGameCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Application\Command\JoinGameCommand;
 use MiniGameApp\Application\Command\LeaveGameCommand;
 use MiniGameApp\Application\MiniGameResponseBuilder;
+use MiniGameApp\Application\Response;
 use MiniGameApp\Manager\GameManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -68,7 +68,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      * Handles a CreateGameCommand
      *
      * @param  CreateGameCommand $command
-     * @return string
+     * @return Response
      */
     public function handleCreateGameCommand(CreateGameCommand $command)
     {
@@ -96,7 +96,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      * Handles a GameMoveCommand
      *
      * @param  GameMoveCommand $command
-     * @return ApplicationResponse
+     * @return Response
      */
     public function handleGameMoveCommand(GameMoveCommand $command)
     {

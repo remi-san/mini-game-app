@@ -1,7 +1,6 @@
 <?php
 namespace MiniGameApp\Test;
 
-use MessageApp\Test\Mock\MessageAppMocker;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\Player;
 use MiniGame\Entity\PlayerId;
@@ -16,7 +15,6 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 {
     use MiniGameAppMocker;
     use GameObjectMocker;
-    use MessageAppMocker;
 
     /**
      * @var PlayerId
@@ -119,7 +117,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->with($game)
             ->once();
 
-        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
+        $expectedResponse = \Mockery::mock('\\MiniGameApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->playerId, $message)
@@ -148,7 +146,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->gameManager->shouldReceive('createMiniGame')->andThrow($exception);
 
-        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
+        $expectedResponse = \Mockery::mock('\\MiniGameApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->playerId, $exceptionMessage)
@@ -186,7 +184,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andReturn($miniGame)
             ->once();
 
-        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
+        $expectedResponse = \Mockery::mock('\\MiniGameApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->playerId, $resultText)
@@ -222,7 +220,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->with($this->playerId, $move)
             ->andThrow(new IllegalMoveException($move, $exceptionText));
 
-        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
+        $expectedResponse = \Mockery::mock('\\MiniGameApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->playerId, $messageText)
@@ -249,7 +247,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andThrow('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException')
             ->once();
 
-        $expectedResponse = \Mockery::mock('\\MessageApp\\Application\\Response');
+        $expectedResponse = \Mockery::mock('\\MiniGameApp\\Application\\Response');
         $this->responseBuilder
             ->shouldReceive('buildResponse')
             ->with($this->playerId, $resultText)
