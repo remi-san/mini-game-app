@@ -89,6 +89,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
             $messageText = $e->getMessage();
         }
 
+        // TODO do not build response here - send event while saving
         return $this->responseBuilder->buildResponse($playerId, $messageText);
     }
 
@@ -113,6 +114,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
             $messageText = $e->getMessage();
         }
 
+        // TODO do not build response here - send event while saving
         return $this->responseBuilder->buildResponse($playerId, $messageText); // send event ?
     }
 
