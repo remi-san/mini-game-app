@@ -126,7 +126,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $executor = new MiniGameCommandHandler($this->gameManager, $this->responseBuilder);
         $response = $executor->handleCreateGameCommand($command);
 
-        $this->assertEquals($expectedResponse, $response);
+        $this->assertNull($response);
     }
 
     /**
@@ -193,7 +193,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $executor = new MiniGameCommandHandler($this->gameManager, $this->responseBuilder);
         $response = $executor->handleGameMoveCommand($command);
 
-        $this->assertEquals($expectedResponse, $response);
+        $this->assertNull($response);
     }
 
     /**

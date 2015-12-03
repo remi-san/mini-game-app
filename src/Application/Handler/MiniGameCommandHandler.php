@@ -82,15 +82,11 @@ class MiniGameCommandHandler implements LoggerAwareInterface
                 $command->getOptions()
             );
 
-            $messageText = $command->getMessage();
-
             $this->gameManager->saveMiniGame($miniGame);
         } catch (\Exception $e) {
-            $messageText = $e->getMessage();
+            // TODO send event instead of building response
+            return $this->responseBuilder->buildResponse($playerId, $e->getMessage());
         }
-
-        // TODO do not build response here - send event while saving
-        return $this->responseBuilder->buildResponse($playerId, $messageText);
     }
 
     /**
@@ -106,16 +102,13 @@ class MiniGameCommandHandler implements LoggerAwareInterface
 
         try {
             $miniGame = $this->gameManager->getMiniGame($command->getGameId());
-            $result = $miniGame->play($playerId, $command->getMove());
-            $messageText = $result->getAsMessage();
+            $miniGame->play($playerId, $command->getMove());
 
             $this->gameManager->saveMiniGame($miniGame);
         } catch (\Exception $e) {
-            $messageText = $e->getMessage();
+            // TODO send event instead of building response
+            return $this->responseBuilder->buildResponse($playerId, $e->getMessage());
         }
-
-        // TODO do not build response here - send event while saving
-        return $this->responseBuilder->buildResponse($playerId, $messageText); // send event ?
     }
 
     /**
