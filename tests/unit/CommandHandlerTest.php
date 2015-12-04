@@ -9,7 +9,6 @@ use MiniGame\Exceptions\IllegalMoveException;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Application\Event\MiniGameAppErrorEvent;
 use MiniGameApp\Application\Handler\MiniGameCommandHandler;
-use MiniGameApp\Application\MiniGameResponseBuilder;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
 
