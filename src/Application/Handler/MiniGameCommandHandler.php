@@ -1,12 +1,12 @@
 <?php
 namespace MiniGameApp\Application\Handler;
 
+use League\Event\EmitterInterface;
 use MiniGameApp\Application\Command\CreateGameCommand;
 use MiniGameApp\Application\Command\GameMoveCommand;
 use MiniGameApp\Application\Command\JoinGameCommand;
 use MiniGameApp\Application\Command\LeaveGameCommand;
-use MiniGameApp\Application\MiniGameResponseBuilder;
-use MiniGameApp\Application\Response;
+use MiniGameApp\Application\Event\MiniGameAppErrorEvent;
 use MiniGameApp\Manager\GameManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -25,22 +25,22 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     private $gameManager;
 
     /**
-     * @var MiniGameResponseBuilder
+     * @var EmitterInterface
      */
-    private $responseBuilder;
+    private $eventEmitter;
 
     /**
      * Constructor
      *
-     * @param GameManager             $gameManager
-     * @param MiniGameResponseBuilder $responseBuilder
+     * @param GameManager      $gameManager
+     * @param EmitterInterface $eventEmitter
      */
     public function __construct(
         GameManager $gameManager,
-        MiniGameResponseBuilder $responseBuilder
+        EmitterInterface $eventEmitter
     ) {
         $this->gameManager = $gameManager;
-        $this->responseBuilder = $responseBuilder;
+        $this->eventEmitter = $eventEmitter;
         $this->logger = new NullLogger();
     }
 
@@ -48,6 +48,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      * Handles a JoinGameCommand
      *
      * @param JoinGameCommand $command
+     * @return void
      */
     public function handleJoinGameCommand(JoinGameCommand $command)
     {
@@ -58,6 +59,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      * Handles a LeaveGameCommand
      *
      * @param LeaveGameCommand $command
+     * @return void
      */
     public function handleLeaveGameCommand(LeaveGameCommand $command)
     {
@@ -68,13 +70,10 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      * Handles a CreateGameCommand
      *
      * @param  CreateGameCommand $command
-     * @return Response
+     * @return void
      */
     public function handleCreateGameCommand(CreateGameCommand $command)
     {
-        $player = reset($command->getOptions()->getPlayerOptions());
-        $playerId = $player->getPlayerId();
-
         try {
             $miniGame = $this->gameManager->createMiniGame(
                 $command->getGameId(),
@@ -84,8 +83,13 @@ class MiniGameCommandHandler implements LoggerAwareInterface
 
             $this->gameManager->saveMiniGame($miniGame);
         } catch (\Exception $e) {
-            // TODO send event instead of building response
-            return $this->responseBuilder->buildResponse($playerId, $e->getMessage());
+            $this->eventEmitter->emit(
+                new MiniGameAppErrorEvent(
+                    $command->getGameId(),
+                    $command->getPlayerId(),
+                    $e->getMessage()
+                )
+            );
         }
     }
 
@@ -93,21 +97,23 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      * Handles a GameMoveCommand
      *
      * @param  GameMoveCommand $command
-     * @return Response
+     * @return void
      */
     public function handleGameMoveCommand(GameMoveCommand $command)
     {
-        $playerId = $command->getPlayerId();
-        $messageText = null;
-
         try {
             $miniGame = $this->gameManager->getMiniGame($command->getGameId());
-            $miniGame->play($playerId, $command->getMove());
+            $miniGame->play($command->getPlayerId(), $command->getMove());
 
             $this->gameManager->saveMiniGame($miniGame);
         } catch (\Exception $e) {
-            // TODO send event instead of building response
-            return $this->responseBuilder->buildResponse($playerId, $e->getMessage());
+            $this->eventEmitter->emit(
+                new MiniGameAppErrorEvent(
+                    $command->getGameId(),
+                    $command->getPlayerId(),
+                    $e->getMessage()
+                )
+            );
         }
     }
 

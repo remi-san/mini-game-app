@@ -1,7 +1,6 @@
 <?php
 namespace MiniGameApp\Manager;
 
-use Broadway\EventHandling\EventBusInterface;
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
