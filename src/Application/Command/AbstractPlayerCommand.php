@@ -1,11 +1,17 @@
 <?php
 namespace MiniGameApp\Application\Command;
 
+use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 
-abstract class AbstractPlayerCommand extends AbstractGameCommand
+abstract class AbstractPlayerCommand implements NamedCommand
 {
+    /**
+     * @var MiniGameId
+     */
+    private $gameId;
+
     /**
      * @var PlayerId
      */
@@ -19,8 +25,18 @@ abstract class AbstractPlayerCommand extends AbstractGameCommand
      */
     public function __construct(MiniGameId $gameId, PlayerId $playerId)
     {
-        parent::__construct($gameId);
+        $this->gameId = $gameId;
         $this->playerId = $playerId;
+    }
+
+    /**
+     * Returns the minigame id
+     *
+     * @return MiniGameId
+     */
+    public function getGameId()
+    {
+        return $this->gameId;
     }
 
     /**
@@ -32,4 +48,11 @@ abstract class AbstractPlayerCommand extends AbstractGameCommand
     {
         return $this->playerId;
     }
+
+    /**
+     * Returns the command name
+     *
+     * @return string
+     */
+    abstract public function getCommandName();
 }
