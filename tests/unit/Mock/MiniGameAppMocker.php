@@ -3,13 +3,12 @@ namespace MiniGameApp\Test\Mock;
 
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
-use MiniGame\Entity\Player;
 use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
-use MiniGameApp\Application\Command\CreateGameCommand;
-use MiniGameApp\Application\Command\CreatePlayerCommand;
-use MiniGameApp\Application\Command\GameMoveCommand;
-use MiniGameApp\Application\Command\LeaveGameCommand;
+use MiniGameApp\Command\CreateGameCommand;
+use MiniGameApp\Command\CreatePlayerCommand;
+use MiniGameApp\Command\GameMoveCommand;
+use MiniGameApp\Command\LeaveGameCommand;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
 
@@ -45,7 +44,7 @@ trait MiniGameAppMocker
         GameOptions $options = null,
         $message = null
     ) {
-        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\CreateGameCommand');
+        $command = \Mockery::mock('\\MiniGameApp\\Command\\CreateGameCommand');
         $command->shouldReceive('getOptions')->andReturn($options);
         $command->shouldReceive('getMessage')->andReturn($message);
         $command->shouldReceive('getGameId')->andReturn($gameId);
@@ -61,7 +60,7 @@ trait MiniGameAppMocker
      */
     public function getGameMoveCommand(MiniGameId $gameId = null, PlayerId $playerId = null, $move = null)
     {
-        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\GameMoveCommand');
+        $command = \Mockery::mock('\\MiniGameApp\\Command\\GameMoveCommand');
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
         $command->shouldReceive('getMove')->andReturn($move);
@@ -75,7 +74,7 @@ trait MiniGameAppMocker
      */
     public function getJoinGameCommand(MiniGameId $gameId = null, PlayerId $playerId = null)
     {
-        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\JoinGameCommand');
+        $command = \Mockery::mock('\\MiniGameApp\\Command\\JoinGameCommand');
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
         return $command;
@@ -88,7 +87,7 @@ trait MiniGameAppMocker
      */
     public function getLeaveGameCommand(MiniGameId $gameId = null, PlayerId $playerId = null)
     {
-        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\LeaveGameCommand');
+        $command = \Mockery::mock('\\MiniGameApp\\Command\\LeaveGameCommand');
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
         $command->shouldReceive('getGameId')->andReturn($gameId);
@@ -102,7 +101,7 @@ trait MiniGameAppMocker
      */
     public function getCreatePlayerCommand(MiniGameId $gameId = null, PlayerId $playerId = null)
     {
-        $command = \Mockery::mock('\\MiniGameApp\\Application\\Command\\CreatePlayerCommand');
+        $command = \Mockery::mock('\\MiniGameApp\\Command\\CreatePlayerCommand');
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
         return $command;

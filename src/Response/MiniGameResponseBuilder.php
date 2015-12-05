@@ -1,7 +1,8 @@
 <?php
-namespace MiniGameApp\Application;
+namespace MiniGameApp\Response;
 
 use MiniGame\Entity\PlayerId;
+use MiniGameApp\Response;
 
 interface MiniGameResponseBuilder
 {

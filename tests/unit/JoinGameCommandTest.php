@@ -2,7 +2,7 @@
 namespace MiniGameApp\Test;
 
 use MiniGame\Test\Mock\GameObjectMocker;
-use MiniGameApp\Application\Command\JoinGameCommand;
+use MiniGameApp\Command\JoinGameCommand;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
 
 class JoinGameCommandTest extends \PHPUnit_Framework_TestCase

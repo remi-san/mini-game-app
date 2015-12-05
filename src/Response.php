@@ -1,5 +1,5 @@
 <?php
-namespace MiniGameApp\Application;
+namespace MiniGameApp;
 
 interface Response // TODO delete this
 {

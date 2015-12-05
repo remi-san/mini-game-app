@@ -1,5 +1,5 @@
 <?php
-namespace MiniGameApp\Application\Event;
+namespace MiniGameApp\Event;
 
 use League\Event\Event;
 use MiniGame\Entity\MiniGameId;

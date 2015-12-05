@@ -2,7 +2,7 @@
 namespace MiniGameApp\Test;
 
 use MiniGame\Test\Mock\GameObjectMocker;
-use MiniGameApp\Application\Command\LeaveGameCommand;
+use MiniGameApp\Command\LeaveGameCommand;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
 
 class LeaveGameCommandTest extends \PHPUnit_Framework_TestCase

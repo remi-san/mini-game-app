@@ -1,5 +1,5 @@
 <?php
-namespace MiniGameApp\Application\Command;
+namespace MiniGameApp\Command;
 
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;

@@ -7,8 +7,8 @@ use MiniGame\Entity\Player;
 use MiniGame\Entity\PlayerId;
 use MiniGame\Exceptions\IllegalMoveException;
 use MiniGame\Test\Mock\GameObjectMocker;
-use MiniGameApp\Application\Event\MiniGameAppErrorEvent;
-use MiniGameApp\Application\Handler\MiniGameCommandHandler;
+use MiniGameApp\Event\MiniGameAppErrorEvent;
+use MiniGameApp\Handler\MiniGameCommandHandler;
 use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
 
@@ -235,7 +235,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andThrow('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException')
             ->once();
 
-        $expectedResponse = \Mockery::mock('\\MiniGameApp\\Application\\Response');
+        $expectedResponse = \Mockery::mock('\\MiniGameApp\\Response');
         $this->eventEmitter
             ->shouldReceive('buildResponse')
             ->with($this->playerId, $resultText)

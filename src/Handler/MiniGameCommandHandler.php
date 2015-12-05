@@ -1,12 +1,12 @@
 <?php
-namespace MiniGameApp\Application\Handler;
+namespace MiniGameApp\Handler;
 
 use League\Event\EmitterInterface;
-use MiniGameApp\Application\Command\CreateGameCommand;
-use MiniGameApp\Application\Command\GameMoveCommand;
-use MiniGameApp\Application\Command\JoinGameCommand;
-use MiniGameApp\Application\Command\LeaveGameCommand;
-use MiniGameApp\Application\Event\MiniGameAppErrorEvent;
+use MiniGameApp\Command\CreateGameCommand;
+use MiniGameApp\Command\GameMoveCommand;
+use MiniGameApp\Command\JoinGameCommand;
+use MiniGameApp\Command\LeaveGameCommand;
+use MiniGameApp\Event\MiniGameAppErrorEvent;
 use MiniGameApp\Manager\GameManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -58,7 +58,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     /**
      * Handles a LeaveGameCommand
      *
-     * @param LeaveGameCommand $command
+     * @param  LeaveGameCommand $command
      * @return void
      */
     public function handleLeaveGameCommand(LeaveGameCommand $command)

@@ -1,5 +1,5 @@
 <?php
-namespace MiniGameApp\Application\Command;
+namespace MiniGameApp\Command;
 
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MiniGame\Entity\MiniGameId;

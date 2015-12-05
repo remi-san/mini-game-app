@@ -1,7 +1,7 @@
 <?php
 namespace MiniGameApp\Test\Mock;
 
-use MiniGameApp\Application\Command\AbstractPlayerCommand;
+use MiniGameApp\Command\AbstractPlayerCommand;
 
 class ConcretePlayerCommand extends AbstractPlayerCommand
 {

@@ -1,5 +1,5 @@
 <?php
-namespace MiniGameApp\Application\Command;
+namespace MiniGameApp\Command;
 
 class LeaveGameCommand extends AbstractPlayerCommand
 {

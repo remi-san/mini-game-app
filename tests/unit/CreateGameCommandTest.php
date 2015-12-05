@@ -2,7 +2,7 @@
 namespace MiniGameApp\Test;
 
 use MiniGame\Test\Mock\GameObjectMocker;
-use MiniGameApp\Application\Command\CreateGameCommand;
+use MiniGameApp\Command\CreateGameCommand;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
 
 class CreateGameCommandTest extends \PHPUnit_Framework_TestCase
