@@ -23,13 +23,4 @@ interface MiniGameRepository
      * @return void
      */
     public function save(MiniGame $game);
-
-    /**
-     * Deletes a mini game
-     *
-     * @param  MiniGame $game
-     *
-     * @return void
-     */
-    public function delete(MiniGame $game);
 }

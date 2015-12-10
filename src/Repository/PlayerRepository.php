@@ -23,13 +23,4 @@ interface PlayerRepository
      * @return void
      */
     public function save(Player $player);
-
-    /**
-     * Deletes a player
-     *
-     * @param  Player $player
-     *
-     * @return void
-     */
-    public function delete(Player $player);
 }
