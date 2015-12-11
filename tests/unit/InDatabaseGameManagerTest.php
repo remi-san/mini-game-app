@@ -1,7 +1,6 @@
 <?php
 namespace MiniGameApp\Test;
 
-use Broadway\EventHandling\EventBusInterface;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Test\Mock\TestDbGameManager;
 
@@ -26,7 +25,6 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->miniGameId = $this->getMiniGameId(self::ID);
         $this->miniGame = $this->getMiniGame($this->miniGameId, 'Game');
-        $this->miniGame->shouldReceive('getPlayers')->andReturn(array($this->player));
     }
 
     public function tearDown()
@@ -42,11 +40,9 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
         $repository = \Mockery::mock('\\MiniGameApp\\Repository\\MiniGameRepository');
         $repository->shouldReceive('find')->andReturn($this->miniGame);
 
-        $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
-
         $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
 
-        $manager = new TestDbGameManager($repository, $playerRepository, $emitter);
+        $manager = new TestDbGameManager($repository, $emitter);
 
         $this->assertEquals($this->miniGame, $manager->getMiniGame($this->miniGameId));
     }
@@ -59,11 +55,9 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
         $repository = \Mockery::mock('\\MiniGameApp\\Repository\\MiniGameRepository');
         $repository->shouldReceive('find')->andThrow('\\Doctrine\\ORM\\ORMException');
 
-        $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
-
         $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
 
-        $manager = new TestDbGameManager($repository, $playerRepository, $emitter);
+        $manager = new TestDbGameManager($repository, $emitter);
 
         $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException');
 
@@ -78,14 +72,11 @@ class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
         $repository = \Mockery::mock('\\MiniGameApp\\Repository\\MiniGameRepository');
         $repository->shouldReceive('save')->once();
 
-        $playerRepository = \Mockery::mock('\\MiniGameApp\\Repository\\PlayerRepository');
-        $playerRepository->shouldReceive('save')->once();
-
         $this->miniGame->shouldReceive('getUncommittedEvents')->andReturn(array());
 
         $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
 
-        $manager = new TestDbGameManager($repository, $playerRepository, $emitter);
+        $manager = new TestDbGameManager($repository, $emitter);
 
         $manager->saveMiniGame($this->miniGame);
     }

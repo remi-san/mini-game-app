@@ -10,7 +10,6 @@ use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Repository\MiniGameRepository;
-use MiniGameApp\Repository\PlayerRepository;
 
 abstract class InDatabaseGameManager implements GameManager
 {
@@ -18,11 +17,6 @@ abstract class InDatabaseGameManager implements GameManager
      * @var MiniGameRepository
      */
     private $gameRepository;
-
-    /**
-     * @var PlayerRepository
-     */
-    private $playerRepository;
 
     /**
      * @var EmitterInterface
@@ -33,16 +27,13 @@ abstract class InDatabaseGameManager implements GameManager
      * Constructor
      *
      * @param MiniGameRepository $gameRepository
-     * @param PlayerRepository   $playerRepository
      * @param EmitterInterface   $eventEmitter
      */
     public function __construct(
         MiniGameRepository $gameRepository,
-        PlayerRepository $playerRepository,
         EmitterInterface $eventEmitter
     ) {
         $this->gameRepository = $gameRepository;
-        $this->playerRepository = $playerRepository;
         $this->eventEmitter = $eventEmitter;
     }
 
@@ -65,11 +56,6 @@ abstract class InDatabaseGameManager implements GameManager
     public function saveMiniGame(MiniGame $game)
     {
         $this->gameRepository->save($game);
-        $players = $game->getPlayers();
-
-        foreach ($players as $player) {
-            $this->playerRepository->save($player);
-        }
 
         $eventStream = $game->getUncommittedEvents();
         foreach ($eventStream as $domainMessage) {
