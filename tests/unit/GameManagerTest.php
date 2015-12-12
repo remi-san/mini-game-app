@@ -4,7 +4,7 @@ namespace MiniGameApp\Test;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Test\Mock\TestDbGameManager;
 
-class InDatabaseGameManagerTest extends \PHPUnit_Framework_TestCase
+class GameManagerTest extends \PHPUnit_Framework_TestCase
 {
     use GameObjectMocker;
 
