@@ -11,7 +11,7 @@ use MiniGame\GameOptions;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Repository\MiniGameRepository;
 
-abstract class InDatabaseGameManager implements GameManager
+abstract class AbstractGameManager implements GameManager
 {
     /**
      * @var MiniGameRepository

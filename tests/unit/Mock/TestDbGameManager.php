@@ -4,9 +4,9 @@ namespace MiniGameApp\Test\Mock;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
-use MiniGameApp\Manager\InDatabaseGameManager;
+use MiniGameApp\Manager\AbstractGameManager;
 
-class TestDbGameManager extends InDatabaseGameManager
+class TestDbGameManager extends AbstractGameManager
 {
     public function createMiniGame(MiniGameId $id, PlayerId $playerId, GameOptions $options)
     {
