@@ -27,6 +27,7 @@
         "remi-san/mini-game" : "dev-master",
         "league/tactician": "~0.6",
         "league/event" : "~2.1",
+        "broadway/broadway" : "~0.8.0",
         "psr/log": "~1.0"
     },
     "require-dev": {
