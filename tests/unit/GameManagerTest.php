@@ -1,8 +1,13 @@
 <?php
 namespace MiniGameApp\Test;
 
+use Broadway\Domain\DateTime;
+use Broadway\Domain\DomainMessage;
+use Broadway\Domain\Metadata;
+use League\Event\EmitterInterface;
+use League\Event\EventInterface;
 use MiniGame\Test\Mock\GameObjectMocker;
-use MiniGameApp\Test\Mock\TestDbGameManager;
+use MiniGameApp\Test\Mock\TestGameManager;
 
 class GameManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -42,7 +47,7 @@ class GameManagerTest extends \PHPUnit_Framework_TestCase
 
         $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
 
-        $manager = new TestDbGameManager($repository, $emitter);
+        $manager = new TestGameManager($repository, $emitter);
 
         $this->assertEquals($this->miniGame, $manager->getMiniGame($this->miniGameId));
     }
@@ -57,7 +62,7 @@ class GameManagerTest extends \PHPUnit_Framework_TestCase
 
         $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
 
-        $manager = new TestDbGameManager($repository, $emitter);
+        $manager = new TestGameManager($repository, $emitter);
 
         $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException');
 
@@ -72,11 +77,19 @@ class GameManagerTest extends \PHPUnit_Framework_TestCase
         $repository = \Mockery::mock('\\MiniGameApp\\Repository\\MiniGameRepository');
         $repository->shouldReceive('save')->once();
 
-        $this->miniGame->shouldReceive('getUncommittedEvents')->andReturn(array());
+        $event = \Mockery::mock(EventInterface::class);
 
-        $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
+        $this->miniGame
+            ->shouldReceive('getUncommittedEvents')
+            ->andReturn(
+                [\Mockery::mock(new DomainMessage(null, null, new Metadata(), $event, DateTime::now()))]
+            );
 
-        $manager = new TestDbGameManager($repository, $emitter);
+        $emitter = \Mockery::mock(EmitterInterface::class, function ($emitter) use ($event) {
+            $emitter->shouldReceive('emit')->with($event)->once();
+        });
+
+        $manager = new TestGameManager($repository, $emitter);
 
         $manager->saveMiniGame($this->miniGame);
     }

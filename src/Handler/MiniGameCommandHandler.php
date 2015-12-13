@@ -131,6 +131,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      *
      * @param  LoggerInterface $logger
      * @return void
+     * @codeCoverageIgnore
      */
     public function setLogger(LoggerInterface $logger)
     {

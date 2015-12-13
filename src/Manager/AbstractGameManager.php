@@ -85,6 +85,7 @@ abstract class AbstractGameManager implements GameManager, LoggerAwareInterface
     /**
      * @param  LoggerInterface $logger
      * @return void
+     * @codeCoverageIgnore
      */
     public function setLogger(LoggerInterface $logger)
     {

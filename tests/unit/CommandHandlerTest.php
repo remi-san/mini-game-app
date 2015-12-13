@@ -71,15 +71,6 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testLogger()
-    {
-        $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->eventEmitter);
-        $executor->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
-    }
-
-    /**
-     * @test
-     */
     public function testJoinGame()
     {
         $command = $this->getJoinGameCommand($this->gameId, $this->playerId);
