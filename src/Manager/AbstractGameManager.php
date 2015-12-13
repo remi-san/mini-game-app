@@ -6,12 +6,13 @@ use Doctrine\ORM\ORMException;
 use League\Event\EmitterInterface;
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
-use MiniGame\Entity\PlayerId;
-use MiniGame\GameOptions;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
 use MiniGameApp\Repository\MiniGameRepository;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
-abstract class AbstractGameManager implements GameManager
+abstract class AbstractGameManager implements GameManager, LoggerAwareInterface
 {
     /**
      * @var MiniGameRepository
@@ -22,6 +23,11 @@ abstract class AbstractGameManager implements GameManager
      * @var EmitterInterface
      */
     private $eventEmitter;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * Constructor
@@ -35,17 +41,8 @@ abstract class AbstractGameManager implements GameManager
     ) {
         $this->gameRepository = $gameRepository;
         $this->eventEmitter = $eventEmitter;
+        $this->logger = new NullLogger();
     }
-
-    /**
-     * Create a mini-game according to the options
-     *
-     * @param  MiniGameId  $id
-     * @param  PlayerId    $playerId
-     * @param  GameOptions $options
-     * @return MiniGame
-     */
-    abstract public function createMiniGame(MiniGameId $id, PlayerId $playerId, GameOptions $options);
 
     /**
      * Saves a mini-game
@@ -83,5 +80,14 @@ abstract class AbstractGameManager implements GameManager
             throw new GameNotFoundException('Game with id "' . $id . '" doesn\'t exist!');
         }
         return $game;
+    }
+
+    /**
+     * @param  LoggerInterface $logger
+     * @return void
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 }

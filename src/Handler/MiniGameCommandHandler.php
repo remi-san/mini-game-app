@@ -8,6 +8,7 @@ use MiniGameApp\Command\JoinGameCommand;
 use MiniGameApp\Command\LeaveGameCommand;
 use MiniGameApp\Event\MiniGameAppErrorEvent;
 use MiniGameApp\Manager\GameManager;
+use MiniGameApp\MiniGameBuilder;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -15,9 +16,9 @@ use Psr\Log\NullLogger;
 class MiniGameCommandHandler implements LoggerAwareInterface
 {
     /**
-     * @var LoggerInterface
+     * @var MiniGameBuilder
      */
-    protected $logger;
+    protected $builder;
 
     /**
      * @var GameManager
@@ -30,15 +31,23 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     private $eventEmitter;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * Constructor
      *
+     * @param MiniGameBuilder  $builder
      * @param GameManager      $gameManager
      * @param EmitterInterface $eventEmitter
      */
     public function __construct(
+        MiniGameBuilder $builder,
         GameManager $gameManager,
         EmitterInterface $eventEmitter
     ) {
+        $this->builder = $builder;
         $this->gameManager = $gameManager;
         $this->eventEmitter = $eventEmitter;
         $this->logger = new NullLogger();
@@ -75,7 +84,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     public function handleCreateGameCommand(CreateGameCommand $command)
     {
         try {
-            $miniGame = $this->gameManager->createMiniGame(
+            $miniGame = $this->builder->createMiniGame(
                 $command->getGameId(),
                 $command->getPlayerId(),
                 $command->getOptions()
