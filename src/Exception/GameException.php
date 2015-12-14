@@ -1,5 +1,5 @@
 <?php
-namespace MiniGameApp\Manager\Exceptions;
+namespace MiniGameApp\Exception;
 
 class GameException extends \Exception
 {

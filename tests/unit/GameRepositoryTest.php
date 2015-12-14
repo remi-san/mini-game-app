@@ -7,9 +7,9 @@ use Broadway\Domain\Metadata;
 use League\Event\EmitterInterface;
 use League\Event\EventInterface;
 use MiniGame\Test\Mock\GameObjectMocker;
-use MiniGameApp\Test\Mock\TestGameManager;
+use MiniGameApp\Test\Mock\TestGameRepository;
 
-class GameManagerTest extends \PHPUnit_Framework_TestCase
+class GameRepositoryTest extends \PHPUnit_Framework_TestCase
 {
     use GameObjectMocker;
 
@@ -47,7 +47,7 @@ class GameManagerTest extends \PHPUnit_Framework_TestCase
 
         $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
 
-        $manager = new TestGameManager($repository, $emitter);
+        $manager = new TestGameRepository($repository, $emitter);
 
         $this->assertEquals($this->miniGame, $manager->getMiniGame($this->miniGameId));
     }
@@ -62,9 +62,9 @@ class GameManagerTest extends \PHPUnit_Framework_TestCase
 
         $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
 
-        $manager = new TestGameManager($repository, $emitter);
+        $manager = new TestGameRepository($repository, $emitter);
 
-        $this->setExpectedException('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException');
+        $this->setExpectedException('\\MiniGameApp\\Exception\\GameNotFoundException');
 
         $manager->getMiniGame($this->miniGameId);
     }
@@ -89,7 +89,7 @@ class GameManagerTest extends \PHPUnit_Framework_TestCase
             $emitter->shouldReceive('emit')->with($event)->once();
         });
 
-        $manager = new TestGameManager($repository, $emitter);
+        $manager = new TestGameRepository($repository, $emitter);
 
         $manager->saveMiniGame($this->miniGame);
     }

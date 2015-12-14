@@ -1,21 +1,21 @@
 <?php
-namespace MiniGameApp\Manager;
+namespace MiniGameApp\Repository;
 
 use Doctrine\ORM\ORMException;
 use League\Event\EmitterInterface;
 use League\Event\EventInterface;
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
-use MiniGameApp\Manager\Exceptions\GameNotFoundException;
+use MiniGameApp\Exception\GameNotFoundException;
 use MiniGameApp\Store\MiniGameStore;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-abstract class AbstractGameManager implements GameManager, LoggerAwareInterface
+abstract class AbstractGameRepository implements GameRepository, LoggerAwareInterface
 {
     /**
-     * @var \MiniGameApp\Store\MiniGameStore
+     * @var MiniGameStore
      */
     private $gameRepository;
 
@@ -32,7 +32,7 @@ abstract class AbstractGameManager implements GameManager, LoggerAwareInterface
     /**
      * Constructor
      *
-     * @param \MiniGameApp\Store\MiniGameStore $gameRepository
+     * @param MiniGameStore $gameRepository
      * @param EmitterInterface   $eventEmitter
      */
     public function __construct(

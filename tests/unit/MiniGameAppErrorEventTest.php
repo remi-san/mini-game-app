@@ -1,16 +1,10 @@
 <?php
 namespace MiniGameApp\Test;
 
-use League\Event\EmitterInterface;
 use MiniGame\Entity\MiniGameId;
-use MiniGame\Entity\Player;
 use MiniGame\Entity\PlayerId;
-use MiniGame\Exceptions\IllegalMoveException;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Event\MiniGameAppErrorEvent;
-use MiniGameApp\Handler\MiniGameCommandHandler;
-use MiniGameApp\Manager\GameManager;
-use MiniGameApp\MiniGameBuilder;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
 
 class MiniGameAppErrorEventTest extends \PHPUnit_Framework_TestCase

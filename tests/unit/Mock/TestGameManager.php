@@ -3,9 +3,9 @@ namespace MiniGameApp\Test\Mock;
 
 use Broadway\Domain\DomainMessage;
 use League\Event\EventInterface;
-use MiniGameApp\Manager\AbstractGameManager;
+use MiniGameApp\Repository\AbstractGameRepository;
 
-class TestGameManager extends AbstractGameManager
+class TestGameRepository extends AbstractGameRepository
 {
     /**
      * Prepares the event to return a League Event

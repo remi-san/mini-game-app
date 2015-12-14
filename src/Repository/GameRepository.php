@@ -1,11 +1,11 @@
 <?php
-namespace MiniGameApp\Manager;
+namespace MiniGameApp\Repository;
 
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
-use MiniGameApp\Manager\Exceptions\GameNotFoundException;
+use MiniGameApp\Exception\GameNotFoundException;
 
-interface GameManager
+interface GameRepository
 {
     /**
      * Saves a mini-game

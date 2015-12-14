@@ -7,8 +7,8 @@ use MiniGameApp\Command\GameMoveCommand;
 use MiniGameApp\Command\JoinGameCommand;
 use MiniGameApp\Command\LeaveGameCommand;
 use MiniGameApp\Event\MiniGameAppErrorEvent;
-use MiniGameApp\Manager\GameManager;
 use MiniGameApp\MiniGameBuilder;
+use MiniGameApp\Repository\GameRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -21,7 +21,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     protected $builder;
 
     /**
-     * @var GameManager
+     * @var \MiniGameApp\Repository\GameRepository
      */
     private $gameManager;
 
@@ -39,12 +39,12 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      * Constructor
      *
      * @param MiniGameBuilder  $builder
-     * @param GameManager      $gameManager
+     * @param GameRepository      $gameManager
      * @param EmitterInterface $eventEmitter
      */
     public function __construct(
         MiniGameBuilder $builder,
-        GameManager $gameManager,
+        GameRepository $gameManager,
         EmitterInterface $eventEmitter
     ) {
         $this->builder = $builder;

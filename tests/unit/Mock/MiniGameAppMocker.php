@@ -9,8 +9,8 @@ use MiniGameApp\Command\CreateGameCommand;
 use MiniGameApp\Command\CreatePlayerCommand;
 use MiniGameApp\Command\GameMoveCommand;
 use MiniGameApp\Command\LeaveGameCommand;
-use MiniGameApp\Manager\GameManager;
 use MiniGameApp\Manager\PlayerManager;
+use MiniGameApp\Repository\GameRepository;
 
 trait MiniGameAppMocker
 {
@@ -18,11 +18,11 @@ trait MiniGameAppMocker
      * Returns a mini-game Manager
      *
      * @param  MiniGame $miniGame
-     * @return GameManager
+     * @return GameRepository
      */
     public function getMiniGameManager(MiniGame $miniGame = null)
     {
-        $mg = \Mockery::mock('\\MiniGameApp\\Manager\\GameManager');
+        $mg = \Mockery::mock('\\MiniGameApp\\Repository\\GameRepository');
         $mg->shouldReceive('createMiniGame')->andReturn($miniGame);
         $mg->shouldReceive('saveMiniGame')->andReturn($miniGame);
         $mg->shouldReceive('getMiniGameId')->andReturn($miniGame);

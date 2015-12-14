@@ -9,8 +9,8 @@ use MiniGame\Exceptions\IllegalMoveException;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Event\MiniGameAppErrorEvent;
 use MiniGameApp\Handler\MiniGameCommandHandler;
-use MiniGameApp\Manager\GameManager;
 use MiniGameApp\MiniGameBuilder;
+use MiniGameApp\Repository\GameRepository;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
 
 class CommandHandlerTest extends \PHPUnit_Framework_TestCase
@@ -39,7 +39,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     private $gameBuilder;
 
     /**
-     * @var GameManager
+     * @var GameRepository
      */
     private $gameManager;
 
@@ -58,7 +58,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->gameBuilder = \Mockery::mock('\\MiniGameApp\\MiniGameBuilder');
 
-        $this->gameManager = \Mockery::mock('\\MiniGameApp\\Manager\\GameManager');
+        $this->gameManager = \Mockery::mock('\\MiniGameApp\\Repository\\GameRepository');
 
         $this->eventEmitter = \Mockery::mock('\\League\Event\EmitterInterface');
     }
@@ -231,7 +231,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $this->gameManager
             ->shouldReceive('getMiniGame')
             ->with($this->gameId)
-            ->andThrow('\\MiniGameApp\\Manager\\Exceptions\\GameNotFoundException')
+            ->andThrow('\\MiniGameApp\\Exception\\GameNotFoundException')
             ->once();
 
         $expectedResponse = \Mockery::mock('\\MiniGameApp\\Response');
