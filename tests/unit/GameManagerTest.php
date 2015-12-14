@@ -42,7 +42,7 @@ class GameManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMiniGame()
     {
-        $repository = \Mockery::mock('\\MiniGameApp\\Repository\\MiniGameRepository');
+        $repository = \Mockery::mock('\\MiniGameApp\\Store\\MiniGameStore');
         $repository->shouldReceive('find')->andReturn($this->miniGame);
 
         $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
@@ -57,7 +57,7 @@ class GameManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNonExistingMiniGame()
     {
-        $repository = \Mockery::mock('\\MiniGameApp\\Repository\\MiniGameRepository');
+        $repository = \Mockery::mock('\\MiniGameApp\\Store\\MiniGameStore');
         $repository->shouldReceive('find')->andThrow('\\Doctrine\\ORM\\ORMException');
 
         $emitter = \Mockery::mock('\\League\Event\EmitterInterface');
@@ -74,7 +74,7 @@ class GameManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSaveMiniGame()
     {
-        $repository = \Mockery::mock('\\MiniGameApp\\Repository\\MiniGameRepository');
+        $repository = \Mockery::mock('\\MiniGameApp\\Store\\MiniGameStore');
         $repository->shouldReceive('save')->once();
 
         $event = \Mockery::mock(EventInterface::class);

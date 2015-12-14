@@ -1,10 +1,10 @@
 <?php
-namespace MiniGameApp\Repository;
+namespace MiniGameApp\Store;
 
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
 
-interface MiniGameRepository
+interface MiniGameStore
 {
     /**
      * Finds an minigame by its primary key / identifier.
