@@ -9,7 +9,7 @@ use MiniGame\Exceptions\IllegalMoveException;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Event\MiniGameAppErrorEvent;
 use MiniGameApp\Handler\MiniGameCommandHandler;
-use MiniGameApp\MiniGameBuilder;
+use MiniGameApp\MiniGameFactory;
 use MiniGameApp\Repository\GameRepository;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
 
@@ -34,7 +34,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     private $gameId;
 
     /**
-     * @var MiniGameBuilder
+     * @var MiniGameFactory
      */
     private $gameBuilder;
 
@@ -56,7 +56,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->gameId = $this->getMiniGameId(666);
 
-        $this->gameBuilder = \Mockery::mock('\\MiniGameApp\\MiniGameBuilder');
+        $this->gameBuilder = \Mockery::mock('\\MiniGameApp\\MiniGameFactory');
 
         $this->gameManager = \Mockery::mock('\\MiniGameApp\\Repository\\GameRepository');
 

@@ -6,7 +6,7 @@ use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
 
-interface MiniGameBuilder
+interface MiniGameFactory
 {
     /**
      * Create a mini-game according to the options
