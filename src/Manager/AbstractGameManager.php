@@ -4,6 +4,7 @@ namespace MiniGameApp\Manager;
 use Broadway\Domain\DomainMessage;
 use Doctrine\ORM\ORMException;
 use League\Event\EmitterInterface;
+use League\Event\EventInterface;
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
 use MiniGameApp\Manager\Exceptions\GameNotFoundException;
@@ -56,8 +57,7 @@ abstract class AbstractGameManager implements GameManager, LoggerAwareInterface
 
         $eventStream = $game->getUncommittedEvents();
         foreach ($eventStream as $domainMessage) {
-            /* @var $domainMessage DomainMessage */
-            $this->eventEmitter->emit($domainMessage->getPayload());
+            $this->eventEmitter->emit($this->prepareEvent($domainMessage));
         }
     }
 
@@ -91,4 +91,12 @@ abstract class AbstractGameManager implements GameManager, LoggerAwareInterface
     {
         $this->logger = $logger;
     }
+
+    /**
+     * Prepares the event to return a League Event
+     *
+     * @param  mixed $originalEvent
+     * @return EventInterface
+     */
+    abstract protected function prepareEvent($originalEvent);
 }
