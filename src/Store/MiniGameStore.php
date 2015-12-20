@@ -9,9 +9,9 @@ interface MiniGameStore
     /**
      * Finds an minigame by its primary key / identifier.
      *
-     * @param MiniGameId $id The identifier.
+     * @param  MiniGameId $id The identifier.
      *
-     * @return object The minigame.
+     * @return MiniGame The minigame.
      */
     public function find($id);
 
