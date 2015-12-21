@@ -56,7 +56,9 @@ abstract class AbstractGameRepository implements GameRepository, LoggerAwareInte
 
         $eventStream = $game->getUncommittedEvents();
         foreach ($eventStream as $domainMessage) {
-            $this->eventEmitter->emit($this->prepareEvent($domainMessage));
+            $event = $this->prepareEvent($domainMessage);
+            $this->logger->debug('Domain event to dispatch', array('name' => $event->getName()));
+            $this->eventEmitter->emit($event);
         }
     }
 
