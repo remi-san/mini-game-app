@@ -27,13 +27,13 @@
         "remi-san/mini-game" : "dev-master",
         "league/tactician": "~0.6",
         "league/event" : "~2.1",
-        "broadway/broadway" : "~0.8.0",
         "psr/log": "~1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5",
         "Mockery/Mockery": "~0.9",
-        "doctrine/orm": "~2.4"
+        "doctrine/orm": "~2.4",
+        "broadway/broadway" : "~0.8.0"
     },
     "autoload": {
         "psr-4": {
