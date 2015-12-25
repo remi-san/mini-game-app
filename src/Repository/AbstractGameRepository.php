@@ -17,7 +17,7 @@ abstract class AbstractGameRepository implements GameRepository, LoggerAwareInte
     /**
      * @var MiniGameStore
      */
-    private $gameRepository;
+    private $gameStore;
 
     /**
      * @var EmitterInterface
@@ -32,14 +32,14 @@ abstract class AbstractGameRepository implements GameRepository, LoggerAwareInte
     /**
      * Constructor
      *
-     * @param MiniGameStore $gameRepository
+     * @param MiniGameStore      $gameStore
      * @param EmitterInterface   $eventEmitter
      */
     public function __construct(
-        MiniGameStore $gameRepository,
+        MiniGameStore $gameStore,
         EmitterInterface $eventEmitter
     ) {
-        $this->gameRepository = $gameRepository;
+        $this->gameStore = $gameStore;
         $this->eventEmitter = $eventEmitter;
         $this->logger = new NullLogger();
     }
@@ -52,9 +52,8 @@ abstract class AbstractGameRepository implements GameRepository, LoggerAwareInte
      */
     public function saveMiniGame(MiniGame $game)
     {
-        $this->gameRepository->save($game);
+        $eventStream = $this->gameStore->save($game);
 
-        $eventStream = $game->getUncommittedEvents();
         foreach ($eventStream as $domainMessage) {
             $event = $this->prepareEvent($domainMessage);
             $this->logger->debug('Domain event to dispatch', array('name' => $event->getName()));
@@ -73,7 +72,7 @@ abstract class AbstractGameRepository implements GameRepository, LoggerAwareInte
     {
         $game = null;
         try {
-            $game = $this->gameRepository->find($id);
+            $game = $this->gameStore->find($id);
         } catch (ORMException $e) {
         }
 

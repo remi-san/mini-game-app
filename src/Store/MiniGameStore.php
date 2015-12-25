@@ -20,7 +20,7 @@ interface MiniGameStore
      *
      * @param  MiniGame $game
      *
-     * @return void
+     * @return array
      */
     public function save(MiniGame $game);
 }
