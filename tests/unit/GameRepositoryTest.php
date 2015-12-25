@@ -74,16 +74,14 @@ class GameRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testSaveMiniGame()
     {
+        $event = \Mockery::mock(EventInterface::class, function ($event) {
+            $event->shouldReceive('getName')->andReturn('event');
+        });
+
         $repository = \Mockery::mock('\\MiniGameApp\\Store\\MiniGameStore');
-        $repository->shouldReceive('save')->once();
-
-        $event = \Mockery::mock(EventInterface::class);
-
-        $this->miniGame
-            ->shouldReceive('getUncommittedEvents')
-            ->andReturn(
-                [\Mockery::mock(new DomainMessage(null, null, new Metadata(), $event, DateTime::now()))]
-            );
+        $repository->shouldReceive('save')
+            ->andReturn([\Mockery::mock(new DomainMessage(null, null, new Metadata(), $event, DateTime::now()))])
+            ->once();
 
         $emitter = \Mockery::mock(EmitterInterface::class, function ($emitter) use ($event) {
             $emitter->shouldReceive('emit')->with($event)->once();
