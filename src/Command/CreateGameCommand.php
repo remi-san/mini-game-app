@@ -5,6 +5,7 @@ use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
+use RemiSan\Command\Origin;
 
 class CreateGameCommand extends AbstractPlayerCommand
 {
@@ -27,10 +28,16 @@ class CreateGameCommand extends AbstractPlayerCommand
      * @param PlayerId    $playerId
      * @param GameOptions $options
      * @param string      $message
+     * @param Origin      $origin
      */
-    public function __construct(MiniGameId $id, PlayerId $playerId, GameOptions $options, $message)
-    {
-        parent::__construct($id, $playerId);
+    public function __construct(
+        MiniGameId $id,
+        PlayerId $playerId,
+        GameOptions $options,
+        $message,
+        Origin $origin = null
+    ) {
+        parent::__construct($id, $playerId, $origin);
         $this->options = $options;
         $this->message = $message;
     }

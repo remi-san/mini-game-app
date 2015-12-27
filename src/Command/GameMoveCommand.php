@@ -4,6 +4,7 @@ namespace MiniGameApp\Command;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 use MiniGame\Move;
+use RemiSan\Command\Origin;
 
 class GameMoveCommand extends AbstractPlayerCommand
 {
@@ -20,11 +21,16 @@ class GameMoveCommand extends AbstractPlayerCommand
      * @param MiniGameId $gameId
      * @param PlayerId   $playerId
      * @param Move       $move
+     * @param Origin     $origin
      */
-    public function __construct(MiniGameId $gameId, PlayerId $playerId, Move $move)
-    {
+    public function __construct(
+        MiniGameId $gameId,
+        PlayerId $playerId,
+        Move $move,
+        Origin $origin = null
+    ) {
         $this->move = $move;
-        parent::__construct($gameId, $playerId);
+        parent::__construct($gameId, $playerId, $origin);
     }
 
     /**

@@ -8,19 +8,19 @@ use MiniGameApp\Exception\GameNotFoundException;
 interface GameRepository
 {
     /**
-     * Saves a mini-game
-     *
-     * @param  MiniGame $game
-     * @return MiniGame
-     */
-    public function saveMiniGame(MiniGame $game);
-
-    /**
      * Get the mini-game corresponding to the id
      *
      * @param  MiniGameId $id
      * @return MiniGame
      * @throws GameNotFoundException
      */
-    public function getMiniGame(MiniGameId $id);
+    public function load(MiniGameId $id);
+
+    /**
+     * Saves a mini-game
+     *
+     * @param  MiniGame $game
+     * @return MiniGame
+     */
+    public function save(MiniGame $game);
 }

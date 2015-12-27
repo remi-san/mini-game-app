@@ -90,7 +90,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
                 $command->getOptions()
             );
 
-            $this->gameManager->saveMiniGame($miniGame);
+            $this->gameManager->save($miniGame);
         } catch (\Exception $e) {
             $this->eventEmitter->emit(
                 new MiniGameAppErrorEvent(
@@ -111,10 +111,10 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     public function handleGameMoveCommand(GameMoveCommand $command)
     {
         try {
-            $miniGame = $this->gameManager->getMiniGame($command->getGameId());
+            $miniGame = $this->gameManager->load($command->getGameId());
             $miniGame->play($command->getPlayerId(), $command->getMove());
 
-            $this->gameManager->saveMiniGame($miniGame);
+            $this->gameManager->save($miniGame);
         } catch (\Exception $e) {
             $this->eventEmitter->emit(
                 new MiniGameAppErrorEvent(
