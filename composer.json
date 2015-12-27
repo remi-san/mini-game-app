@@ -21,12 +21,17 @@
         {
             "type": "vcs",
             "url": "git@bitbucket.org:remi-san/message-app"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:remi-san/command-origin"
         }
     ],
     "require": {
         "remi-san/mini-game" : "dev-master",
         "league/tactician": "~0.6",
         "league/event" : "~2.1",
+        "remi-san/command-origin" : "dev-master",
         "psr/log": "~1.0"
     },
     "require-dev": {

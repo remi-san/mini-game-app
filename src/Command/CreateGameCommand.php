@@ -6,7 +6,7 @@ use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
 
-class CreateGameCommand extends AbstractPlayerCommand implements NamedCommand
+class CreateGameCommand extends AbstractPlayerCommand
 {
     const NAME = 'GAME.CREATE';
 
