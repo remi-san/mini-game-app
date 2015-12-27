@@ -113,7 +113,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andReturn($game)
             ->once();
         $this->gameManager
-            ->shouldReceive('saveMiniGame')
+            ->shouldReceive('save')
             ->with($game)
             ->once();
 
@@ -165,7 +165,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $result = $this->getGameResult($resultText);
 
         $this->gameManager
-            ->shouldReceive('saveMiniGame')
+            ->shouldReceive('save')
             ->with($miniGame)
             ->once();
         $miniGame
@@ -174,7 +174,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->andReturn($result)
             ->once();
         $this->gameManager
-            ->shouldReceive('getMiniGame')
+            ->shouldReceive('load')
             ->with($this->gameId)
             ->andReturn($miniGame)
             ->once();
@@ -197,7 +197,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $miniGame = $this->getMiniGame($this->gameId, 'game');
 
         $this->gameManager
-            ->shouldReceive('getMiniGame')
+            ->shouldReceive('load')
             ->with($this->gameId)
             ->andReturn($miniGame)
             ->once();
@@ -229,7 +229,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move);
 
         $this->gameManager
-            ->shouldReceive('getMiniGame')
+            ->shouldReceive('load')
             ->with($this->gameId)
             ->andThrow('\\MiniGameApp\\Exception\\GameNotFoundException')
             ->once();
