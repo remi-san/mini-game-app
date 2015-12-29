@@ -4,10 +4,10 @@ namespace MiniGameApp\Command;
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
-use RemiSan\Command\Origin;
-use RemiSan\Command\OriginAwareCommand;
+use RemiSan\Command\Context;
+use RemiSan\Command\ContextAwareCommand;
 
-abstract class AbstractPlayerCommand implements NamedCommand, OriginAwareCommand
+abstract class AbstractPlayerCommand implements NamedCommand, ContextAwareCommand
 {
     /**
      * @var MiniGameId
@@ -20,25 +20,25 @@ abstract class AbstractPlayerCommand implements NamedCommand, OriginAwareCommand
     private $playerId;
 
     /**
-     * @var Origin
+     * @var Context
      */
-    private $origin;
+    private $context;
 
     /**
      * Constructor
      *
      * @param MiniGameId $gameId
      * @param PlayerId   $playerId
-     * @param Origin     $origin
+     * @param Context    $context
      */
     public function __construct(
         MiniGameId $gameId,
         PlayerId $playerId,
-        Origin $origin = null
+        Context $context = null
     ) {
         $this->gameId = $gameId;
         $this->playerId = $playerId;
-        $this->origin = $origin;
+        $this->origin = $context;
     }
 
     /**
@@ -69,12 +69,12 @@ abstract class AbstractPlayerCommand implements NamedCommand, OriginAwareCommand
     abstract public function getCommandName();
 
     /**
-     * Returns the origin
+     * Returns the context
      *
-     * @return Origin
+     * @return Context
      */
-    public function getOrigin()
+    public function getContext()
     {
-        return $this->origin;
+        return $this->context;
     }
 }
