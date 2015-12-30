@@ -1,7 +1,6 @@
 <?php
 namespace MiniGameApp\Handler;
 
-use League\Event\EmitterInterface;
 use MiniGameApp\Command\CreateGameCommand;
 use MiniGameApp\Command\GameMoveCommand;
 use MiniGameApp\Command\JoinGameCommand;
@@ -12,6 +11,7 @@ use MiniGameApp\Repository\GameRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use RemiSan\Command\ErrorEventHandler;
 
 class MiniGameCommandHandler implements LoggerAwareInterface
 {
@@ -21,14 +21,14 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     protected $builder;
 
     /**
-     * @var \MiniGameApp\Repository\GameRepository
+     * @var GameRepository
      */
     private $gameManager;
 
     /**
-     * @var EmitterInterface
+     * @var ErrorEventHandler
      */
-    private $eventEmitter;
+    private $errorHandler;
 
     /**
      * @var LoggerInterface
@@ -38,18 +38,18 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     /**
      * Constructor
      *
-     * @param MiniGameFactory  $builder
-     * @param GameRepository      $gameManager
-     * @param EmitterInterface $eventEmitter
+     * @param MiniGameFactory   $builder
+     * @param GameRepository    $gameManager
+     * @param ErrorEventHandler $errorHandler
      */
     public function __construct(
         MiniGameFactory $builder,
         GameRepository $gameManager,
-        EmitterInterface $eventEmitter
+        ErrorEventHandler $errorHandler
     ) {
         $this->builder = $builder;
         $this->gameManager = $gameManager;
-        $this->eventEmitter = $eventEmitter;
+        $this->errorHandler = $errorHandler;
         $this->logger = new NullLogger();
     }
 
