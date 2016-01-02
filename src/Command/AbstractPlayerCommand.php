@@ -38,7 +38,7 @@ abstract class AbstractPlayerCommand implements NamedCommand, ContextAwareComman
     ) {
         $this->gameId = $gameId;
         $this->playerId = $playerId;
-        $this->origin = $context;
+        $this->context = $context;
     }
 
     /**
