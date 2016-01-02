@@ -49,6 +49,7 @@ trait MiniGameAppMocker
         $command->shouldReceive('getMessage')->andReturn($message);
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
+        $command->shouldReceive('getContext')->andReturn(null);
         return $command;
     }
 
@@ -64,6 +65,7 @@ trait MiniGameAppMocker
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
         $command->shouldReceive('getMove')->andReturn($move);
+        $command->shouldReceive('getContext')->andReturn(null);
         return $command;
     }
 
@@ -77,6 +79,7 @@ trait MiniGameAppMocker
         $command = \Mockery::mock('\\MiniGameApp\\Command\\JoinGameCommand');
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
+        $command->shouldReceive('getContext')->andReturn(null);
         return $command;
     }
 
@@ -91,6 +94,7 @@ trait MiniGameAppMocker
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
         $command->shouldReceive('getGameId')->andReturn($gameId);
+        $command->shouldReceive('getContext')->andReturn(null);
         return $command;
     }
 
@@ -104,6 +108,7 @@ trait MiniGameAppMocker
         $command = \Mockery::mock('\\MiniGameApp\\Command\\CreatePlayerCommand');
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
+        $command->shouldReceive('getContext')->andReturn(null);
         return $command;
     }
 }
