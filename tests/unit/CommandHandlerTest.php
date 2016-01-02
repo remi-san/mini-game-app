@@ -1,18 +1,17 @@
 <?php
 namespace MiniGameApp\Test;
 
-use League\Event\EmitterInterface;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\Player;
 use MiniGame\Entity\PlayerId;
 use MiniGame\Exceptions\IllegalMoveException;
 use MiniGame\Test\Mock\GameObjectMocker;
+use MiniGameApp\Error\ErrorEventHandler;
 use MiniGameApp\Event\MiniGameAppErrorEvent;
 use MiniGameApp\Handler\MiniGameCommandHandler;
 use MiniGameApp\MiniGameFactory;
 use MiniGameApp\Repository\GameRepository;
 use MiniGameApp\Test\Mock\MiniGameAppMocker;
-use RemiSan\Command\ErrorEventHandler;
 
 class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 {

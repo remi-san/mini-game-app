@@ -5,15 +5,14 @@ use MiniGameApp\Command\CreateGameCommand;
 use MiniGameApp\Command\GameMoveCommand;
 use MiniGameApp\Command\JoinGameCommand;
 use MiniGameApp\Command\LeaveGameCommand;
+use MiniGameApp\Error\ErrorEventHandler;
 use MiniGameApp\Event\MiniGameAppErrorEvent;
 use MiniGameApp\MiniGameFactory;
 use MiniGameApp\Repository\GameRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use RemiSan\Command\ContextContainer;
-use RemiSan\Command\ErrorEventHandler;
 
 class MiniGameCommandHandler implements LoggerAwareInterface
 {
