@@ -22,11 +22,13 @@ class JoinGameCommandTest extends \PHPUnit_Framework_TestCase
     {
         $userId = $this->getPlayerId(42);
         $gameId = $this->getMiniGameId(666);
+        $playerOptions = $this->getPlayerOptions();
 
-        $command = new JoinGameCommand($gameId, $userId);
+        $command = new JoinGameCommand($gameId, $userId, $playerOptions);
 
         $this->assertEquals($userId, $command->getPlayerId());
         $this->assertEquals($gameId, $command->getGameId());
+        $this->assertEquals($playerOptions, $command->getPlayerOptions());
         $this->assertEquals(JoinGameCommand::NAME, $command->getCommandName());
     }
 }

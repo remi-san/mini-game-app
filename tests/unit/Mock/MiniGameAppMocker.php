@@ -5,6 +5,7 @@ use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
+use MiniGame\PlayerOptions;
 use MiniGameApp\Command\CreateGameCommand;
 use MiniGameApp\Command\CreatePlayerCommand;
 use MiniGameApp\Command\GameMoveCommand;
@@ -74,11 +75,15 @@ trait MiniGameAppMocker
      * @param  PlayerId  $playerId
      * @return GameMoveCommand
      */
-    public function getJoinGameCommand(MiniGameId $gameId = null, PlayerId $playerId = null)
-    {
+    public function getJoinGameCommand(
+        MiniGameId $gameId = null,
+        PlayerId $playerId = null,
+        PlayerOptions $options = null
+    ) {
         $command = \Mockery::mock('\\MiniGameApp\\Command\\JoinGameCommand');
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
+        $command->shouldReceive('getPlayerOptions')->andReturn($options);
         $command->shouldReceive('getContext')->andReturn(null);
         return $command;
     }

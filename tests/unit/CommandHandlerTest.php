@@ -5,6 +5,7 @@ use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\Player;
 use MiniGame\Entity\PlayerId;
 use MiniGame\Exceptions\IllegalMoveException;
+use MiniGame\PlayerOptions;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Error\ErrorEventHandler;
 use MiniGameApp\Event\MiniGameAppErrorEvent;
@@ -34,6 +35,11 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     private $gameId;
 
     /**
+     * @var PlayerOptions
+     */
+    private $playeOptions;
+
+    /**
      * @var MiniGameFactory
      */
     private $gameBuilder;
@@ -56,6 +62,8 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->gameId = $this->getMiniGameId(666);
 
+        $this->playeOptions = $this->getPlayerOptions();
+
         $this->gameBuilder = \Mockery::mock('\\MiniGameApp\\MiniGameFactory');
 
         $this->gameManager = \Mockery::mock('\\MiniGameApp\\Repository\\GameRepository');
@@ -73,9 +81,22 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testJoinGame()
     {
-        $command = $this->getJoinGameCommand($this->gameId, $this->playerId);
+        $miniGame = $this->getMiniGame($this->gameId, 'game');
+        $command = $this->getJoinGameCommand($this->gameId, $this->playerId, $this->playeOptions);
 
-        $this->setExpectedException('\\InvalidArgumentException');
+        $this->gameManager
+            ->shouldReceive('save')
+            ->with($miniGame)
+            ->once();
+        $miniGame
+            ->shouldReceive('addPlayerToGame')
+            ->with($this->playeOptions)
+            ->once();
+        $this->gameManager
+            ->shouldReceive('load')
+            ->with($this->gameId)
+            ->andReturn($miniGame)
+            ->once();
 
         $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
         $executor->handleJoinGameCommand($command);

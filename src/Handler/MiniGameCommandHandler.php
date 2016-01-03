@@ -59,7 +59,24 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      */
     public function handleJoinGameCommand(JoinGameCommand $command)
     {
-        throw new \InvalidArgumentException('Not implemented #' . $command->getGameId());
+        ContextContainer::setContext($command->getContext());
+
+        try {
+            $miniGame = $this->gameManager->load($command->getGameId());
+            $miniGame->addPlayerToGame($command->getPlayerOptions());
+
+            $this->gameManager->save($miniGame);
+        } catch (\Exception $e) {
+            $this->errorHandler->handle(
+                new MiniGameAppErrorEvent(
+                    $command->getGameId(),
+                    $command->getPlayerId(),
+                    $e->getMessage()
+                )
+            );
+        }
+
+        ContextContainer::reset();
     }
 
     /**
@@ -70,6 +87,8 @@ class MiniGameCommandHandler implements LoggerAwareInterface
      */
     public function handleLeaveGameCommand(LeaveGameCommand $command)
     {
+        ContextContainer::setContext($command->getContext());
+        ContextContainer::reset();
         throw new \InvalidArgumentException('Not implemented #' . $command->getGameId());
     }
 
