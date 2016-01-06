@@ -52,47 +52,6 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     }
 
     /**
-     * Handles a JoinGameCommand
-     *
-     * @param JoinGameCommand $command
-     * @return void
-     */
-    public function handleJoinGameCommand(JoinGameCommand $command)
-    {
-        ContextContainer::setContext($command->getContext());
-
-        try {
-            $miniGame = $this->gameManager->load($command->getGameId());
-            $miniGame->addPlayerToGame($command->getPlayerOptions());
-
-            $this->gameManager->save($miniGame);
-        } catch (\Exception $e) {
-            $this->errorHandler->handle(
-                new MiniGameAppErrorEvent(
-                    $command->getGameId(),
-                    $command->getPlayerId(),
-                    $e->getMessage()
-                )
-            );
-        }
-
-        ContextContainer::reset();
-    }
-
-    /**
-     * Handles a LeaveGameCommand
-     *
-     * @param  LeaveGameCommand $command
-     * @return void
-     */
-    public function handleLeaveGameCommand(LeaveGameCommand $command)
-    {
-        ContextContainer::setContext($command->getContext());
-        ContextContainer::reset();
-        throw new \InvalidArgumentException('Not implemented #' . $command->getGameId());
-    }
-
-    /**
      * Handles a CreateGameCommand
      *
      * @param  CreateGameCommand $command
@@ -124,6 +83,64 @@ class MiniGameCommandHandler implements LoggerAwareInterface
     }
 
     /**
+     * Handles a JoinGameCommand
+     *
+     * @param JoinGameCommand $command
+     * @return void
+     */
+    public function handleJoinGameCommand(JoinGameCommand $command)
+    {
+        ContextContainer::setContext($command->getContext());
+
+        try {
+            $miniGame = $this->gameManager->load($command->getGameId());
+
+            $miniGame->addPlayerToGame($command->getPlayerOptions());
+
+            $this->gameManager->save($miniGame);
+        } catch (\Exception $e) {
+            $this->errorHandler->handle(
+                new MiniGameAppErrorEvent(
+                    $command->getGameId(),
+                    $command->getPlayerId(),
+                    $e->getMessage()
+                )
+            );
+        }
+
+        ContextContainer::reset();
+    }
+
+    /**
+     * Handles a LeaveGameCommand
+     *
+     * @param  LeaveGameCommand $command
+     * @return void
+     */
+    public function handleLeaveGameCommand(LeaveGameCommand $command)
+    {
+        ContextContainer::setContext($command->getContext());
+
+        try {
+            $miniGame = $this->gameManager->load($command->getGameId());
+
+            $miniGame->leaveGame($command->getPlayerId());
+
+            $this->gameManager->save($miniGame);
+        } catch (\Exception $e) {
+            $this->errorHandler->handle(
+                new MiniGameAppErrorEvent(
+                    $command->getGameId(),
+                    $command->getPlayerId(),
+                    $e->getMessage()
+                )
+            );
+        }
+
+        ContextContainer::reset();
+    }
+
+    /**
      * Handles a GameMoveCommand
      *
      * @param  GameMoveCommand $command
@@ -135,6 +152,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
 
         try {
             $miniGame = $this->gameManager->load($command->getGameId());
+
             $miniGame->play($command->getPlayerId(), $command->getMove());
 
             $this->gameManager->save($miniGame);

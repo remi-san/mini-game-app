@@ -107,9 +107,22 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testLeaveGame()
     {
+        $miniGame = $this->getMiniGame($this->gameId, 'game');
         $command = $this->getLeaveGameCommand($this->gameId, $this->playerId);
 
-        $this->setExpectedException('\\InvalidArgumentException');
+        $this->gameManager
+            ->shouldReceive('save')
+            ->with($miniGame)
+            ->once();
+        $miniGame
+            ->shouldReceive('leaveGame')
+            ->with($this->playerId)
+            ->once();
+        $this->gameManager
+            ->shouldReceive('load')
+            ->with($this->gameId)
+            ->andReturn($miniGame)
+            ->once();
 
         $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
         $executor->handleLeaveGameCommand($command);
