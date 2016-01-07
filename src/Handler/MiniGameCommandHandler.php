@@ -5,6 +5,7 @@ use MiniGameApp\Command\CreateGameCommand;
 use MiniGameApp\Command\GameMoveCommand;
 use MiniGameApp\Command\JoinGameCommand;
 use MiniGameApp\Command\LeaveGameCommand;
+use MiniGameApp\Command\StartGameCommand;
 use MiniGameApp\Error\ErrorEventHandler;
 use MiniGameApp\Event\MiniGameAppErrorEvent;
 use MiniGameApp\MiniGameFactory;
@@ -67,6 +68,35 @@ class MiniGameCommandHandler implements LoggerAwareInterface
                 $command->getPlayerId(),
                 $command->getOptions()
             );
+
+            $this->gameManager->save($miniGame);
+        } catch (\Exception $e) {
+            $this->errorHandler->handle(
+                new MiniGameAppErrorEvent(
+                    $command->getGameId(),
+                    $command->getPlayerId(),
+                    $e->getMessage()
+                )
+            );
+        }
+
+        ContextContainer::reset();
+    }
+
+    /**
+     * Handles a StartGameCommand
+     *
+     * @param  StartGameCommand $command
+     * @return void
+     */
+    public function handleStartGameCommand(StartGameCommand $command)
+    {
+        ContextContainer::setContext($command->getContext());
+
+        try {
+            $miniGame = $this->gameManager->load($command->getGameId());
+
+            $miniGame->startGame($command->getPlayerId());
 
             $this->gameManager->save($miniGame);
         } catch (\Exception $e) {
