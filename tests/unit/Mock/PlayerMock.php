@@ -52,4 +52,24 @@ class PlayerMock implements Player
     {
         return 'ext';
     }
+
+    /**
+     * Has player lost?
+     *
+     * @return bool
+     */
+    public function hasLost()
+    {
+        return false;
+    }
+
+    /**
+     * Has player won?
+     *
+     * @return bool
+     */
+    public function hasWon()
+    {
+        return true;
+    }
 }
