@@ -2,8 +2,8 @@
 namespace MiniGameApp\Test\Mock;
 
 use MiniGame\Entity\MiniGame;
-use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\Player;
+use MiniGame\Entity\PlayerId;
 
 class PlayerMock implements Player
 {
@@ -14,7 +14,7 @@ class PlayerMock implements Player
 
     public function getId()
     {
-        return new MiniGameId(1);
+        return new PlayerId(1);
     }
 
     public function getName()
@@ -71,5 +71,14 @@ class PlayerMock implements Player
     public function hasWon()
     {
         return true;
+    }
+
+    /**
+     * @param  Player $player
+     * @return mixed
+     */
+    public function equals(Player $player)
+    {
+        return $player->getId()->equals($this->getId());
     }
 }
