@@ -29,7 +29,7 @@
     ],
     "require": {
         "remi-san/mini-game" : "dev-master",
-        "league/tactician": "~0.6",
+        "league/tactician": "^1.0",
         "league/event" : "~2.1",
         "remi-san/command-origin" : "dev-master",
         "psr/log": "~1.0"
