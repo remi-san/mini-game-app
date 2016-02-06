@@ -12,17 +12,17 @@ abstract class AbstractPlayerCommand implements NamedCommand, ContextAwareComman
     /**
      * @var MiniGameId
      */
-    private $gameId;
+    protected $gameId;
 
     /**
      * @var PlayerId
      */
-    private $playerId;
+    protected $playerId;
 
     /**
      * @var Context
      */
-    private $context;
+    protected $context;
 
     /**
      * Constructor
