@@ -36,6 +36,21 @@ abstract class AbstractPlayerCommand implements NamedCommand, ContextAwareComman
         PlayerId $playerId,
         Context $context = null
     ) {
+        $this->init($gameId, $playerId, $context);
+    }
+
+    /**
+     * Init.
+     *
+     * @param MiniGameId $gameId
+     * @param PlayerId   $playerId
+     * @param Context    $context
+     */
+    protected function init(
+        MiniGameId $gameId,
+        PlayerId $playerId,
+        Context $context = null
+    ) {
         $this->gameId = $gameId;
         $this->playerId = $playerId;
         $this->context = $context;
