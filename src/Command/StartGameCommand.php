@@ -3,7 +3,6 @@ namespace MiniGameApp\Command;
 
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
-use MiniGame\PlayerOptions;
 use TwitterHangman\Context\Context;
 
 class StartGameCommand extends AbstractPlayerCommand
@@ -11,18 +10,10 @@ class StartGameCommand extends AbstractPlayerCommand
     const NAME = 'GAME.START';
 
     /**
-     * Constructor
-     *
-     * @param MiniGameId    $gameId
-     * @param PlayerId      $playerId
-     * @param Context       $context
+     * Construct.
      */
-    public function __construct(
-        MiniGameId $gameId,
-        PlayerId $playerId,
-        Context $context = null
-    ) {
-        parent::__construct($gameId, $playerId, $context);
+    public function __construct()
+    {
     }
 
     /**
@@ -33,5 +24,26 @@ class StartGameCommand extends AbstractPlayerCommand
     public function getCommandName()
     {
         return self::NAME;
+    }
+
+    /**
+     * Construct
+     *
+     * @param MiniGameId  $id
+     * @param PlayerId    $playerId
+     * @param Context      $origin
+     *
+     * @return StartGameCommand
+     */
+    public static function create(
+        MiniGameId $id = null,
+        PlayerId $playerId = null,
+        Context $origin = null
+    ) {
+        $obj = new self();
+
+        $obj->init($id, $playerId, $origin);
+
+        return $obj;
     }
 }

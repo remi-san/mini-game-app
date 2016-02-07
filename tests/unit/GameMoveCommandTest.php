@@ -24,7 +24,7 @@ class GameMoveCommandTest extends \PHPUnit_Framework_TestCase
         $gameId = $this->getMiniGameId(666);
         $move = $this->getMove('move');
 
-        $command = new GameMoveCommand($gameId, $userId, $move);
+        $command = GameMoveCommand::create($gameId, $userId, $move);
 
         $this->assertEquals($userId, $command->getPlayerId());
         $this->assertEquals($gameId, $command->getGameId());

@@ -23,7 +23,7 @@ class CreatePlayerCommandTest extends \PHPUnit_Framework_TestCase
         $userId = $this->getPlayerId(42);
         $gameId = $this->getMiniGameId(666);
 
-        $command = new CreatePlayerCommand($gameId, $userId);
+        $command = CreatePlayerCommand::create($gameId, $userId);
 
         $this->assertEquals($userId, $command->getPlayerId());
         $this->assertEquals($gameId, $command->getGameId());

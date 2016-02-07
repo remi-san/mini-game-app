@@ -16,21 +16,10 @@ class JoinGameCommand extends AbstractPlayerCommand
     private $playerOptions;
 
     /**
-     * Constructor
-     *
-     * @param MiniGameId    $gameId
-     * @param PlayerId      $playerId
-     * @param PlayerOptions $playerOptions
-     * @param Context       $context
+     * Constructor.
      */
-    public function __construct(
-        MiniGameId $gameId,
-        PlayerId $playerId,
-        PlayerOptions $playerOptions,
-        Context $context = null
-    ) {
-        $this->playerOptions = $playerOptions;
-        parent::__construct($gameId, $playerId, $context);
+    public function __construct()
+    {
     }
 
     /**
@@ -49,5 +38,30 @@ class JoinGameCommand extends AbstractPlayerCommand
     public function getCommandName()
     {
         return self::NAME;
+    }
+
+    /**
+     * Static constructor.
+     *
+     * @param MiniGameId    $gameId
+     * @param PlayerId      $playerId
+     * @param PlayerOptions $playerOptions
+     * @param Context       $context
+     *
+     * @return JoinGameCommand
+     */
+    public static function create(
+        MiniGameId $gameId,
+        PlayerId $playerId,
+        PlayerOptions $playerOptions,
+        Context $context = null
+    ) {
+        $obj = new self();
+
+        $obj->init($gameId, $playerId, $context);
+
+        $obj->playerOptions = $playerOptions;
+
+        return $obj;
     }
 }

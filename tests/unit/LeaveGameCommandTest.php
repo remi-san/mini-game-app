@@ -23,7 +23,7 @@ class LeaveGameCommandTest extends \PHPUnit_Framework_TestCase
         $userId = $this->getPlayerId(42);
         $gameId = $this->getMiniGameId(666);
 
-        $command = new LeaveGameCommand($gameId, $userId);
+        $command = LeaveGameCommand::create($gameId, $userId);
 
         $this->assertEquals($userId, $command->getPlayerId());
         $this->assertEquals($gameId, $command->getGameId());

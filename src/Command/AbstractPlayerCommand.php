@@ -25,21 +25,6 @@ abstract class AbstractPlayerCommand implements NamedCommand, ContextAwareComman
     protected $context;
 
     /**
-     * Constructor
-     *
-     * @param MiniGameId $gameId
-     * @param PlayerId   $playerId
-     * @param Context    $context
-     */
-    public function __construct(
-        MiniGameId $gameId,
-        PlayerId $playerId,
-        Context $context = null
-    ) {
-        $this->init($gameId, $playerId, $context);
-    }
-
-    /**
      * Init.
      *
      * @param MiniGameId $gameId

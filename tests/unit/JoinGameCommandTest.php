@@ -24,7 +24,7 @@ class JoinGameCommandTest extends \PHPUnit_Framework_TestCase
         $gameId = $this->getMiniGameId(666);
         $playerOptions = $this->getPlayerOptions();
 
-        $command = new JoinGameCommand($gameId, $userId, $playerOptions);
+        $command = JoinGameCommand::create($gameId, $userId, $playerOptions);
 
         $this->assertEquals($userId, $command->getPlayerId());
         $this->assertEquals($gameId, $command->getGameId());

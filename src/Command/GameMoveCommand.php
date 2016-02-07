@@ -16,21 +16,10 @@ class GameMoveCommand extends AbstractPlayerCommand
     private $move;
 
     /**
-     * Constructor
-     *
-     * @param MiniGameId $gameId
-     * @param PlayerId   $playerId
-     * @param Move       $move
-     * @param Context     $origin
+     * Constructor.
      */
-    public function __construct(
-        MiniGameId $gameId,
-        PlayerId $playerId,
-        Move $move,
-        Context $origin = null
-    ) {
-        $this->move = $move;
-        parent::__construct($gameId, $playerId, $origin);
+    public function __construct()
+    {
     }
 
     /**
@@ -49,5 +38,30 @@ class GameMoveCommand extends AbstractPlayerCommand
     public function getMove()
     {
         return $this->move;
+    }
+
+    /**
+     * Static constructor.
+     *
+     * @param MiniGameId $gameId
+     * @param PlayerId   $playerId
+     * @param Move       $move
+     * @param Context     $origin
+     *
+     * @return GameMoveCommand
+     */
+    public static function create(
+        MiniGameId $gameId,
+        PlayerId $playerId,
+        Move $move,
+        Context $origin = null
+    ) {
+        $obj = new self();
+
+        $obj->init($gameId, $playerId, $origin);
+
+        $obj->move = $move;
+
+        return $obj;
     }
 }
