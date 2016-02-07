@@ -14,7 +14,7 @@ class PlayerMock implements Player
 
     public function getId()
     {
-        return new PlayerId(1);
+        return PlayerId::create(1);
     }
 
     public function getName()
