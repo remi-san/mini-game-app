@@ -4,7 +4,7 @@ namespace MiniGameApp\Command;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 use MiniGame\GameOptions;
-use RemiSan\Command\Context;
+use RemiSan\Context\Context;
 
 class CreateGameCommand extends AbstractPlayerCommand
 {
@@ -60,7 +60,7 @@ class CreateGameCommand extends AbstractPlayerCommand
      * @param PlayerId    $playerId
      * @param GameOptions $options
      * @param string      $message
-     * @param Context      $origin
+     * @param Context     $origin
      *
      * @return CreateGameCommand
      */

@@ -4,8 +4,8 @@ namespace MiniGameApp\Command;
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
-use RemiSan\Command\Context;
-use RemiSan\Command\ContextAware;
+use RemiSan\Context\Context;
+use RemiSan\Context\ContextAware;
 
 abstract class AbstractPlayerCommand implements NamedCommand, ContextAware
 {

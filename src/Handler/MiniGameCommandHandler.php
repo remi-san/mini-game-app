@@ -13,7 +13,7 @@ use MiniGameApp\Repository\GameRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use RemiSan\Command\ContextContainer;
+use RemiSan\Context\ContextContainer;
 
 class MiniGameCommandHandler implements LoggerAwareInterface
 {

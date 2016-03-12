@@ -4,7 +4,7 @@ namespace MiniGameApp\Command;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 use MiniGame\Move;
-use RemiSan\Command\Context;
+use RemiSan\Context\Context;
 
 class GameMoveCommand extends AbstractPlayerCommand
 {
@@ -46,7 +46,7 @@ class GameMoveCommand extends AbstractPlayerCommand
      * @param MiniGameId $gameId
      * @param PlayerId   $playerId
      * @param Move       $move
-     * @param Context     $origin
+     * @param Context    $origin
      *
      * @return GameMoveCommand
      */
