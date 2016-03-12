@@ -24,14 +24,14 @@
         },
         {
             "type": "vcs",
-            "url": "git@github.com:remi-san/command-origin"
+            "url": "git@github.com:remi-san/context"
         }
     ],
     "require": {
         "remi-san/mini-game" : "dev-master",
         "league/tactician": "^1.0",
         "league/event" : "~2.1",
-        "remi-san/command-origin" : "dev-master",
+        "remi-san/context" : "dev-master",
         "psr/log": "~1.0"
     },
     "require-dev": {

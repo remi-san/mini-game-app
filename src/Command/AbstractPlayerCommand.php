@@ -5,9 +5,9 @@ use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 use RemiSan\Command\Context;
-use RemiSan\Command\ContextAwareCommand;
+use RemiSan\Command\ContextAware;
 
-abstract class AbstractPlayerCommand implements NamedCommand, ContextAwareCommand
+abstract class AbstractPlayerCommand implements NamedCommand, ContextAware
 {
     /**
      * @var MiniGameId
