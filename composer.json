@@ -17,6 +17,10 @@
         {
             "type": "vcs",
             "url": "git@bitbucket.org:remi-san/mini-game.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:remi-san/message-app"
         }
     ],
     "require": {
@@ -34,6 +38,11 @@
     "autoload": {
         "psr-4": {
             "MiniGameApp\\": "src/",
+            "MiniGameApp\\Test\\Mock\\" : "tests/unit/Mock/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "MiniGameApp\\Test\\" : "tests/unit/"
         }
     }
