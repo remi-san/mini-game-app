@@ -17,10 +17,6 @@
         {
             "type": "vcs",
             "url": "git@bitbucket.org:remi-san/mini-game.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:remi-san/message-app"
         }
     ],
     "require": {
