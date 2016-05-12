@@ -10,8 +10,10 @@ use MiniGameApp\Command\CreateGameCommand;
 use MiniGameApp\Command\CreatePlayerCommand;
 use MiniGameApp\Command\GameMoveCommand;
 use MiniGameApp\Command\LeaveGameCommand;
+use MiniGameApp\Command\StartGameCommand;
 use MiniGameApp\Manager\PlayerManager;
 use MiniGameApp\Repository\GameRepository;
+use RemiSan\Context\Context;
 
 trait MiniGameAppMocker
 {
@@ -67,6 +69,24 @@ trait MiniGameAppMocker
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
         $command->shouldReceive('getMove')->andReturn($move);
         $command->shouldReceive('getContext')->andReturn(null);
+        return $command;
+    }
+
+    /**
+     * @param MiniGameId $gameId
+     * @param PlayerId $playerId
+     * @param Context $context
+     * @return StartGameCommand
+     */
+    public function getStartGameCommand(
+        MiniGameId $gameId = null,
+        PlayerId $playerId = null,
+        Context $context = null
+    ) {
+        $command = \Mockery::mock('\\MiniGameApp\\Command\\StartGameCommand');
+        $command->shouldReceive('getGameId')->andReturn($gameId);
+        $command->shouldReceive('getPlayerId')->andReturn($playerId);
+        $command->shouldReceive('getContext')->andReturn($context);
         return $command;
     }
 
