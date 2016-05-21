@@ -66,8 +66,8 @@ class CreateGameCommand extends AbstractPlayerCommand
      * @return CreateGameCommand
      */
     public static function create(
-        MiniGameId $id = null,
-        PlayerId $playerId = null,
+        MiniGameId $id,
+        PlayerId $playerId,
         GameOptions $options = null,
         $message = null,
         Context $origin = null

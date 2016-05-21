@@ -37,8 +37,8 @@ class CreatePlayerCommand extends AbstractPlayerCommand
      * @return CreatePlayerCommand
      */
     public static function create(
-        MiniGameId $id = null,
-        PlayerId $playerId = null,
+        MiniGameId $id,
+        PlayerId $playerId,
         Context $origin = null
     ) {
         $obj = new self();
