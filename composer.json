@@ -13,12 +13,6 @@
             "role": "Developer"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:remi-san/mini-game.git"
-        }
-    ],
     "require": {
         "remi-san/mini-game" : "dev-master",
         "league/tactician": "^1.0",
