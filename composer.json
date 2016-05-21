@@ -1,9 +1,11 @@
 {
     "name": "remi-san/mini-game-app",
     "description" : "A mini-game application lib",
+    "license": "MIT",
     "keywords": [
         "Game",
-        "Text-based"
+        "TextBased",
+        "App"
     ],
     "authors": [
         {
@@ -23,6 +25,8 @@
     "require-dev": {
         "phpunit/phpunit": "~4.5",
         "Mockery/Mockery": "~0.9",
+        "fabpot/php-cs-fixer": "^1.10",
+        "squizlabs/php_codesniffer": "~2.0",
         "doctrine/orm": "~2.4"
     },
     "autoload": {
@@ -34,6 +38,11 @@
     "autoload-dev": {
         "psr-4": {
             "MiniGameApp\\Test\\" : "tests/unit/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
         }
     }
 }

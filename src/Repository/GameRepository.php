@@ -1,4 +1,5 @@
 <?php
+
 namespace MiniGameApp\Repository;
 
 use MiniGame\Entity\MiniGame;
@@ -11,8 +12,8 @@ interface GameRepository
      * Get the mini-game corresponding to the id
      *
      * @param  MiniGameId $id
-     * @return MiniGame
      * @throws GameNotFoundException
+     * @return MiniGame
      */
     public function load(MiniGameId $id);
 

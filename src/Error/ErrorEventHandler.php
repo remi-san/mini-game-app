@@ -1,4 +1,5 @@
 <?php
+
 namespace MiniGameApp\Error;
 
 use League\Event\EventInterface;

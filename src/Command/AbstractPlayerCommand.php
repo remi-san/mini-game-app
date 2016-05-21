@@ -1,4 +1,5 @@
 <?php
+
 namespace MiniGameApp\Command;
 
 use League\Tactician\Plugins\NamedCommand\NamedCommand;

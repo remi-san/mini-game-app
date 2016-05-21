@@ -1,4 +1,5 @@
 <?php
+
 namespace MiniGameApp;
 
 use MiniGame\Entity\MiniGame;

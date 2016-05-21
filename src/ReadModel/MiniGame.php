@@ -1,4 +1,5 @@
 <?php
+
 namespace MiniGameApp\ReadModel;
 
 interface MiniGame

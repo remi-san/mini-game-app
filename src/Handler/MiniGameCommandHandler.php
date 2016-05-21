@@ -1,4 +1,5 @@
 <?php
+
 namespace MiniGameApp\Handler;
 
 use MiniGameApp\Command\CreateGameCommand;

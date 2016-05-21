@@ -1,4 +1,5 @@
 <?php
+
 namespace MiniGameApp\ReadModel;
 
 use MiniGame\Entity\PlayerId;

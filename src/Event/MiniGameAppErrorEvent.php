@@ -1,4 +1,5 @@
 <?php
+
 namespace MiniGameApp\Event;
 
 use League\Event\Event;
