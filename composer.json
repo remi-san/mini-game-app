@@ -27,7 +27,8 @@
         "Mockery/Mockery": "~0.9",
         "fabpot/php-cs-fixer": "^1.10",
         "squizlabs/php_codesniffer": "~2.0",
-        "doctrine/orm": "~2.4"
+        "doctrine/orm": "~2.4",
+        "broadway/broadway": "^0.9"
     },
     "autoload": {
         "psr-4": {
@@ -39,6 +40,9 @@
         "psr-4": {
             "MiniGameApp\\Test\\" : "tests/unit/"
         }
+    },
+    "suggest": {
+        "broadway/broadway": "Allows to use event sourced repository."
     },
     "extra": {
         "branch-alias": {

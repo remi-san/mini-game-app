@@ -4,7 +4,7 @@ namespace MiniGameApp\Command;
 
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
-use TwitterHangman\Context\Context;
+use RemiSan\Context\Context;
 
 class StartGameCommand extends AbstractPlayerCommand
 {

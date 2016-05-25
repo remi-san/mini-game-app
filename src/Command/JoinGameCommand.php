@@ -5,7 +5,7 @@ namespace MiniGameApp\Command;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 use MiniGame\PlayerOptions;
-use TwitterHangman\Context\Context;
+use RemiSan\Context\Context;
 
 class JoinGameCommand extends AbstractPlayerCommand
 {
