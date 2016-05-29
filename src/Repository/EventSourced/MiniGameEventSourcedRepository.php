@@ -2,6 +2,7 @@
 
 namespace MiniGameApp\Repository\EventSourced;
 
+use Broadway\Domain\AggregateRoot;
 use Broadway\EventSourcing\EventSourcingRepository;
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
@@ -33,6 +34,10 @@ class MiniGameEventSourcedRepository implements GameRepository
      */
     public function save(MiniGame $game)
     {
+        if (!$game instanceof AggregateRoot) {
+            throw new \InvalidArgumentException();
+        }
+
         $this->repository->save($game);
     }
 
@@ -45,6 +50,12 @@ class MiniGameEventSourcedRepository implements GameRepository
      */
     public function load(MiniGameId $id)
     {
-        return $this->repository->load($id);
+        $game = $this->repository->load($id);
+
+        if ($game !== null && ! $game instanceof MiniGame) {
+            throw new \InvalidArgumentException();
+        }
+
+        return $game;
     }
 }
