@@ -135,7 +135,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('handle')
             ->with(\Mockery::on(function ($errorEvent) {
                 return $errorEvent instanceof MiniGameAppErrorEvent;
-            }));
+            }), $this->context);
 
         $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
         $executor->handleStartGameCommand($command);
@@ -147,7 +147,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     public function testJoinGame()
     {
         $miniGame = $this->getMiniGame($this->gameId, 'game');
-        $command = $this->getJoinGameCommand($this->gameId, $this->playerId, $this->playeOptions);
+        $command = $this->getJoinGameCommand($this->gameId, $this->playerId, $this->playeOptions, $this->context);
 
         $this->gameManager
             ->shouldReceive('save')
@@ -173,7 +173,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     public function testJoinGameWithException()
     {
         $miniGame = $this->getMiniGame($this->gameId, 'game');
-        $command = $this->getJoinGameCommand($this->gameId, $this->playerId, $this->playeOptions);
+        $command = $this->getJoinGameCommand($this->gameId, $this->playerId, $this->playeOptions, $this->context);
 
         $this->gameManager
             ->shouldReceive('save')
@@ -192,7 +192,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('handle')
             ->with(\Mockery::on(function ($errorEvent) {
                 return $errorEvent instanceof MiniGameAppErrorEvent;
-            }));
+            }), $this->context);
 
         $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
         $executor->handleJoinGameCommand($command);
@@ -204,7 +204,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     public function testLeaveGame()
     {
         $miniGame = $this->getMiniGame($this->gameId, 'game');
-        $command = $this->getLeaveGameCommand($this->gameId, $this->playerId);
+        $command = $this->getLeaveGameCommand($this->gameId, $this->playerId, $this->context);
 
         $this->gameManager
             ->shouldReceive('save')
@@ -230,7 +230,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     public function testLeaveGameWithException()
     {
         $miniGame = $this->getMiniGame($this->gameId, 'game');
-        $command = $this->getLeaveGameCommand($this->gameId, $this->playerId);
+        $command = $this->getLeaveGameCommand($this->gameId, $this->playerId, $this->context);
 
         $this->gameManager
             ->shouldReceive('save')
@@ -249,7 +249,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('handle')
             ->with(\Mockery::on(function ($errorEvent) {
                 return $errorEvent instanceof MiniGameAppErrorEvent;
-            }));
+            }), $this->context);
 
         $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
         $executor->handleLeaveGameCommand($command);
@@ -267,7 +267,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 
         $game = $this->getMiniGame();
 
-        $command = $this->getCreateGameCommand($this->gameId, $this->playerId, $options, $message);
+        $command = $this->getCreateGameCommand($this->gameId, $this->playerId, $options, $message, $this->context);
         $this->gameBuilder
             ->shouldReceive('createMiniGame')
             ->with($this->gameId, $this->playerId, $options)
@@ -293,7 +293,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $options->shouldReceive('getId')->andReturn($this->gameId);
         $options->shouldReceive('getPlayerOptions')->andReturn(array($this->getPlayerOptions($this->playerId)));
 
-        $command = $this->getCreateGameCommand($this->gameId, $this->playerId, $options, $message);
+        $command = $this->getCreateGameCommand($this->gameId, $this->playerId, $options, $message, $this->context);
 
         $exception = new \Exception($exceptionMessage);
 
@@ -303,7 +303,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('handle')
             ->with(\Mockery::on(function ($event) {
                 return $event instanceof MiniGameAppErrorEvent;
-            }))
+            }), $this->context)
             ->once();
 
         $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
@@ -317,7 +317,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $resultText = 'result';
         $move = $this->getMove('a');
-        $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move);
+        $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move, $this->context);
         $miniGame = $this->getMiniGame($this->gameId, 'game');
         $result = $this->getGameResult($resultText);
 
@@ -348,7 +348,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $exceptionText = 'exception';
 
         $move = $this->getMove('a');
-        $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move);
+        $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move, $this->context);
         $miniGame = $this->getMiniGame($this->gameId, 'game');
 
         $this->gameManager
@@ -365,7 +365,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('handle')
             ->with(\Mockery::on(function ($event) {
                 return $event instanceof MiniGameAppErrorEvent;
-            }))
+            }), $this->context)
             ->once();
 
         $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
@@ -378,7 +378,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     public function testGameMoveWithGameNotFoundException()
     {
         $move = $this->getMove('a');
-        $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move);
+        $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move, $this->context);
 
         $this->gameManager
             ->shouldReceive('load')
@@ -390,7 +390,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('handle')
             ->with(\Mockery::on(function ($event) {
                 return $event instanceof MiniGameAppErrorEvent;
-            }))
+            }), $this->context)
             ->once();
 
         $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);

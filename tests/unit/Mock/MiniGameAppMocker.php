@@ -35,24 +35,26 @@ trait MiniGameAppMocker
     }
 
     /**
-     * @param MiniGameId $gameId
-     * @param PlayerId $playerId
-     * @param GameOptions $options
-     * @param string $message
+     * @param  MiniGameId $gameId
+     * @param  PlayerId $playerId
+     * @param  GameOptions $options
+     * @param  string      $message
+     * @param  Context     $context
      * @return CreateGameCommand
      */
     public function getCreateGameCommand(
         MiniGameId $gameId = null,
         PlayerId $playerId = null,
         GameOptions $options = null,
-        $message = null
+        $message = null,
+        Context $context = null
     ) {
         $command = \Mockery::mock('\\MiniGameApp\\Command\\CreateGameCommand');
         $command->shouldReceive('getOptions')->andReturn($options);
         $command->shouldReceive('getMessage')->andReturn($message);
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
-        $command->shouldReceive('getContext')->andReturn(null);
+        $command->shouldReceive('getContext')->andReturn($context);
         return $command;
     }
 
@@ -60,22 +62,27 @@ trait MiniGameAppMocker
      * @param  MiniGameId $gameId
      * @param  PlayerId   $playerId
      * @param  string     $move
+     * @param  Context    $context
      * @return GameMoveCommand
      */
-    public function getGameMoveCommand(MiniGameId $gameId = null, PlayerId $playerId = null, $move = null)
-    {
+    public function getGameMoveCommand(
+        MiniGameId $gameId = null,
+        PlayerId $playerId = null,
+        $move = null,
+        Context $context = null
+    ) {
         $command = \Mockery::mock('\\MiniGameApp\\Command\\GameMoveCommand');
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
         $command->shouldReceive('getMove')->andReturn($move);
-        $command->shouldReceive('getContext')->andReturn(null);
+        $command->shouldReceive('getContext')->andReturn($context);
         return $command;
     }
 
     /**
-     * @param MiniGameId $gameId
-     * @param PlayerId $playerId
-     * @param Context $context
+     * @param  MiniGameId $gameId
+     * @param  PlayerId $playerId
+     * @param  Context $context
      * @return StartGameCommand
      */
     public function getStartGameCommand(
@@ -93,47 +100,58 @@ trait MiniGameAppMocker
     /**
      * @param  MiniGameId $gameId
      * @param  PlayerId  $playerId
+     * @param  PlayerOptions $options
+     * @param  Context $context
      * @return GameMoveCommand
      */
     public function getJoinGameCommand(
         MiniGameId $gameId = null,
         PlayerId $playerId = null,
-        PlayerOptions $options = null
+        PlayerOptions $options = null,
+        Context $context = null
     ) {
         $command = \Mockery::mock('\\MiniGameApp\\Command\\JoinGameCommand');
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
         $command->shouldReceive('getPlayerOptions')->andReturn($options);
-        $command->shouldReceive('getContext')->andReturn(null);
+        $command->shouldReceive('getContext')->andReturn($context);
         return $command;
     }
 
     /**
      * @param  MiniGameId $gameId
      * @param  PlayerId   $playerId
+     * @param  Context    $context
      * @return LeaveGameCommand
      */
-    public function getLeaveGameCommand(MiniGameId $gameId = null, PlayerId $playerId = null)
-    {
+    public function getLeaveGameCommand(
+        MiniGameId $gameId = null,
+        PlayerId $playerId = null,
+        Context $context = null
+    ) {
         $command = \Mockery::mock('\\MiniGameApp\\Command\\LeaveGameCommand');
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
         $command->shouldReceive('getGameId')->andReturn($gameId);
-        $command->shouldReceive('getContext')->andReturn(null);
+        $command->shouldReceive('getContext')->andReturn($context);
         return $command;
     }
 
     /**
      * @param  MiniGameId $gameId
      * @param  PlayerId   $playerId
+     * @param  Context    $context
      * @return CreatePlayerCommand
      */
-    public function getCreatePlayerCommand(MiniGameId $gameId = null, PlayerId $playerId = null)
-    {
+    public function getCreatePlayerCommand(
+        MiniGameId $gameId = null,
+        PlayerId $playerId = null,
+        Context $context = null
+    ) {
         $command = \Mockery::mock('\\MiniGameApp\\Command\\CreatePlayerCommand');
         $command->shouldReceive('getGameId')->andReturn($gameId);
         $command->shouldReceive('getPlayerId')->andReturn($playerId);
-        $command->shouldReceive('getContext')->andReturn(null);
+        $command->shouldReceive('getContext')->andReturn($context);
         return $command;
     }
 }

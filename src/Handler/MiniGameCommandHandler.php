@@ -77,7 +77,8 @@ class MiniGameCommandHandler implements LoggerAwareInterface
                     $command->getGameId(),
                     $command->getPlayerId(),
                     $e->getMessage()
-                )
+                ),
+                $command->getContext()
             );
         }
 
@@ -106,7 +107,8 @@ class MiniGameCommandHandler implements LoggerAwareInterface
                     $command->getGameId(),
                     $command->getPlayerId(),
                     $e->getMessage()
-                )
+                ),
+                $command->getContext()
             );
         }
 
@@ -135,7 +137,8 @@ class MiniGameCommandHandler implements LoggerAwareInterface
                     $command->getGameId(),
                     $command->getPlayerId(),
                     $e->getMessage()
-                )
+                ),
+                $command->getContext()
             );
         }
 
@@ -164,7 +167,8 @@ class MiniGameCommandHandler implements LoggerAwareInterface
                     $command->getGameId(),
                     $command->getPlayerId(),
                     $e->getMessage()
-                )
+                ),
+                $command->getContext()
             );
         }
 
@@ -193,7 +197,8 @@ class MiniGameCommandHandler implements LoggerAwareInterface
                     $command->getGameId(),
                     $command->getPlayerId(),
                     $e->getMessage()
-                )
+                ),
+                $command->getContext()
             );
         }
 
