@@ -17,11 +17,6 @@ class CreateGameCommand extends AbstractPlayerCommand
     private $options;
 
     /**
-     * @var string
-     */
-    private $message;
-
-    /**
      * Construct.
      */
     public function __construct()
@@ -47,20 +42,11 @@ class CreateGameCommand extends AbstractPlayerCommand
     }
 
     /**
-     * @return string
-     */
-    public function getMessage()
-    {
-        return $this->message;
-    }
-
-    /**
      * Construct
      *
      * @param MiniGameId  $id
      * @param PlayerId    $playerId
      * @param GameOptions $options
-     * @param string      $message
      * @param Context     $origin
      *
      * @return CreateGameCommand
@@ -69,14 +55,12 @@ class CreateGameCommand extends AbstractPlayerCommand
         MiniGameId $id,
         PlayerId $playerId,
         GameOptions $options = null,
-        $message = null,
         Context $origin = null
     ) {
         $obj = new self();
 
         $obj->init($id, $playerId, $origin);
         $obj->options = $options;
-        $obj->message = $message;
 
         return $obj;
     }
