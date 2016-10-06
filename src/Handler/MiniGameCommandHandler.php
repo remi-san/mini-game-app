@@ -73,6 +73,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
             $this->gameManager->save($miniGame);
         } catch (\Exception $e) {
             $this->errorHandler->handle(
+                // TODO type
                 new MiniGameAppErrorEvent(
                     $command->getGameId(),
                     $command->getPlayerId(),
@@ -103,6 +104,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
             $this->gameManager->save($miniGame);
         } catch (\Exception $e) {
             $this->errorHandler->handle(
+                // TODO type
                 new MiniGameAppErrorEvent(
                     $command->getGameId(),
                     $command->getPlayerId(),
@@ -133,6 +135,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
             $this->gameManager->save($miniGame);
         } catch (\Exception $e) {
             $this->errorHandler->handle(
+                // TODO type
                 new MiniGameAppErrorEvent(
                     $command->getGameId(),
                     $command->getPlayerId(),
@@ -163,6 +166,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
             $this->gameManager->save($miniGame);
         } catch (\Exception $e) {
             $this->errorHandler->handle(
+                // TODO type
                 new MiniGameAppErrorEvent(
                     $command->getGameId(),
                     $command->getPlayerId(),
@@ -193,6 +197,7 @@ class MiniGameCommandHandler implements LoggerAwareInterface
             $this->gameManager->save($miniGame);
         } catch (\Exception $e) {
             $this->errorHandler->handle(
+                // TODO type
                 new MiniGameAppErrorEvent(
                     $command->getGameId(),
                     $command->getPlayerId(),
