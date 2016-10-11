@@ -9,6 +9,8 @@ use MiniGame\GameResult;
 
 class MiniGameAppErrorEvent extends Event implements GameResult
 {
+    const NAME = 'minigame.error';
+
     /**
      * @var MiniGameId
      */
@@ -33,7 +35,7 @@ class MiniGameAppErrorEvent extends Event implements GameResult
      */
     public function __construct(MiniGameId $gameId, PlayerId $playerId, $message)
     {
-        parent::__construct('minigame.error');
+        parent::__construct(static::NAME);
         $this->gameId = $gameId;
         $this->playerId = $playerId;
         $this->message = $message;
