@@ -1,82 +1,91 @@
 <?php
 namespace MiniGameApp\Test;
 
+use Faker\Factory;
+use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\Player;
 use MiniGame\Entity\PlayerId;
 use MiniGame\Exceptions\IllegalMoveException;
+use MiniGame\GameOptions;
+use MiniGame\GameResult;
+use MiniGame\Move;
 use MiniGame\PlayerOptions;
-use MiniGame\Test\Mock\GameObjectMocker;
+use MiniGameApp\Command\CreateGameCommand;
+use MiniGameApp\Command\GameMoveCommand;
+use MiniGameApp\Command\JoinGameCommand;
+use MiniGameApp\Command\LeaveGameCommand;
+use MiniGameApp\Command\StartGameCommand;
 use MiniGameApp\Error\ErrorEventHandler;
 use MiniGameApp\Event\MiniGameAppErrorEvent;
+use MiniGameApp\Exception\GameNotFoundException;
 use MiniGameApp\Handler\MiniGameCommandHandler;
 use MiniGameApp\MiniGameFactory;
 use MiniGameApp\Repository\GameRepository;
-use MiniGameApp\Test\Mock\MiniGameAppMocker;
+use Mockery\Mock;
 use RemiSan\Context\Context;
 
 class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    use MiniGameAppMocker;
-    use GameObjectMocker;
-
-    /**
-     * @var PlayerId
-     */
-    private $playerId;
-
-    /**
-     * @var Player
-     */
-    private $player;
-
-    /**
-     * @var MiniGameId
-     */
+    /** @var MiniGameId */
     private $gameId;
 
-    /**
-     * @var PlayerOptions
-     */
-    private $playeOptions;
+    /** @var PlayerId */
+    private $playerId;
 
-    /**
-     * @var MiniGameFactory
-     */
+    /** @var Player */
+    private $player;
+
+    /** @var Context */
+    private $context;
+
+    /** @var Move */
+    private $move;
+
+    /** @var GameOptions | Mock */
+    private $options;
+
+    /** @var PlayerOptions | Mock */
+    private $playerOptions;
+
+    /** @var MiniGame | Mock */
+    private $miniGame;
+
+    /** @var MiniGameFactory | Mock */
     private $gameBuilder;
 
-    /**
-     * @var GameRepository
-     */
+    /** @var GameRepository | Mock */
     private $gameManager;
 
-    /**
-     * @var ErrorEventHandler
-     */
+    /** @var ErrorEventHandler | Mock */
     private $errorHandler;
 
-    /**
-     * @var Context
-     */
-    private $context;
+    /** @var MiniGameCommandHandler */
+    private $miniGameCommandHandler;
 
     public function setUp()
     {
-        $this->playerId = $this->getPlayerId(42);
+        $faker = Factory::create();
 
-        $this->player = $this->getPlayer($this->playerId, 'Adams');
+        $this->gameId = MiniGameId::create($faker->uuid);
+        $this->playerId = PlayerId::create($faker->uuid);
 
-        $this->gameId = $this->getMiniGameId(666);
+        $this->miniGame = $this->getMiniGame($this->gameId, $faker->name);
+        $this->player = $this->getPlayer($this->playerId, $faker->name);
+        $this->move = \Mockery::mock(Move::class);
+        $this->options = $this->getGameOptions();
+        $this->playerOptions = \Mockery::mock(PlayerOptions::class);
+        $this->context = \Mockery::mock(Context::class);
 
-        $this->playeOptions = $this->getPlayerOptions();
-
-        $this->gameBuilder = \Mockery::mock('\\MiniGameApp\\MiniGameFactory');
-
-        $this->gameManager = \Mockery::mock('\\MiniGameApp\\Repository\\GameRepository');
-
+        $this->gameBuilder = \Mockery::mock(MiniGameFactory::class);
+        $this->gameManager = \Mockery::mock(GameRepository::class);
         $this->errorHandler = \Mockery::mock(ErrorEventHandler::class);
 
-        $this->context = \Mockery::mock(Context::class);
+        $this->miniGameCommandHandler = new MiniGameCommandHandler(
+            $this->gameBuilder,
+            $this->gameManager,
+            $this->errorHandler
+        );
     }
 
     public function tearDown()
@@ -87,311 +96,335 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testStartGame()
+    public function itShouldCreateGame()
     {
-        $miniGame = $this->getMiniGame($this->gameId, 'game');
-        $command = $this->getStartGameCommand($this->gameId, $this->playerId, $this->context);
+        $command = CreateGameCommand::create($this->gameId, $this->playerId, $this->options, $this->context);
 
-        $this->gameManager
-            ->shouldReceive('save')
-            ->with($miniGame)
-            ->once();
-        $miniGame
-            ->shouldReceive('startGame')
-            ->with($this->playerId)
-            ->once();
-        $this->gameManager
-            ->shouldReceive('load')
-            ->with($this->gameId)
-            ->andReturn($miniGame)
-            ->once();
+        $this->assertItWillCreateGame();
+        $this->assertGameStateWillBePersisted();
 
-        $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
-        $executor->handleStartGameCommand($command);
+        $this->miniGameCommandHandler->handleCreateGameCommand($command);
     }
 
     /**
      * @test
      */
-    public function testStartGameWithException()
+    public function itShouldFailCreatingGame()
     {
-        $miniGame = $this->getMiniGame($this->gameId, 'game');
-        $command = $this->getStartGameCommand($this->gameId, $this->playerId, $this->context);
+        $command = CreateGameCommand::create($this->gameId, $this->playerId, $this->options, $this->context);
 
-        $this->gameManager
-            ->shouldReceive('save')
-            ->with($miniGame)
-            ->never();
-        $miniGame
-            ->shouldReceive('startGame')
-            ->with($this->playerId)
-            ->andThrow(\Exception::class);
-        $this->gameManager
-            ->shouldReceive('load')
-            ->with($this->gameId)
-            ->andReturn($miniGame)
-            ->once();
-        $this->errorHandler
-            ->shouldReceive('handle')
-            ->with(\Mockery::on(function ($errorEvent) {
-                return $errorEvent instanceof MiniGameAppErrorEvent;
-            }), $this->context);
+        $this->givenGameCannotBeCreated();
 
-        $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
-        $executor->handleStartGameCommand($command);
+        $this->assertErrorWillBeHandled();
+        $this->assertGameStateWontChange();
+
+        $this->miniGameCommandHandler->handleCreateGameCommand($command);
     }
 
     /**
      * @test
      */
-    public function testJoinGame()
+    public function itShouldStartGame()
     {
-        $miniGame = $this->getMiniGame($this->gameId, 'game');
-        $command = $this->getJoinGameCommand($this->gameId, $this->playerId, $this->playeOptions, $this->context);
+        $command = StartGameCommand::create($this->gameId, $this->playerId, $this->context);
 
-        $this->gameManager
-            ->shouldReceive('save')
-            ->with($miniGame)
-            ->once();
-        $miniGame
-            ->shouldReceive('addPlayerToGame')
-            ->with($this->playeOptions)
-            ->once();
-        $this->gameManager
-            ->shouldReceive('load')
-            ->with($this->gameId)
-            ->andReturn($miniGame)
-            ->once();
+        $this->givenGameExists();
 
-        $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
-        $executor->handleJoinGameCommand($command);
+        $this->assertItWillStartTheGame();
+        $this->assertGameStateWillBePersisted();
+
+        $this->miniGameCommandHandler->handleStartGameCommand($command);
     }
 
     /**
      * @test
      */
-    public function testJoinGameWithException()
+    public function itShouldFailStartingGame()
     {
-        $miniGame = $this->getMiniGame($this->gameId, 'game');
-        $command = $this->getJoinGameCommand($this->gameId, $this->playerId, $this->playeOptions, $this->context);
+        $command = StartGameCommand::create($this->gameId, $this->playerId, $this->context);
 
-        $this->gameManager
-            ->shouldReceive('save')
-            ->with($miniGame)
-            ->never();
-        $miniGame
-            ->shouldReceive('addPlayerToGame')
-            ->with($this->playerId)
-            ->andThrow(\Exception::class);
-        $this->gameManager
-            ->shouldReceive('load')
-            ->with($this->gameId)
-            ->andReturn($miniGame)
-            ->once();
-        $this->errorHandler
-            ->shouldReceive('handle')
-            ->with(\Mockery::on(function ($errorEvent) {
-                return $errorEvent instanceof MiniGameAppErrorEvent;
-            }), $this->context);
+        $this->givenGameExists();
+        $this->givenItCanNotStartTheGame();
 
-        $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
-        $executor->handleJoinGameCommand($command);
+        $this->assertErrorWillBeHandled();
+        $this->assertGameStateWontChange();
+
+        $this->miniGameCommandHandler->handleStartGameCommand($command);
     }
 
     /**
      * @test
      */
-    public function testLeaveGame()
+    public function itShouldJoinGame()
     {
-        $miniGame = $this->getMiniGame($this->gameId, 'game');
-        $command = $this->getLeaveGameCommand($this->gameId, $this->playerId, $this->context);
+        $command = JoinGameCommand::create($this->gameId, $this->playerId, $this->playerOptions, $this->context);
 
-        $this->gameManager
-            ->shouldReceive('save')
-            ->with($miniGame)
-            ->once();
-        $miniGame
-            ->shouldReceive('leaveGame')
-            ->with($this->playerId)
-            ->once();
-        $this->gameManager
-            ->shouldReceive('load')
-            ->with($this->gameId)
-            ->andReturn($miniGame)
-            ->once();
+        $this->givenGameExists();
 
-        $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
-        $executor->handleLeaveGameCommand($command);
+        $this->assertPlayerWillBeAddedToGame();
+        $this->assertGameStateWillBePersisted();
+
+        $this->miniGameCommandHandler->handleJoinGameCommand($command);
     }
 
     /**
      * @test
      */
-    public function testLeaveGameWithException()
+    public function itShouldFailJoiningGame()
     {
-        $miniGame = $this->getMiniGame($this->gameId, 'game');
-        $command = $this->getLeaveGameCommand($this->gameId, $this->playerId, $this->context);
+        $command = JoinGameCommand::create($this->gameId, $this->playerId, $this->playerOptions, $this->context);
 
-        $this->gameManager
-            ->shouldReceive('save')
-            ->with($miniGame)
-            ->never();
-        $miniGame
-            ->shouldReceive('leaveGame')
-            ->with($this->playerId)
-            ->andThrow(\Exception::class);
-        $this->gameManager
-            ->shouldReceive('load')
-            ->with($this->gameId)
-            ->andReturn($miniGame)
-            ->once();
-        $this->errorHandler
-            ->shouldReceive('handle')
-            ->with(\Mockery::on(function ($errorEvent) {
-                return $errorEvent instanceof MiniGameAppErrorEvent;
-            }), $this->context);
+        $this->givenGameExists();
+        $this->givenItCanNotAddAPlayerToGame();
 
-        $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
-        $executor->handleLeaveGameCommand($command);
+        $this->assertErrorWillBeHandled();
+        $this->assertGameStateWontChange();
+
+        $this->miniGameCommandHandler->handleJoinGameCommand($command);
     }
 
     /**
      * @test
      */
-    public function testCreateGame()
+    public function itShouldLeaveGame()
     {
-        $options = $this->getGameOptions();
+        $command = LeaveGameCommand::create($this->gameId, $this->playerId, $this->context);
+
+        $this->givenGameExists();
+
+        $this->assertPlayerWillLeaveGame();
+        $this->assertGameStateWillBePersisted();
+
+        $this->miniGameCommandHandler->handleLeaveGameCommand($command);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldFailLeavingGame()
+    {
+        $command = LeaveGameCommand::create($this->gameId, $this->playerId, $this->context);
+
+        $this->givenGameExists();
+        $this->givenPlayerCanNotLeaveGame();
+
+        $this->assertErrorWillBeHandled();
+        $this->assertGameStateWontChange();
+
+        $this->miniGameCommandHandler->handleLeaveGameCommand($command);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldPlay()
+    {
+        $command = GameMoveCommand::create($this->gameId, $this->playerId, $this->move, $this->context);
+
+        $this->givenGameExists();
+
+        $this->assertPlayerWillPlay();
+        $this->assertGameStateWillBePersisted();
+
+        $this->miniGameCommandHandler->handleGameMoveCommand($command);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldFailPlaying()
+    {
+        $command = GameMoveCommand::create($this->gameId, $this->playerId, $this->move, $this->context);
+
+        $this->givenGameExists();
+        $this->givenPlayerCanNotPlay();
+
+        $this->assertErrorWillBeHandled();
+        $this->assertGameStateWontChange();
+
+        $this->miniGameCommandHandler->handleGameMoveCommand($command);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldFailPlayingIfGameDoesNotExist()
+    {
+        $command = GameMoveCommand::create($this->gameId, $this->playerId, $this->move, $this->context);
+
+        $this->givenGameDoesNotExist();
+
+        $this->assertErrorWillBeHandled();
+        $this->assertGameStateWontChange();
+
+        $this->miniGameCommandHandler->handleGameMoveCommand($command);
+    }
+
+    /**
+     * @param MiniGameId $gameId
+     * @param string     $name
+     *
+     * @return MiniGame
+     */
+    private function getMiniGame($gameId, $name)
+    {
+        /** @var MiniGame | Mock $miniGame */
+        $miniGame = \Mockery::mock(MiniGame::class);
+        $miniGame->shouldReceive('getId')->andReturn($gameId);
+        $miniGame->shouldReceive('getName')->andReturn($name);
+
+        return $miniGame;
+    }
+
+    /**
+     * @param PlayerId $playerId
+     * @param string   $name
+     *
+     * @return Player
+     */
+    private function getPlayer($playerId, $name)
+    {
+        /** @var Player | Mock $player */
+        $player = \Mockery::mock(Player::class);
+        $player->shouldReceive('getId')->andReturn($playerId);
+        $player->shouldReceive('getName')->andReturn($name);
+
+        return $player;
+    }
+
+    /**
+     * @return GameOptions
+     */
+    private function getGameOptions()
+    {
+        /** @var GameOptions | Mock $options */
+        $options = \Mockery::mock(GameOptions::class);
         $options->shouldReceive('getId')->andReturn($this->gameId);
-        $options->shouldReceive('getPlayerOptions')->andReturn(array($this->getPlayerOptions($this->playerId)));
+        $options->shouldReceive('getPlayerOptions')->andReturn([$this->playerOptions]);
 
-        $game = $this->getMiniGame();
+        return $options;
+    }
 
-        $command = $this->getCreateGameCommand($this->gameId, $this->playerId, $options, $this->context);
+    private function assertItWillStartTheGame()
+    {
+        $this->miniGame
+            ->shouldReceive('startGame')
+            ->with($this->playerId)
+            ->once();
+    }
+
+    private function assertGameStateWillBePersisted()
+    {
+        $this->gameManager
+            ->shouldReceive('save')
+            ->with($this->miniGame)
+            ->once();
+    }
+
+    private function givenGameExists()
+    {
+        $this->gameManager
+            ->shouldReceive('load')
+            ->with($this->gameId)
+            ->andReturn($this->miniGame);
+    }
+
+    private function assertGameStateWontChange()
+    {
+        $this->gameManager
+            ->shouldReceive('save')
+            ->with($this->miniGame)
+            ->never();
+    }
+
+    private function givenItCanNotStartTheGame()
+    {
+        $this->miniGame
+            ->shouldReceive('startGame')
+            ->with($this->playerId)
+            ->andThrow(\Exception::class);
+    }
+
+    private function assertErrorWillBeHandled()
+    {
+        $this->errorHandler
+            ->shouldReceive('handle')
+            ->with(\Mockery::on(function ($errorEvent) {
+                return $errorEvent instanceof MiniGameAppErrorEvent;
+            }), $this->context)
+            ->once();
+    }
+
+    private function assertPlayerWillBeAddedToGame()
+    {
+        $this->miniGame
+            ->shouldReceive('addPlayerToGame')
+            ->with($this->playerOptions)
+            ->once();
+    }
+
+    private function givenItCanNotAddAPlayerToGame()
+    {
+        $this->miniGame
+            ->shouldReceive('addPlayerToGame')
+            ->with($this->playerId)
+            ->andThrow(\Exception::class);
+    }
+
+    private function assertPlayerWillLeaveGame()
+    {
+        $this->miniGame
+            ->shouldReceive('leaveGame')
+            ->with($this->playerId)
+            ->once();
+    }
+
+    private function givenPlayerCanNotLeaveGame()
+    {
+        $this->miniGame
+            ->shouldReceive('leaveGame')
+            ->with($this->playerId)
+            ->andThrow(\Exception::class);
+    }
+
+    private function assertItWillCreateGame()
+    {
         $this->gameBuilder
             ->shouldReceive('createMiniGame')
-            ->with($this->gameId, $this->playerId, $options)
-            ->andReturn($game)
+            ->with($this->gameId, $this->playerId, $this->options)
+            ->andReturn($this->miniGame)
             ->once();
-        $this->gameManager
-            ->shouldReceive('save')
-            ->with($game)
-            ->once();
-
-        $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
-        $executor->handleCreateGameCommand($command);
     }
 
-    /**
-     * @test
-     */
-    public function testCreateGameWithException()
+    private function givenGameCannotBeCreated()
     {
-        $exceptionMessage = 'exception';
-        $options = $this->getGameOptions();
-        $options->shouldReceive('getId')->andReturn($this->gameId);
-        $options->shouldReceive('getPlayerOptions')->andReturn(array($this->getPlayerOptions($this->playerId)));
-
-        $command = $this->getCreateGameCommand($this->gameId, $this->playerId, $options, $this->context);
-
-        $exception = new \Exception($exceptionMessage);
-
-        $this->gameBuilder->shouldReceive('createMiniGame')->andThrow($exception);
-
-        $this->errorHandler
-            ->shouldReceive('handle')
-            ->with(\Mockery::on(function ($event) {
-                return $event instanceof MiniGameAppErrorEvent;
-            }), $this->context)
-            ->once();
-
-        $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
-        $executor->handleCreateGameCommand($command);
+        $this->gameBuilder
+            ->shouldReceive('createMiniGame')
+            ->andThrow(\Exception::class);
     }
 
-    /**
-     * @test
-     */
-    public function testGameMove()
+    private function assertPlayerWillPlay()
     {
-        $resultText = 'result';
-        $move = $this->getMove('a');
-        $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move, $this->context);
-        $miniGame = $this->getMiniGame($this->gameId, 'game');
-        $result = $this->getGameResult($resultText);
-
-        $this->gameManager
-            ->shouldReceive('save')
-            ->with($miniGame)
-            ->once();
-        $miniGame
+        $this->miniGame
             ->shouldReceive('play')
-            ->with($this->playerId, $move)
-            ->andReturn($result)
+            ->with($this->playerId, $this->move)
+            ->andReturn(\Mockery::mock(GameResult::class))
             ->once();
-        $this->gameManager
-            ->shouldReceive('load')
-            ->with($this->gameId)
-            ->andReturn($miniGame)
-            ->once();
-
-        $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
-        $executor->handleGameMoveCommand($command);
     }
 
-    /**
-     * @test
-     */
-    public function testGameMoveWithGameException()
+    private function givenPlayerCanNotPlay()
     {
-        $exceptionText = 'exception';
-
-        $move = $this->getMove('a');
-        $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move, $this->context);
-        $miniGame = $this->getMiniGame($this->gameId, 'game');
-
-        $this->gameManager
-            ->shouldReceive('load')
-            ->with($this->gameId)
-            ->andReturn($miniGame)
-            ->once();
-        $miniGame
+        $this->miniGame
             ->shouldReceive('play')
-            ->with($this->playerId, $move)
-            ->andThrow(new IllegalMoveException($move, $exceptionText));
-
-        $this->errorHandler
-            ->shouldReceive('handle')
-            ->with(\Mockery::on(function ($event) {
-                return $event instanceof MiniGameAppErrorEvent;
-            }), $this->context)
-            ->once();
-
-        $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
-        $executor->handleGameMoveCommand($command);
+            ->with($this->playerId, $this->move)
+            ->andThrow(new IllegalMoveException($this->move));
     }
 
-    /**
-     * @test
-     */
-    public function testGameMoveWithGameNotFoundException()
+    private function givenGameDoesNotExist()
     {
-        $move = $this->getMove('a');
-        $command = $this->getGameMoveCommand($this->gameId, $this->playerId, $move, $this->context);
-
         $this->gameManager
             ->shouldReceive('load')
             ->with($this->gameId)
-            ->andThrow('\\MiniGameApp\\Exception\\GameNotFoundException')
-            ->once();
-
-        $this->errorHandler
-            ->shouldReceive('handle')
-            ->with(\Mockery::on(function ($event) {
-                return $event instanceof MiniGameAppErrorEvent;
-            }), $this->context)
-            ->once();
-
-        $executor = new MiniGameCommandHandler($this->gameBuilder, $this->gameManager, $this->errorHandler);
-        $executor->handleGameMoveCommand($command);
+            ->andThrow(GameNotFoundException::class);
     }
 }

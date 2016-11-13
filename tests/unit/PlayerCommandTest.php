@@ -1,11 +1,11 @@
 <?php
 namespace MiniGameApp\Test;
 
+use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
 use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Test\Mock\ConcretePlayerCommand;
 use RemiSan\Context\Context;
-use TwitterHangman\Cache\ORM\__CG__\MiniGame\Entity\MiniGameId;
 
 class PlayerCommandTest extends \PHPUnit_Framework_TestCase
 {
