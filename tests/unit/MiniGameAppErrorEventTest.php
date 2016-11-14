@@ -1,32 +1,25 @@
 <?php
 namespace MiniGameApp\Test;
 
+use Faker\Factory;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
-use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Event\MiniGameAppErrorEvent;
-use MiniGameApp\Test\Mock\MiniGameAppMocker;
 
 class MiniGameAppErrorEventTest extends \PHPUnit_Framework_TestCase
 {
-    use MiniGameAppMocker;
-    use GameObjectMocker;
-
-    /**
-     * @var PlayerId
-     */
+    /** @var PlayerId */
     private $playerId;
 
-    /**
-     * @var MiniGameId
-     */
+    /** @var MiniGameId */
     private $gameId;
 
     public function setUp()
     {
-        $this->playerId = $this->getPlayerId(42);
+        $faker = Factory::create();
 
-        $this->gameId = $this->getMiniGameId(666);
+        $this->playerId = PlayerId::create($faker->uuid);
+        $this->gameId = MiniGameId::create($faker->uuid);
     }
 
     public function tearDown()
@@ -37,7 +30,7 @@ class MiniGameAppErrorEventTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function test()
+    public function itShouldBuildTheError()
     {
         $event = new MiniGameAppErrorEvent($this->gameId, $this->playerId, 'message');
 

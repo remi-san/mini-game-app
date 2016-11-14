@@ -1,34 +1,48 @@
 <?php
 namespace MiniGameApp\Test;
 
-use MiniGame\Test\Mock\GameObjectMocker;
+use Faker\Factory;
+use MiniGame\Entity\MiniGameId;
+use MiniGame\Entity\PlayerId;
+use MiniGame\Move;
 use MiniGameApp\Command\GameMoveCommand;
-use MiniGameApp\Test\Mock\MiniGameAppMocker;
+use RemiSan\Context\Context;
 
 class GameMoveCommandTest extends \PHPUnit_Framework_TestCase
 {
-    use GameObjectMocker;
-    use MiniGameAppMocker;
+    /** @var PlayerId */
+    private $playerId;
 
-    public function tearDown()
+    /** @var MiniGameId */
+    private $gameId;
+
+    /** @var Move */
+    private $move;
+
+    /** @var Context */
+    private $context;
+
+    public function setUp()
     {
-        \Mockery::close();
+        $faker = Factory::create();
+
+        $this->playerId = PlayerId::create($faker->uuid);
+        $this->gameId = MiniGameId::create($faker->uuid);
+        $this->move = \Mockery::mock(Move::class);
+        $this->context = \Mockery::mock(Context::class);
     }
 
     /**
      * @test
      */
-    public function test()
+    public function itShouldBuildTheCommand()
     {
-        $userId = $this->getPlayerId(42);
-        $gameId = $this->getMiniGameId(666);
-        $move = $this->getMove('move');
+        $command = GameMoveCommand::create($this->gameId, $this->playerId, $this->move, $this->context);
 
-        $command = GameMoveCommand::create($gameId, $userId, $move);
-
-        $this->assertEquals($userId, $command->getPlayerId());
-        $this->assertEquals($gameId, $command->getGameId());
-        $this->assertEquals($move, $command->getMove());
+        $this->assertEquals($this->playerId, $command->getPlayerId());
+        $this->assertEquals($this->gameId, $command->getGameId());
+        $this->assertEquals($this->move, $command->getMove());
+        $this->assertEquals($this->context, $command->getContext());
         $this->assertEquals(GameMoveCommand::NAME, $command->getCommandName());
     }
 }

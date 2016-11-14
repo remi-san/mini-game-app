@@ -4,21 +4,36 @@ namespace MiniGameApp\Test;
 
 use Broadway\Domain\AggregateRoot;
 use Broadway\EventSourcing\EventSourcingRepository;
+use Faker\Factory;
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\MiniGameId;
 use MiniGameApp\Repository\EventSourced\MiniGameEventSourcedRepository;
 use MiniGameApp\Test\Mock\AggregateRootMiniGame;
+use Mockery\Mock;
 
 class MiniGameEventSourcedRepositoryTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var EventSourcingRepository
-     */
-    private $repository;
+    /** @var MiniGameId */
+    private $gameId;
+
+    /** @var MiniGame */
+    private $game;
+
+    /** @var EventSourcingRepository | Mock */
+    private $eventSourcingRepository;
+
+    /** @var MiniGameEventSourcedRepository */
+    private $miniGameRepository;
 
     public function setUp()
     {
-        $this->repository = \Mockery::mock(EventSourcingRepository::class);
+        $faker = Factory::create();
+
+        $this->gameId = MiniGameId::create($faker->uuid);
+
+        $this->eventSourcingRepository = \Mockery::mock(EventSourcingRepository::class);
+
+        $this->miniGameRepository = new MiniGameEventSourcedRepository($this->eventSourcingRepository);
     }
 
     public function tearDown()
@@ -31,13 +46,11 @@ class MiniGameEventSourcedRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldThrowAnExceptionIfMiniGameIsNotAnAggregateRoot()
     {
-        $game = \Mockery::mock(MiniGame::class);
-
-        $repository = new MiniGameEventSourcedRepository($this->repository);
+        $this->givenGameIsNotAnAggregateRoot();
 
         $this->setExpectedException(\InvalidArgumentException::class);
 
-        $repository->save($game);
+        $this->miniGameRepository->save($this->game);
     }
 
     /**
@@ -45,13 +58,10 @@ class MiniGameEventSourcedRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldDeferSaveToInnerRepository()
     {
-        $game = new AggregateRootMiniGame();
+        $this->givenGameIsValid();
+        $this->assertGameWillBeSaved();
 
-        $repository = new MiniGameEventSourcedRepository($this->repository);
-
-        $this->repository->shouldReceive('save')->with($game);
-
-        $repository->save($game);
+        $this->miniGameRepository->save($this->game);
     }
 
     /**
@@ -59,16 +69,12 @@ class MiniGameEventSourcedRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldUseTheInnerRepositoryToLoadTheMiniGame()
     {
-        $gameId = \Mockery::mock(MiniGameId::class);
-        $game = new AggregateRootMiniGame();
+        $this->givenGameIsValid();
+        $this->givenGameExists();
 
-        $repository = new MiniGameEventSourcedRepository($this->repository);
+        $returnUser = $this->miniGameRepository->load($this->gameId);
 
-        $this->repository->shouldReceive('load')->with($gameId)->andReturn($game);
-
-        $returnUser = $repository->load($gameId);
-
-        $this->assertEquals($returnUser, $game);
+        $this->assertEquals($returnUser, $this->game);
     }
 
     /**
@@ -76,13 +82,9 @@ class MiniGameEventSourcedRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldReturnNullIfTheInnerRepositoryReturnsNull()
     {
-        $gameId = \Mockery::mock(MiniGameId::class);
+        $this->givenGameDoesNotExist();
 
-        $repository = new MiniGameEventSourcedRepository($this->repository);
-
-        $this->repository->shouldReceive('load')->with($gameId)->andReturn(null);
-
-        $this->assertNull($repository->load($gameId));
+        $this->assertNull($this->miniGameRepository->load($this->gameId));
     }
 
     /**
@@ -90,14 +92,41 @@ class MiniGameEventSourcedRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldThrowAnExceptionIfTheLoadedEntityIsNotAMiniGame()
     {
-        $gameId = \Mockery::mock(MiniGameId::class);
-        $game = \Mockery::mock(AggregateRoot::class);
+        $this->givenAggregateRootIsNotAGame();
+        $this->givenGameExists();
 
-        $repository = new MiniGameEventSourcedRepository($this->repository);
-
-        $this->repository->shouldReceive('load')->with($gameId)->andReturn($game);
         $this->setExpectedException(\InvalidArgumentException::class);
 
-        $repository->load($gameId);
+        $this->miniGameRepository->load($this->gameId);
+    }
+
+    private function assertGameWillBeSaved()
+    {
+        $this->eventSourcingRepository->shouldReceive('save')->with($this->game)->once();
+    }
+
+    private function givenGameExists()
+    {
+        $this->eventSourcingRepository->shouldReceive('load')->with($this->gameId)->andReturn($this->game);
+    }
+
+    private function givenGameIsValid()
+    {
+        $this->game = new AggregateRootMiniGame();
+    }
+
+    private function givenGameIsNotAnAggregateRoot()
+    {
+        $this->game = \Mockery::mock(MiniGame::class);
+    }
+
+    private function givenAggregateRootIsNotAGame()
+    {
+        $this->game = \Mockery::mock(AggregateRoot::class);
+    }
+
+    private function givenGameDoesNotExist()
+    {
+        $this->eventSourcingRepository->shouldReceive('load')->with($this->gameId)->andReturn(null);
     }
 }

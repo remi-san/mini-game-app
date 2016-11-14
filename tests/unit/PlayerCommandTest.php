@@ -1,35 +1,29 @@
 <?php
 namespace MiniGameApp\Test;
 
+use Faker\Factory;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
-use MiniGame\Test\Mock\GameObjectMocker;
 use MiniGameApp\Test\Mock\ConcretePlayerCommand;
 use RemiSan\Context\Context;
 
 class PlayerCommandTest extends \PHPUnit_Framework_TestCase
 {
-    use GameObjectMocker;
-
-    /**
-     * @var PlayerId
-     */
+    /** @var PlayerId */
     private $playerId;
 
-    /**
-     * @var MiniGameId
-     */
+    /** @var MiniGameId */
     private $gameId;
 
-    /**
-     * @var Context
-     */
+    /** @var Context */
     private $context;
 
     public function setUp()
     {
-        $this->playerId = $this->getPlayerId(42);
-        $this->gameId = $this->getMiniGameId(666);
+        $faker = Factory::create();
+
+        $this->playerId = PlayerId::create($faker->uuid);
+        $this->gameId = MiniGameId::create($faker->uuid);
         $this->context = \Mockery::mock(Context::class);
     }
 
@@ -41,7 +35,7 @@ class PlayerCommandTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function test()
+    public function itShouldBuildTheCommand()
     {
         $playerCommand = new ConcretePlayerCommand($this->gameId, $this->playerId, $this->context);
 

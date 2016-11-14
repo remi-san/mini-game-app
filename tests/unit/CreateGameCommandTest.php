@@ -1,34 +1,48 @@
 <?php
 namespace MiniGameApp\Test;
 
-use MiniGame\Test\Mock\GameObjectMocker;
+use Faker\Factory;
+use MiniGame\Entity\MiniGameId;
+use MiniGame\Entity\PlayerId;
+use MiniGame\GameOptions;
 use MiniGameApp\Command\CreateGameCommand;
-use MiniGameApp\Test\Mock\MiniGameAppMocker;
+use RemiSan\Context\Context;
 
 class CreateGameCommandTest extends \PHPUnit_Framework_TestCase
 {
-    use GameObjectMocker;
-    use MiniGameAppMocker;
+    /** @var PlayerId */
+    private $playerId;
 
-    public function tearDown()
+    /** @var MiniGameId */
+    private $gameId;
+
+    /** @var GameOptions */
+    private $gameOptions;
+
+    /** @var Context */
+    private $context;
+
+    public function setUp()
     {
-        \Mockery::close();
+        $faker = Factory::create();
+
+        $this->playerId = PlayerId::create($faker->uuid);
+        $this->gameId = MiniGameId::create($faker->uuid);
+        $this->gameOptions = \Mockery::mock(GameOptions::class);
+        $this->context = \Mockery::mock(Context::class);
     }
 
     /**
      * @test
      */
-    public function test()
+    public function itShouldBuildTheCommand()
     {
-        $options = $this->getGameOptions();
-        $gameId = $this->getMiniGameId(42);
-        $playerId = $this->getPlayerId(33);
+        $command = CreateGameCommand::create($this->gameId, $this->playerId, $this->gameOptions, $this->context);
 
-        $command = CreateGameCommand::create($gameId, $playerId, $options);
-
-        $this->assertEquals($gameId, $command->getGameId());
-        $this->assertEquals($playerId, $command->getPlayerId());
-        $this->assertEquals($options, $command->getOptions());
+        $this->assertEquals($this->gameId, $command->getGameId());
+        $this->assertEquals($this->playerId, $command->getPlayerId());
+        $this->assertEquals($this->gameOptions, $command->getOptions());
+        $this->assertEquals($this->context, $command->getContext());
         $this->assertEquals(CreateGameCommand::NAME, $command->getCommandName());
     }
 }
