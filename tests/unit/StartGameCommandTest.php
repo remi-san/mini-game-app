@@ -4,7 +4,6 @@ namespace MiniGameApp\Test;
 use Faker\Factory;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
-use MiniGameApp\Command\LeaveGameCommand;
 use MiniGameApp\Command\StartGameCommand;
 use RemiSan\Context\Context;
 
