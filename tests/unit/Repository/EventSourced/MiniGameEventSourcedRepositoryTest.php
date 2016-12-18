@@ -1,6 +1,6 @@
 <?php
 
-namespace MiniGameApp\Test;
+namespace MiniGameApp\Test\Repository\EventSourced;
 
 use Broadway\Domain\AggregateRoot;
 use Broadway\EventSourcing\EventSourcingRepository;

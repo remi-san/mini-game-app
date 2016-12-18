@@ -1,13 +1,13 @@
 <?php
-namespace MiniGameApp\Test;
+namespace MiniGameApp\Test\Command;
 
 use Faker\Factory;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
-use MiniGameApp\Test\Mock\ConcretePlayerCommand;
+use MiniGameApp\Command\CreatePlayerCommand;
 use RemiSan\Context\Context;
 
-class PlayerCommandTest extends \PHPUnit_Framework_TestCase
+class CreatePlayerCommandTest extends \PHPUnit_Framework_TestCase
 {
     /** @var PlayerId */
     private $playerId;
@@ -27,20 +27,16 @@ class PlayerCommandTest extends \PHPUnit_Framework_TestCase
         $this->context = \Mockery::mock(Context::class);
     }
 
-    public function tearDown()
-    {
-        \Mockery::close();
-    }
-
     /**
      * @test
      */
     public function itShouldBuildTheCommand()
     {
-        $playerCommand = new ConcretePlayerCommand($this->gameId, $this->playerId, $this->context);
+        $command = CreatePlayerCommand::create($this->gameId, $this->playerId, $this->context);
 
-        $this->assertEquals($this->playerId, $playerCommand->getPlayerId());
-        $this->assertEquals($this->gameId, $playerCommand->getGameId());
-        $this->assertEquals($this->context, $playerCommand->getContext());
+        $this->assertEquals($this->playerId, $command->getPlayerId());
+        $this->assertEquals($this->gameId, $command->getGameId());
+        $this->assertEquals($this->context, $command->getContext());
+        $this->assertEquals(CreatePlayerCommand::NAME, $command->getCommandName());
     }
 }

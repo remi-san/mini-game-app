@@ -1,19 +1,23 @@
 <?php
-namespace MiniGameApp\Test;
+namespace MiniGameApp\Test\Command;
 
 use Faker\Factory;
 use MiniGame\Entity\MiniGameId;
 use MiniGame\Entity\PlayerId;
-use MiniGameApp\Command\LeaveGameCommand;
+use MiniGame\Move;
+use MiniGameApp\Command\GameMoveCommand;
 use RemiSan\Context\Context;
 
-class LeaveGameCommandTest extends \PHPUnit_Framework_TestCase
+class GameMoveCommandTest extends \PHPUnit_Framework_TestCase
 {
     /** @var PlayerId */
     private $playerId;
 
     /** @var MiniGameId */
     private $gameId;
+
+    /** @var Move */
+    private $move;
 
     /** @var Context */
     private $context;
@@ -24,6 +28,7 @@ class LeaveGameCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->playerId = PlayerId::create($faker->uuid);
         $this->gameId = MiniGameId::create($faker->uuid);
+        $this->move = \Mockery::mock(Move::class);
         $this->context = \Mockery::mock(Context::class);
     }
 
@@ -32,11 +37,12 @@ class LeaveGameCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldBuildTheCommand()
     {
-        $command = LeaveGameCommand::create($this->gameId, $this->playerId, $this->context);
+        $command = GameMoveCommand::create($this->gameId, $this->playerId, $this->move, $this->context);
 
         $this->assertEquals($this->playerId, $command->getPlayerId());
         $this->assertEquals($this->gameId, $command->getGameId());
+        $this->assertEquals($this->move, $command->getMove());
         $this->assertEquals($this->context, $command->getContext());
-        $this->assertEquals(LeaveGameCommand::NAME, $command->getCommandName());
+        $this->assertEquals(GameMoveCommand::NAME, $command->getCommandName());
     }
 }

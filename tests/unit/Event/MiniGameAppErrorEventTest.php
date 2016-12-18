@@ -1,5 +1,5 @@
 <?php
-namespace MiniGameApp\Test;
+namespace MiniGameApp\Test\Event;
 
 use Faker\Factory;
 use MiniGame\Entity\MiniGameId;

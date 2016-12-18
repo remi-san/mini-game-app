@@ -1,5 +1,5 @@
 <?php
-namespace MiniGameApp\Test;
+namespace MiniGameApp\Test\Handler;
 
 use Faker\Factory;
 use MiniGame\Entity\MiniGame;
