@@ -46,7 +46,7 @@ class AggregateRootMiniGame implements MiniGame, AggregateRoot
      */
     public function getId()
     {
-        return new MiniGameId(0);
+        return MiniGameId::create();
     }
 
     /**
