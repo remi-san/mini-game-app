@@ -33,8 +33,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MiniGameApp\\": "src/",
-            "MiniGameApp\\Test\\Mock\\" : "tests/unit/Mock/"
+            "MiniGameApp\\": "src/"
         }
     },
     "autoload-dev": {
